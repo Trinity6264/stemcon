@@ -1,4 +1,4 @@
-import 'package:stemcon/views/authentication/otp_view.dart';
+
 import 'package:stemcon/views/category/add_category_view.dart';
 import 'package:stemcon/views/category/dpr/dpr_view.dart';
 import 'package:stemcon/views/category/selected_cat_view.dart';
@@ -23,7 +23,6 @@ import '../views/category/tasks/task_view.dart';
   MaterialRoute(page: StartUpView, initial: true),
   MaterialRoute(page: CompanyCodeView),
   MaterialRoute(page: LoginView ),
-  MaterialRoute(page: OtpView),
   MaterialRoute(page: HomeView),
   MaterialRoute(page: AddProjectView),
   MaterialRoute(page: TaskView),

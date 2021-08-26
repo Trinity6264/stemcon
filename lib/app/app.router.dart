@@ -12,7 +12,6 @@ import 'package:stacked/stacked_annotations.dart';
 
 import '../views/authentication/company_code_view.dart';
 import '../views/authentication/login_view.dart';
-import '../views/authentication/otp_view.dart';
 import '../views/authentication/startup_view.dart';
 import '../views/category/add_category_view.dart';
 import '../views/category/dpr/add_new_dpr_view.dart';
@@ -28,7 +27,6 @@ class Routes {
   static const String startUpView = '/';
   static const String companyCodeView = '/company-code-view';
   static const String loginView = '/login-view';
-  static const String otpView = '/otp-view';
   static const String homeView = '/home-view';
   static const String addProjectView = '/add-project-view';
   static const String taskView = '/task-view';
@@ -42,7 +40,6 @@ class Routes {
     startUpView,
     companyCodeView,
     loginView,
-    otpView,
     homeView,
     addProjectView,
     taskView,
@@ -62,7 +59,6 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.startUpView, page: StartUpView),
     RouteDef(Routes.companyCodeView, page: CompanyCodeView),
     RouteDef(Routes.loginView, page: LoginView),
-    RouteDef(Routes.otpView, page: OtpView),
     RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.addProjectView, page: AddProjectView),
     RouteDef(Routes.taskView, page: TaskView),
@@ -99,18 +95,6 @@ class StackedRouter extends RouterBase {
         builder: (context) => LoginView(
           key: args.key,
           companyCode: args.companyCode,
-        ),
-        settings: data,
-      );
-    },
-    OtpView: (data) {
-      var args = data.getArgs<OtpViewArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => OtpView(
-          key: args.key,
-          companyCode: args.companyCode,
-          countryCode: args.countryCode,
-          countryNumber: args.countryNumber,
         ),
         settings: data,
       );
@@ -243,19 +227,6 @@ class LoginViewArguments {
   final Key? key;
   final int? companyCode;
   LoginViewArguments({this.key, this.companyCode});
-}
-
-/// OtpView arguments holder class
-class OtpViewArguments {
-  final Key? key;
-  final int companyCode;
-  final String countryCode;
-  final String countryNumber;
-  OtpViewArguments(
-      {this.key,
-      required this.companyCode,
-      required this.countryCode,
-      required this.countryNumber});
 }
 
 /// HomeView arguments holder class

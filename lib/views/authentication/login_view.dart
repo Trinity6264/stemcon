@@ -6,6 +6,7 @@ import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/authentication_view_model.dart';
 import 'package:stemcon/views/authentication/login_view.form.dart';
 
+import '../../shared/logo_size.dart';
 import '../../utils/dialog/custom_dialog.dart';
 
 @FormView(fields: [
@@ -22,6 +23,7 @@ class LoginView extends StatelessWidget with $LoginView {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AuthenticationViewModel>.reactive(
+      onModelReady: (model) => model.getSignature(),
       viewModelBuilder: () => AuthenticationViewModel(),
       builder: (context, model, child) {
         return Scaffold(
@@ -35,15 +37,7 @@ class LoginView extends StatelessWidget with $LoginView {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      height: _size.height * 0.1,
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/logo/roundlogo.jpg'),
-                        ),
-                      ),
-                    ),
+                    const LogoSize(),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 30),
                       child: Text(

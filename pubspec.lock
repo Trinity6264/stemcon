@@ -443,6 +443,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.4.0"
+  pin_input_text_field:
+    dependency: transitive
+    description:
+      name: pin_input_text_field
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.1"
   platform:
     dependency: transitive
     description:
@@ -574,6 +581,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sms_autofill:
+    dependency: "direct main"
+    description:
+      name: sms_autofill
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
   source_gen:
     dependency: transitive
     description:
@@ -637,13 +651,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  telephony:
-    dependency: "direct main"
-    description:
-      name: telephony
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.4"
   term_glyph:
     dependency: transitive
     description:
