@@ -57,16 +57,36 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   titleWidget(text: 'Work unit'),
-                  DropdownButtonFormField(
-                    decoration: textInputDecor,
-                    hint: const Text('MM'),
-                    items: model.workingUnit.map((e) {
-                      return DropdownMenuItem(
-                        child: Text(e),
-                        value: e,
-                      );
-                    }).toList(),
-                    onChanged: model.onChangedUnits,
+                  Row(
+                    children: [
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: RadioListTile(
+                          groupValue: model.unit,
+                          value: 'MM',
+                          title: const Text("MM"),
+                          onChanged: model.onChangedUnit,
+                        ),
+                      ),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: RadioListTile(
+                          groupValue: model.unit,
+                          value: 'Ft',
+                          title: const Text("Ft"),
+                          onChanged: model.onChangedUnit,
+                        ),
+                      ),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: RadioListTile(
+                          groupValue: model.unit,
+                          value: 'CM',
+                          title: const Text("CM"),
+                          onChanged: model.onChangedUnit,
+                        ),
+                      ),
+                    ],
                   ),
                   titleWidget(text: 'Man Working Hour'),
                   TextField(
@@ -82,7 +102,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                   DropdownButtonFormField(
                     decoration: textInputDecor,
                     hint: const Text('KOLKATA 6:30'),
-                    items: model.workingUnit.map((e) {
+                    items: model.listOfunits.map((e) {
                       return DropdownMenuItem(
                         child: Text(e),
                         value: e,

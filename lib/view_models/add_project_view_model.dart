@@ -76,7 +76,6 @@ class AddProjectViewModel extends BaseViewModel {
         );
         if (response.statusCode == 200) {
           final data = response.data;
-          print(data);
           if (data['res_code'] == "1") {
             setBusy(false);
             toAddProject2View(

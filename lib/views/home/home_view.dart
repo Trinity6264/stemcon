@@ -23,11 +23,13 @@ class HomeView extends StatelessWidget with $HomeView {
           userId: model.userId!,
           token: model.authenticationToken!.toString(),
         );
+        print(model.userId);
+        print(model.authenticationToken);
       },
       builder: (context, model, child) {
         return Scaffold(
           floatingActionButton: FloatingActionButton(
-            onPressed: () => model.toAddProjectView(),
+            onPressed: model.toAddProjectView,
             child: const Icon(Icons.add),
           ),
           appBar: model.isSearch
@@ -115,13 +117,19 @@ class HomeView extends StatelessWidget with $HomeView {
                     ),
                     PopupMenuButton(
                         icon: const Icon(Icons.more_vert, color: Colors.black),
+                        enableFeedback: true,
+                        onSelected: (val) {
+                          if (val == 2) {
+                            model.askLogoutPermission();
+                          }
+                        },
                         itemBuilder: (context) => [
                               const PopupMenuItem(
-                                child: Text("First"),
+                                child: Text("Profile"),
                                 value: 1,
                               ),
                               const PopupMenuItem(
-                                child: Text("Second"),
+                                child: Text("Sign-Out"),
                                 value: 2,
                               )
                             ]),
@@ -154,7 +162,6 @@ class HomeView extends StatelessWidget with $HomeView {
                         itemCount: model.datas.length,
                         itemBuilder: (context, index) {
                           final data = model.datas[index];
-                          print(data.projectPhotoPath);
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ExpansionPanelList(

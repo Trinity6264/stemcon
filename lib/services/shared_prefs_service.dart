@@ -13,7 +13,6 @@ class SharedPrefsservice {
     return _prefs.getInt('isLogin');
   }
 
-
   Future savedUserData({
     required String key,
     required dynamic value,
@@ -74,5 +73,11 @@ class SharedPrefsservice {
   Future<String?> loadUserUpdatedAt() async {
     final _prefs = await SharedPreferences.getInstance();
     return _prefs.getString('updated_at');
+  }
+
+  // clear values
+  Future clearData() async {
+    final _prefs = await SharedPreferences.getInstance();
+    return _prefs.clear();
   }
 }

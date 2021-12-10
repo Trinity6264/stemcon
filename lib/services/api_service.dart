@@ -22,6 +22,17 @@ class ApiService {
     return response;
   }
 
+  // logout
+  Future<http.Response> signOut({required LogoutModel logoutModel}) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/logout';
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: logoutModel.toJson(),
+    );
+    return response;
+  }
+
   // Add project 1
   Future<Response> addProject1({
     required int userId,

@@ -12,33 +12,25 @@ class NewProjectViewModel extends BaseViewModel {
   final _navService = locator<NavigationService>();
   final _apiService = locator<ApiService>();
   final _snackbarService = locator<SnackbarService>();
-  String selectedWorkingUnit = '';
+
   String selectedTimeZone = '';
 
-  List<String> workingUnit = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
-  ];
+  List<String> listOfunits = ['MM', 'Ft', 'CM'];
+  String? unit;
+
+  void onChangedUnit(String? value) {
+    unit = value!;
+    notifyListeners();
+  }
+  //
 
   void back() {
     _navService.back();
   }
 
-  void onChangedUnits(dynamic selected) {
-    selectedWorkingUnit = selected;
-    notifyListeners();
-  }
+
   void onChangedTime(dynamic selected) {
-     selectedTimeZone = selected;
+    selectedTimeZone = selected;
     notifyListeners();
   }
 
@@ -56,7 +48,7 @@ class NewProjectViewModel extends BaseViewModel {
         purpose == '' ||
         keyPoints == '' ||
         address == '' ||
-        selectedWorkingUnit == '' ||
+        unit == null ||
         selectedTimeZone == '') {
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
         messageColor: whiteColor,
@@ -76,7 +68,7 @@ class NewProjectViewModel extends BaseViewModel {
         projectPurpose: purpose,
         projectStatus: 'active',
         projectTimezone: selectedTimeZone,
-        projectUnit: selectedWorkingUnit,
+        projectUnit: unit,
       );
       final response =
           await _apiService.addProject2(postContent: projectContent);

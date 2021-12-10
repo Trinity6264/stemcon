@@ -40,3 +40,15 @@ class ConfirmOtp {
 
   String toJson() => json.encode(toMap());
 }
+
+class LogoutModel {
+  String? userId;
+  String? token;
+  LogoutModel({this.token, this.userId});
+
+  Map<String, dynamic> toMap() {
+    return {"user_id": userId,  "token": token};
+  }
+
+  String toJson() => json.encode(toMap());
+}
