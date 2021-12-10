@@ -82,8 +82,6 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        print(data);
-
         if (data['res_code'] == "1") {
           // persist data to local storage
           await _prefsService.savedUserState(1);

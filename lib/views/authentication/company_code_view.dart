@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stemcon/shared/logo_size.dart';
+import 'package:stemcon/shared/shared_button.dart';
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/startup_view_model.dart';
@@ -57,27 +58,11 @@ class CompanyCodeView extends StatelessWidget with $CompanyCodeView {
                   ),
                 ),
                 const SizedBox(height: 10.0),
-                SizedBox(
-                  height: _size.height * 0.1 / 1.8,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: primaryColor,
-                    ),
-                    onPressed: () {
-                      model.toLoginView(
-                        int.parse(companyCodeController.text),
-                        companyCodeController.text,
-                      );
-                    },
-                    child: const Text(
-                      'Next',
-                      style: TextStyle(
-                        color: whiteColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20.0,
-                      ),
-                    ),
+                SharedButton(
+                  title: 'Next',
+                  onPressed: () => model.toLoginView(
+                    int.parse(companyCodeController.text),
+                    companyCodeController.text,
                   ),
                 ),
               ],

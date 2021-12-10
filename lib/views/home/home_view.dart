@@ -23,8 +23,6 @@ class HomeView extends StatelessWidget with $HomeView {
           userId: model.userId!,
           token: model.authenticationToken!.toString(),
         );
-        print(model.userId);
-        print(model.authenticationToken);
       },
       builder: (context, model, child) {
         return Scaffold(
@@ -425,9 +423,7 @@ class HomeView extends StatelessWidget with $HomeView {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
+                                        const SizedBox(height: 10),
                                       ],
                                     ),
                                   ),

@@ -11,9 +11,7 @@ class StartUpView extends StatelessWidget {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<StartUpViewModel>.nonReactive(
-      onModelReady: (model) {
-        model.toCompanyView();
-      },
+      onModelReady: (model) => model.toCompanyView(),
       viewModelBuilder: () => StartUpViewModel(),
       builder: (context, model, child) {
         return Scaffold(
@@ -21,9 +19,9 @@ class StartUpView extends StatelessWidget {
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children:const [
-                 LogoSize(),
-                 Padding(
+              children: const [
+                LogoSize(),
+                Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
                     'StemCon',

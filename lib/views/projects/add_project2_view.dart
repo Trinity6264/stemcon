@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stemcon/shared/shared_button.dart';
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/add_project2_view_model.dart';
@@ -125,33 +126,19 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
-                      : SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: primaryColor,
-                            ),
-                            onPressed: () {
-                              model.submitData(
-                                userId: userId,
-                                token: token,
-                                id: id,
-                                adminStatus: adminStatus,
-                                workingHour: workingHourController.text.trim(),
-                                purpose: purposeController.text.trim(),
-                                keyPoints: keyPointsController.text.trim(),
-                                address: addressController.text.trim(),
-                              );
-                            },
-                            child: const Text(
-                              'SUBMIT',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                letterSpacing: 1.5,
-                              ),
-                            ),
+                      : SharedButton(
+                          title: 'SUBMIT',
+                          onPressed: () => model.submitData(
+                            userId: userId,
+                            token: token,
+                            id: id,
+                            adminStatus: adminStatus,
+                            workingHour: workingHourController.text.trim(),
+                            purpose: purposeController.text.trim(),
+                            keyPoints: keyPointsController.text.trim(),
+                            address: addressController.text.trim(),
                           ),
-                        ),
+                        )
                 ],
               ),
             ),

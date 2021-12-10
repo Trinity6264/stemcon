@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stemcon/shared/shared_button.dart';
 
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/add_dpr_view_model.dart';
-
 
 import '../../../shared/text_input_decor.dart';
 import 'add_new_dpr_view.form.dart';
@@ -152,19 +152,13 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : Container(
-                            width: double.infinity,
-                            margin: const EdgeInsets.only(bottom: 20),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                model.addDpr(
-                                  projectId: projectId,
-                                  dprDescription: taskController.text.trim(),
-                                  token: token,
-                                  userId: userId,
-                                );
-                              },
-                              child: const Text('SUBMIT'),
+                        : SharedButton(
+                            title: 'SUBMIT',
+                            onPressed: () => model.addDpr(
+                              projectId: projectId,
+                              dprDescription: taskController.text.trim(),
+                              token: token,
+                              userId: userId,
                             ),
                           ),
                   ],
@@ -177,7 +171,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
     );
   }
 
-  Future<DateTime?> endDate({
+  Future endDate({
     required BuildContext context,
     required AddNewDprViewModel model,
   }) async {

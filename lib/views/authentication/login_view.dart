@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stemcon/shared/shared_button.dart';
 
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/authentication_view_model.dart';
@@ -108,27 +109,11 @@ class LoginView extends StatelessWidget with $LoginView {
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : SizedBox(
-                            height: _size.height * 0.1 / 1.8,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: primaryColor,
-                              ),
-                              onPressed: () {
-                                model.toOtpView(
-                                  number: int.parse(numberController.text),
-                                  companyCode: companyCode.toString(),
-                                );
-                              },
-                              child: const Text(
-                                'LOG IN',
-                                style: TextStyle(
-                                  color: whiteColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 20.0,
-                                ),
-                              ),
+                        : SharedButton(
+                            title: 'LOG IN',
+                            onPressed: () => model.toOtpView(
+                              number: int.parse(numberController.text),
+                              companyCode: companyCode.toString(),
                             ),
                           ),
                     SizedBox(height: _size.height * 0.1),

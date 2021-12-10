@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stemcon/shared/shared_button.dart';
 
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
@@ -138,23 +139,17 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
-                      : SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: primaryColor,
-                            ),
-                            onPressed: () {
-                              model.addProject(
-                                projectCode: projectCodeController.text.trim(),
-                                projectName: projectNameController.text.trim(),
-                                token: token,
-                                userId: userId,
-                                adminStatus: adminStatus,
-                              );
-                            },
-                            child: const Text('CREATE PROJECT'),
-                          ),
+                      : SharedButton(
+                          title: 'CREATE PROJECT',
+                          onPressed: () {
+                            model.addProject(
+                              projectCode: projectCodeController.text.trim(),
+                              projectName: projectNameController.text.trim(),
+                              token: token,
+                              userId: userId,
+                              adminStatus: adminStatus,
+                            );
+                          },
                         ),
                 ],
               ),

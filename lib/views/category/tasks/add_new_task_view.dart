@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stemcon/shared/shared_button.dart';
 
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/add_new_task_view_model.dart';
 import 'package:stemcon/views/category/tasks/add_new_task_view.form.dart';
 
-
 @FormView(fields: [
   FormTextField(name: 'task1'),
   FormTextField(name: 'description'),
 ])
-class AddNewTaskView extends StatelessWidget  with $AddNewTaskView{
+class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
   final int userId;
   final int token;
   final String taskName;
@@ -91,21 +91,14 @@ class AddNewTaskView extends StatelessWidget  with $AddNewTaskView{
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
-                      : Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(bottom: 20),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              model.addTask(
-                                taskName: taskName,
-                                description: descriptionController.text.trim(),
-                                token: token,
-                                userId: userId,
-                                projectId: projectId,
-
-                              );
-                            },
-                            child: const Text('Add Task'),
+                      : SharedButton(
+                          title: 'Add Task',
+                          onPressed: () => model.addTask(
+                            taskName: taskName,
+                            description: descriptionController.text.trim(),
+                            token: token,
+                            userId: userId,
+                            projectId: projectId,
                           ),
                         ),
                 ],
