@@ -1,0 +1,30 @@
+POST http://stemcon.likeview.in/api/register
+Content-Type: application/json
+
+{
+    "country_code":"+1",
+    "company_code":8526477,
+    "mobile_number":"8074586350"
+}
+
+###
+POST http://stemcon.likeview.in/api/project/list
+Content-Type: application/json
+
+{
+    "user_id": 69,
+    "token":"64686"
+}
+###
+POST http://stemcon.likeview.in/api/project/addStep1
+Content-Type: application/json
+
+{
+      "user_id": 67,
+      "token": 4717250,
+      "project_name": "Good work",
+      "project_code": "T304",
+      "project_photo_path": "",
+      "project_start_date": "2026-01-01 ",
+      "project_end_date": "2025-01-01 "
+}
