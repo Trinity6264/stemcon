@@ -109,6 +109,8 @@ class StackedRouter extends RouterBase {
         builder: (context) => OtpView(
           key: args.key,
           companyCode: args.companyCode,
+          countryCode: args.countryCode,
+          countryNumber: args.countryNumber,
         ),
         settings: data,
       );
@@ -244,7 +246,13 @@ class LoginViewArguments {
 class OtpViewArguments {
   final Key? key;
   final int companyCode;
-  OtpViewArguments({this.key, required this.companyCode});
+  final String countryCode;
+  final String countryNumber;
+  OtpViewArguments(
+      {this.key,
+      required this.companyCode,
+      required this.countryCode,
+      required this.countryNumber});
 }
 
 /// AddProjectView arguments holder class

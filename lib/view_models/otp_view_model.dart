@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:sms_autofill/sms_autofill.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:telephony/telephony.dart';
-
-import 'package:stemcon/main.dart';
 
 import '../app/app.locator.dart';
 import '../app/app.router.dart';
@@ -20,28 +18,47 @@ class OtpViewModel extends BaseViewModel {
   final _apiService = locator<ApiService>();
   final _prefsService = locator<SharedPrefsservice>();
   String otpCode = '';
+  String num1 = '';
+  String num2 = '';
+  String num3 = '';
+  String num4 = '';
   int? token;
   final telephony = Telephony.instance;
+
+  // first controller
+  TextEditingController controller1 = TextEditingController(text: '');
+  TextEditingController controller2 = TextEditingController(text: '');
+  TextEditingController controlle3 = TextEditingController(text: '');
+  TextEditingController controlle4 = TextEditingController(text: '');
 
   //
   void generateToken() {
     token = Random().nextInt(9999999);
   }
 
-  onMessage(SmsMessage message) {
+  onMessage(SmsMessage message, int companyCode) {
     if (message.address == 'YCloud') {
       final data = message.body!.split(':');
-      otpCode = data[1];
-
+      final code = data[1];
+      final splitOtp = code.split('');
+      print(splitOtp[0]);
+      controller1 = TextEditingController(text: splitOtp[1]);
+      controller2 = TextEditingController(text: splitOtp[2]);
+      controlle3 = TextEditingController(text: splitOtp[3]);
+      controlle4 = TextEditingController(text: splitOtp[4]);
+      otpCode = code;
       notifyListeners();
+      matchingOtp(companyCode: companyCode);
       return;
     }
   }
 
-  void listenForIncomingMessage() {
+  void listenForIncomingMessage(int companyCode) {
     telephony.listenIncomingSms(
       listenInBackground: false,
-      onNewMessage: onMessage,
+      onNewMessage: (message) {
+        onMessage(message, companyCode);
+      },
     );
   }
 

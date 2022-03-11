@@ -27,7 +27,7 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
     setBusy(true);
     final data =
         await _apiService.fetchSuggestion(userId: userId, token: token);
-    if (!data.isEmpty) {
+    if (data.isNotEmpty) {
       setBusy(false);
       datas = data;
     } else {

@@ -54,10 +54,12 @@ class AuthenticationViewModel extends BaseViewModel {
           setBusy(false);
           final data = jsonDecode(response.body);
           if (data['res_code'] == "1") {
-            _navService.navigateTo(
-              Routes.otpView,
-              arguments: OtpViewArguments(companyCode: companyCode),
-            );
+            _navService.navigateTo(Routes.otpView,
+                arguments: OtpViewArguments(
+                  companyCode: companyCode,
+                  countryCode: countryCode!.callingCode!,
+                  countryNumber: number,
+                ));
             return;
           } else {
             _dialogService.showDialog(

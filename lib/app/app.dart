@@ -22,7 +22,7 @@ import '../views/category/tasks/task_view.dart';
 @StackedApp(routes: [
   MaterialRoute(page: StartUpView, initial: true),
   MaterialRoute(page: CompanyCodeView),
-  MaterialRoute(page: LoginView),
+  MaterialRoute(page: LoginView ),
   MaterialRoute(page: OtpView),
   MaterialRoute(page: HomeView),
   MaterialRoute(page: AddProjectView),

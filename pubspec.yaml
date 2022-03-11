@@ -31,7 +31,6 @@ dependencies:
     sdk: flutter
   stacked: ^2.2.8
   stacked_services: ^0.8.16
-  sms_autofill: ^2.2.0
   shared_preferences: ^2.0.13
   http: ^0.13.4
   flutter_svg: ^1.0.3

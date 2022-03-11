@@ -36,14 +36,14 @@ class LoginView extends StatelessWidget with $LoginView {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                  height: _size.height * 0.1,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/logo/roundlogo.jpg'),
+                      height: _size.height * 0.1,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/logo/roundlogo.jpg'),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 30),
                       child: Text(
@@ -138,7 +138,24 @@ class LoginView extends StatelessWidget with $LoginView {
                             ),
                           ),
                     SizedBox(height: _size.height * 0.1),
-                    const Text('Login into app/signup'),
+                    Row(
+                      children: const [
+                        Expanded(
+                            child: Divider(
+                          color: greyColor,
+                          thickness: 1.0,
+                        )),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Text('Login into app/signup'),
+                        ),
+                        Expanded(
+                            child: Divider(
+                          color: greyColor,
+                          thickness: 1.0,
+                        )),
+                      ],
+                    ),
                     SizedBox(height: _size.height * 0.1 / 5),
                     Container(
                       width: double.infinity,

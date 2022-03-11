@@ -1,14 +1,23 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 import 'package:stacked/stacked.dart';
+
 import 'package:stemcon/shared/logo_size.dart';
 
+import '../../shared/text_input_decor.dart';
 import '../../utils/color/color_pallets.dart';
 import '../../view_models/otp_view_model.dart';
 
 class OtpView extends StatelessWidget {
   final int companyCode;
-  const OtpView({Key? key, required this.companyCode}) : super(key: key);
+  final String countryCode;
+  final String countryNumber;
+  const OtpView({
+    Key? key,
+    required this.companyCode,
+    required this.countryCode,
+    required this.countryNumber,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +25,28 @@ class OtpView extends StatelessWidget {
     return ViewModelBuilder<OtpViewModel>.reactive(
       onModelReady: (model) {
         model.generateToken();
-        model.listenForIncomingMessage();
+        model.listenForIncomingMessage(companyCode);
+      },
+      onDispose: (model) {
+        model.controller1.dispose();
+        model.controller2.dispose();
+        model.controlle3.dispose();
+        model.controlle4.dispose();
       },
       viewModelBuilder: () => OtpViewModel(),
       builder: (context, model, child) {
         return Scaffold(
+          appBar: AppBar(
+            elevation: 0.0,
+            backgroundColor: whiteColor,
+            title: const Text(
+              'OTP Verification',
+              style: TextStyle(
+                color: blackColor,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
           backgroundColor: whiteColor,
           body: Container(
             width: double.infinity,
@@ -28,43 +54,102 @@ class OtpView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const LogoSize(),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 30),
-                  child: Text(
-                    'StemCon',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
                 SizedBox(height: _size.height * 0.1 / 30),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
+                 Padding(
+                  padding:const EdgeInsets.all(8.0),
                   child: Text(
-                    'Code will be filled automatically',
-                    style: TextStyle(fontWeight: FontWeight.w300),
+                    'Enter otp sent to $countryCode $countryNumber',
+                    style:const TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 18.0,
+                    ),
                   ),
                 ),
                 SizedBox(height: _size.height * 0.01),
-                PinFieldAutoFill(
-                  codeLength: 4,
-                  decoration: UnderlineDecoration(
-                    textStyle: const TextStyle(fontSize: 20, color: blackColor),
-                    colorBuilder: FixedColorBuilder(
-                      blackColor.withOpacity(0.3),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      height: _size.height * 0.1,
+                      width: 50,
+                      child: TextField(
+                        controller: model.controller1,
+                        textAlign: TextAlign.center,
+                        maxLength: 1,
+                        decoration: textInputDecor.copyWith(
+                          counterText: '',
+                          hintText: '-',
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.phone,
+                      ),
                     ),
+                    SizedBox(
+                      height: _size.height * 0.1,
+                      width: 50,
+                      child: TextField(
+                        controller: model.controller2,
+                        textAlign: TextAlign.center,
+                        maxLength: 1,
+                        decoration: textInputDecor.copyWith(
+                          counterText: '',
+                          hintText: '-',
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.phone,
+                      ),
+                    ),
+                    SizedBox(
+                      height: _size.height * 0.1,
+                      width: 50,
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        controller: model.controlle3,
+                        maxLength: 1,
+                        decoration: textInputDecor.copyWith(
+                          counterText: '',
+                          hintText: '-',
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.phone,
+                      ),
+                    ),
+                    SizedBox(
+                      height: _size.height * 0.1,
+                      width: 50,
+                      child: TextField(
+                        controller: model.controlle4,
+                        textAlign: TextAlign.center,
+                        maxLength: 1,
+                        decoration: textInputDecor.copyWith(
+                          counterText: '',
+                          hintText: '-',
+                        ),
+                        textInputAction: TextInputAction.go,
+                        keyboardType: TextInputType.phone,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: _size.height * 0.01),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(
+                        text: 'Don\'t receive OTP?  ',
+                        style: TextStyle(
+                          color: blackColor,
+                        ),
+                      ),
+                      TextSpan(
+                          text: 'RESEND',
+                          style: const TextStyle(
+                            color: blackColor,
+                            fontWeight: FontWeight.w800,
+                          ),
+                          recognizer: TapGestureRecognizer()..onTap = () {}),
+                    ],
                   ),
-                  currentCode: model.otpCode,
-                  onCodeChanged: (code) {
-                    model.otpCode = code.toString();
-                    if (code != null) {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      model.matchingOtp(companyCode: companyCode);
-                    }
-                  },
                 ),
                 SizedBox(height: _size.height * 0.01),
                 model.isBusy

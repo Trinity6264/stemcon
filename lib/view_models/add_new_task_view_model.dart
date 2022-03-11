@@ -66,6 +66,10 @@ class AddTaskViewModel extends BaseViewModel {
         }
       } on Exception catch (e) {
         setBusy(false);
+         _snackbarService.registerSnackbarConfig(SnackbarConfig(
+              messageColor: whiteColor,
+            ));
+            _snackbarService.showSnackbar(message: e.toString());
         return;
       }
     }
