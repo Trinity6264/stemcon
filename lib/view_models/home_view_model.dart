@@ -1,4 +1,4 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/app/app.locator.dart';
@@ -14,6 +14,13 @@ class HomeViewModel extends BaseViewModel {
   final _navService = locator<NavigationService>();
   final _snackbarService = locator<SnackbarService>();
 
+  bool isSearch = false;
+
+  void changedToSerach() {
+    isSearch = !isSearch;
+    notifyListeners();
+  }
+
   List<ProjectListModel> datas = [];
   String errorMessage = '';
   Future<void> loadData({
@@ -22,9 +29,10 @@ class HomeViewModel extends BaseViewModel {
   }) async {
     setBusy(true);
     final data = await _apiService.fetchProject(userId: userId, token: token);
-    if (!data.isEmpty) {
+    if (data.isNotEmpty) {
       setBusy(false);
-      datas = data;
+      data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+      datas = data.reversed.toList();
     } else {
       setBusy(false);
       errorMessage = 'No Data Found\n Please check your internet connectivity';
@@ -90,5 +98,31 @@ class HomeViewModel extends BaseViewModel {
         projectId: projectId,
       ),
     );
+  }
+
+// search
+  Future<void> searchDatas({
+    required int userId,
+    required String token,
+    required String value,
+  }) async {
+    setBusy(true);
+    final data = await _apiService.searchProject(
+      userId: userId,
+      token: token,
+      search: value,
+    );
+    if (data.isNotEmpty) {
+      setBusy(false);
+      data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+      datas = data.reversed.toList();
+    } else {
+      setBusy(false);
+      errorMessage = 'No Data Found\n Please check your internet connectivity';
+      _snackbarService.registerSnackbarConfig(SnackbarConfig(
+        messageColor: whiteColor,
+      ));
+      _snackbarService.showSnackbar(message: 'Something went wrong!');
+    }
   }
 }

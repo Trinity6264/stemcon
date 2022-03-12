@@ -55,11 +55,11 @@ class OtpView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: _size.height * 0.1 / 30),
-                 Padding(
-                  padding:const EdgeInsets.all(8.0),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
                     'Enter otp sent to $countryCode $countryNumber',
-                    style:const TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w300,
                       fontSize: 18.0,
                     ),
@@ -142,12 +142,13 @@ class OtpView extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                          text: 'RESEND',
-                          style: const TextStyle(
-                            color: blackColor,
-                            fontWeight: FontWeight.w800,
-                          ),
-                          recognizer: TapGestureRecognizer()..onTap = () {}),
+                        text: 'RESEND',
+                        style: const TextStyle(
+                          color: blackColor,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        recognizer: TapGestureRecognizer()..onTap = model.back,
+                      ),
                     ],
                   ),
                 ),

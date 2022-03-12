@@ -41,7 +41,6 @@ class OtpViewModel extends BaseViewModel {
       final data = message.body!.split(':');
       final code = data[1];
       final splitOtp = code.split('');
-      print(splitOtp[0]);
       controller1 = TextEditingController(text: splitOtp[1]);
       controller2 = TextEditingController(text: splitOtp[2]);
       controlle3 = TextEditingController(text: splitOtp[3]);
@@ -152,5 +151,9 @@ class OtpViewModel extends BaseViewModel {
         description: e.toString(),
       );
     }
+  }
+
+  void back() {
+    _navService.back();
   }
 }

@@ -116,8 +116,11 @@ class StackedRouter extends RouterBase {
       );
     },
     HomeView: (data) {
+      var args = data.getArgs<HomeViewArguments>(
+        orElse: () => HomeViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const HomeView(),
+        builder: (context) => HomeView(key: args.key),
         settings: data,
       );
     },
@@ -253,6 +256,12 @@ class OtpViewArguments {
       required this.companyCode,
       required this.countryCode,
       required this.countryNumber});
+}
+
+/// HomeView arguments holder class
+class HomeViewArguments {
+  final Key? key;
+  HomeViewArguments({this.key});
 }
 
 /// AddProjectView arguments holder class

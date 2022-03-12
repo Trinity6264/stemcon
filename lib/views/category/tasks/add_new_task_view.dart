@@ -7,11 +7,12 @@ import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/add_new_task_view_model.dart';
 import 'package:stemcon/views/category/tasks/add_new_task_view.form.dart';
 
+
 @FormView(fields: [
   FormTextField(name: 'task1'),
   FormTextField(name: 'description'),
 ])
-class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
+class AddNewTaskView extends StatelessWidget  with $AddNewTaskView{
   final int userId;
   final int token;
   final String taskName;

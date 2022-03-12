@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
+import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/home_view_model.dart';
+import 'package:stemcon/views/home/home_view.form.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+@FormView(fields: [
+  FormTextField(name: 'search'),
+])
+class HomeView extends StatelessWidget with $HomeView {
+  HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,55 +26,107 @@ class HomeView extends StatelessWidget {
       },
       builder: (context, model, child) {
         return Scaffold(
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton(
             onPressed: () => model.toAddProjectView(),
             child: const Icon(Icons.add),
           ),
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Row(
-              children: [
-                Image.asset(
-                  'assets/logo/roundlogo.jpg',
-                  height: 40,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Container(
-                    padding: const EdgeInsets.all(0.0),
-                    child: const Text(
-                      'STEMCON',
-                      style: TextStyle(color: Colors.black),
-                    ))
-              ],
-            ),
-            backgroundColor: whiteColor,
-            elevation: 0,
-            actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.search,
-                  color: Colors.black,
-                ),
-                onPressed: () {},
-              ),
-              PopupMenuButton(
-                  icon: const Icon(Icons.more_vert, color: Colors.black),
-                  itemBuilder: (context) => [
-                        const PopupMenuItem(
-                          child: Text("First"),
-                          value: 1,
+          appBar: model.isSearch
+              ? AppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: whiteColor,
+                  elevation: 0.0,
+                  title: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: textInputDecor.copyWith(
+                            hintText: 'Search...',
+                            enabled: true,
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: whiteColor,
+                              ),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: whiteColor,
+                              ),
+                            ),
+                          ),
+                          controller: searchController,
+                          focusNode: searchFocusNode,
+                          onChanged: (value) {
+                            model.searchDatas(
+                              userId: model.userId!,
+                              token: model.authenticationToken!.toString(),
+                              value: value,
+                            );
+                          },
                         ),
-                        const PopupMenuItem(
-                          child: Text("Second"),
-                          value: 2,
-                        )
-                      ]),
-            ],
-          ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          model.changedToSerach();
+                          model.loadData(
+                            userId: model.userId!,
+                            token: model.authenticationToken!.toString(),
+                          );
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ],
+                  ),
+                )
+              : AppBar(
+                  automaticallyImplyLeading: false,
+                  title: Row(
+                    children: [
+                      Image.asset(
+                        'assets/logo/roundlogo.jpg',
+                        height: 40,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(0.0),
+                        child: const Text(
+                          'STEMCON',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                  backgroundColor: whiteColor,
+                  elevation: 0,
+                  actions: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        model.changedToSerach();
+                        searchFocusNode.requestFocus();
+                      },
+                    ),
+                    PopupMenuButton(
+                        icon: const Icon(Icons.more_vert, color: Colors.black),
+                        itemBuilder: (context) => [
+                              const PopupMenuItem(
+                                child: Text("First"),
+                                value: 1,
+                              ),
+                              const PopupMenuItem(
+                                child: Text("Second"),
+                                value: 2,
+                              )
+                            ]),
+                  ],
+                ),
           backgroundColor: whiteColor,
           body: RefreshIndicator(
             onRefresh: () {
@@ -96,7 +154,6 @@ class HomeView extends StatelessWidget {
                         itemCount: model.datas.length,
                         itemBuilder: (context, index) {
                           final data = model.datas[index];
-                          debugPrint(data.projectPhotoPath);
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ExpansionPanelList(

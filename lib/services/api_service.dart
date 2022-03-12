@@ -266,4 +266,36 @@ class ApiService {
     });
     return response;
   }
+
+
+  // TODO search
+
+  Future<List<ProjectListModel>> searchProject({
+    required int userId,
+    required String token,
+    required String search,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/project/search';
+    final data = {"user_id": userId, "token": token, 'search':search};
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      final datas = jsonDecode(response.body);
+      if (datas['res_code'] == '1') {
+        final List<dynamic> data = datas['res_data'];
+        return data.map((e) {
+          return ProjectListModel.fromJson(e);
+        }).toList();
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
 }
