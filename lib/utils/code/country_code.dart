@@ -2,6 +2,12 @@ import '../../models/country_codes_model.dart';
 
 List<CountryCodesModel> countryCodeDatas = [
   CountryCodesModel(
+    countryCode: "IN",
+    name: "India",
+    callingCode: "+91",
+    flag: "flags/ind.png",
+  ),
+  CountryCodesModel(
     countryCode: "AF",
     name: "Afghanistan",
     callingCode: "+93",
@@ -624,12 +630,6 @@ List<CountryCodesModel> countryCodeDatas = [
     name: "Iceland",
     callingCode: "+354",
     flag: "flags/isl.png",
-  ),
-  CountryCodesModel(
-    countryCode: "IN",
-    name: "India",
-    callingCode: "+91",
-    flag: "flags/ind.png",
   ),
   CountryCodesModel(
     countryCode: "ID",
