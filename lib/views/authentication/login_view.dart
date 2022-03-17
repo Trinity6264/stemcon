@@ -117,8 +117,8 @@ class LoginView extends StatelessWidget with $LoginView {
                               ),
                               onPressed: () {
                                 model.toOtpView(
-                                  companyCode: companyCode!,
-                                  number: numberController.text,
+                                  number: int.parse(numberController.text),
+                                  companyCode: companyCode.toString(),
                                 );
                               },
                               child: const Text(

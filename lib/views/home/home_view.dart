@@ -154,6 +154,7 @@ class HomeView extends StatelessWidget with $HomeView {
                         itemCount: model.datas.length,
                         itemBuilder: (context, index) {
                           final data = model.datas[index];
+                          print(data.projectPhotoPath);
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ExpansionPanelList(

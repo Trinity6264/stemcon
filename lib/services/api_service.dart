@@ -13,7 +13,7 @@ import 'package:stemcon/models/project_list_model.dart';
 class ApiService {
   // create an account
   Future<http.Response> createAccount({required NewUser userModel}) async {
-    const String serverUrl = 'http://stemcon.likeview.in/api/register';
+    const String serverUrl = 'http://stemcon.likeview.in/api/login';
     final response = await http.post(
       Uri.parse(serverUrl),
       headers: {'Content-Type': 'application/json'},

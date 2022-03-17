@@ -32,15 +32,15 @@ class AuthenticationViewModel extends BaseViewModel {
   CountryCodesModel? countryCode = countryCodeDatas[0];
 
   void toOtpView({
-    required int companyCode,
-    required String number,
+    required String? companyCode,  
+    required int? number,
   }) async {
-    if (number == '' || countryCode == null || appSignature == null) {
+    if (number == null || countryCode == null || appSignature == null) {
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
         messageColor: whiteColor,
       ));
       _snackbarService.showSnackbar(message: 'Entry can\'t be empty');
-    } else if (number.length < 9) {
+    } else if (number.toString().length < 9) {
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
         messageColor: whiteColor,
       ));
@@ -49,9 +49,9 @@ class AuthenticationViewModel extends BaseViewModel {
     } else {
       setBusy(true);
       final userModel = NewUser(
-        company: companyCode,
+        companyCode: companyCode,
         number: number,
-        countryCode: countryCode!.callingCode,
+        countryCode: countryCode!.callingCode!,
         appSignature: appSignature,
       );
       final response = await _apiService.createAccount(userModel: userModel);
@@ -61,7 +61,6 @@ class AuthenticationViewModel extends BaseViewModel {
         if (data['res_code'] == "1") {
           _navService.navigateToView(
             OtpVerify(
-              companyCode: companyCode,
               countryCode: countryCode!.callingCode!,
               countryNumber: number,
             ),
@@ -69,9 +68,7 @@ class AuthenticationViewModel extends BaseViewModel {
           return;
         } else {
           _dialogService.showDialog(
-            title: 'Authentication',
-            description: data['res_message'],
-          );
+              title: 'Authentication', description: data['res_message']);
           return;
         }
       } else {

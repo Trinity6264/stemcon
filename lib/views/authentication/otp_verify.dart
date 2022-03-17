@@ -14,12 +14,10 @@ import '../../services/shared_prefs_service.dart';
 import '../../utils/color/color_pallets.dart';
 
 class OtpVerify extends StatefulWidget {
-  final int companyCode;
   final String countryCode;
-  final String countryNumber;
+  final int countryNumber;
   const OtpVerify({
     Key? key,
-    required this.companyCode,
     required this.countryCode,
     required this.countryNumber,
   }) : super(key: key);
@@ -72,19 +70,19 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
     });
   }
 
-  void matchingOtp({
-    required int companyCode,
-  }) async {
+  void matchingOtp() async {
     setBusy(true);
     try {
       final cornfirmOtp = ConfirmOtp(
-        companyCode: companyCode,
+        mobileNumber: widget.countryNumber.toString(),
         otp: int.parse(otpCode),
         token: token,
       );
       final response = await _apiService.cornfirmOtp(cornfirmOtp: cornfirmOtp);
+ 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+
         if (data['res_code'] == "1") {
           // persist data to local storage
           await _prefsService.savedUserState(1);
@@ -149,10 +147,11 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
           );
         }
       } else {
+        final data = jsonDecode(response.body);
         setBusy(false);
         _dialogService.showDialog(
           title: 'Failed',
-          description: "Something went wrong try again",
+          description: data['res_message'],
         );
       }
     } on Exception catch (e) {
@@ -213,7 +212,8 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
               onCodeChanged: (code) {
                 if (code!.length == 4) {
                   FocusScope.of(context).requestFocus(FocusNode());
-                  matchingOtp(companyCode: widget.companyCode);
+                  otpCode = code;
+                  matchingOtp();
                 }
               },
             ),
