@@ -61,7 +61,7 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
 
   //
   void generateToken() {
-    token = Random().nextInt(9999999);
+    token = Random().nextInt(999999);
   }
 
   void setBusy(bool fn) {
@@ -79,9 +79,10 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
         token: token,
       );
       final response = await _apiService.cornfirmOtp(cornfirmOtp: cornfirmOtp);
- 
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        print(data);
 
         if (data['res_code'] == "1") {
           // persist data to local storage
