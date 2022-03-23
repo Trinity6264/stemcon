@@ -28,7 +28,6 @@ class NewProjectViewModel extends BaseViewModel {
     _navService.back();
   }
 
-
   void onChangedTime(dynamic selected) {
     selectedTimeZone = selected;
     notifyListeners();
@@ -43,6 +42,7 @@ class NewProjectViewModel extends BaseViewModel {
     required String purpose,
     required String keyPoints,
     required String address,
+    required String timeZone,
   }) async {
     if (workingHour == '' ||
         purpose == '' ||
@@ -67,7 +67,7 @@ class NewProjectViewModel extends BaseViewModel {
         projectManHour: workingHour,
         projectPurpose: purpose,
         projectStatus: 'active',
-        projectTimezone: selectedTimeZone,
+        projectTimezone: timeZone,
         projectUnit: unit,
       );
       final response =

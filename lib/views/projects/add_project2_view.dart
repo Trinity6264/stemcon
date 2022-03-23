@@ -28,9 +28,14 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
 
   @override
   Widget build(BuildContext context) {
+    Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<NewProjectViewModel>.reactive(
       onDispose: (model) {
         disposeForm();
+      },
+      onModelReady: (model) {
+        DateTime d = DateTime.now();
+        model.selectedTimeZone = d.toString();
       },
       viewModelBuilder: () => NewProjectViewModel(),
       builder: (context, model, child) {
@@ -100,16 +105,16 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                     decoration: textInputDecor.copyWith(hintText: 'Resudance'),
                   ),
                   titleWidget(text: 'Time Zone'),
-                  DropdownButtonFormField(
-                    decoration: textInputDecor,
-                    hint: const Text('KOLKATA 6:30'),
-                    items: model.listOfunits.map((e) {
-                      return DropdownMenuItem(
-                        child: Text(e),
-                        value: e,
-                      );
-                    }).toList(),
-                    onChanged: model.onChangedTime,
+                  Container(
+                    width: double.infinity,
+                    height: _size.height * 0.2 / 2.8,
+                    padding: const EdgeInsets.only(left: 10.0),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: blackColor, width: 1.2),
+                    ),
+                    child: Text(model.selectedTimeZone),
                   ),
                   titleWidget(text: 'Key Points'),
                   TextField(
@@ -132,6 +137,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                             userId: userId,
                             token: token,
                             id: id,
+                            timeZone: model.selectedTimeZone,
                             adminStatus: adminStatus,
                             workingHour: workingHourController.text.trim(),
                             purpose: purposeController.text.trim(),
