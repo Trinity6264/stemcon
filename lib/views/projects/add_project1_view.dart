@@ -135,6 +135,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 40.0),
                   model.isBusy
                       ? const Center(
                           child: CircularProgressIndicator(),
