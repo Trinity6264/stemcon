@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/app/app.locator.dart';
@@ -15,8 +17,37 @@ class NewProjectViewModel extends BaseViewModel {
 
   String selectedTimeZone = '';
 
+  List<String> listOfselectedTimeZone = [];
+
+  List<int> manWorkingHour = [];
+
   List<String> listOfunits = ['MM', 'Ft', 'CM'];
   String? unit;
+  String manHour = '1';
+
+  Future<void> requestTime() async {
+    try {
+      selectedTimeZone = await FlutterNativeTimezone.getLocalTimezone();
+    } catch (e) {
+      if (kDebugMode) {
+        print('Could not get the local timezone');
+      }
+    }
+    try {
+      listOfselectedTimeZone =
+          await FlutterNativeTimezone.getAvailableTimezones();
+      listOfselectedTimeZone.sort();
+    } catch (e) {
+      if (kDebugMode) {
+        print('Could not get available timezones');
+      }
+    }
+    notifyListeners();
+  }
+
+  void generatingManWorkingHour() {
+    List.generate(12, (index) => manWorkingHour.add(index));
+  }
 
   void onChangedUnit(String? value) {
     unit = value!;
@@ -33,6 +64,11 @@ class NewProjectViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void onChangedManHour(dynamic selected) {
+    manHour = selected;
+    notifyListeners();
+  }
+
   Future<void> submitData({
     required int userId,
     required int token,
@@ -44,6 +80,15 @@ class NewProjectViewModel extends BaseViewModel {
     required String address,
     required String timeZone,
   }) async {
+    print('userId: $userId');
+    print('Token: $token');
+    print('Id: $id');
+    print('AdminS: $adminStatus');
+    print('Working: $workingHour');
+    print('purpose: $purpose');
+    print('KeyPoints: $keyPoints');
+    print('Address: $address');
+    print('time: $timeZone');
     if (workingHour == '' ||
         purpose == '' ||
         keyPoints == '' ||

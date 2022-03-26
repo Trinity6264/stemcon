@@ -34,8 +34,8 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
         disposeForm();
       },
       onModelReady: (model) {
-        DateTime d = DateTime.now();
-        model.selectedTimeZone = d.toString();
+        model.requestTime();
+        model.generatingManWorkingHour();
       },
       viewModelBuilder: () => NewProjectViewModel(),
       builder: (context, model, child) {
@@ -95,9 +95,27 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                     ],
                   ),
                   titleWidget(text: 'Man Working Hour'),
-                  TextField(
-                    controller: workingHourController,
-                    decoration: textInputDecor.copyWith(hintText: '1400 HR'),
+                  Container(
+                    width: double.infinity,
+                    height: _size.height * 0.2 / 2.3,
+                    padding: const EdgeInsets.only(left: 10.0),
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      border: Border.all(color: blackColor, width: 1.2),
+                    ),
+                    child: DropdownButtonFormField(
+                      items: model.manWorkingHour
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e.toString(),
+                              child: Text(e.toString()),
+                            ),
+                          )
+                          .toList(),
+                      hint: Text(model.manHour),
+                      onChanged: model.onChangedManHour,
+                    ),
                   ),
                   titleWidget(text: 'Purpose Of Project'),
                   TextField(
@@ -107,14 +125,26 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                   titleWidget(text: 'Time Zone'),
                   Container(
                     width: double.infinity,
-                    height: _size.height * 0.2 / 2.8,
+                    height: _size.height * 0.2 / 2.3,
                     padding: const EdgeInsets.only(left: 10.0),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.0),
                       border: Border.all(color: blackColor, width: 1.2),
                     ),
-                    child: Text(model.selectedTimeZone),
+                    child: DropdownButtonFormField(
+                      items: model.listOfselectedTimeZone
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e),
+                            ),
+                          )
+                          .toList(),
+                      hint: Text(model.selectedTimeZone),
+                      value: model.selectedTimeZone,
+                      onChanged: model.onChangedTime,
+                    ),
                   ),
                   titleWidget(text: 'Key Points'),
                   TextField(
@@ -139,7 +169,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                             id: id,
                             timeZone: model.selectedTimeZone,
                             adminStatus: adminStatus,
-                            workingHour: workingHourController.text.trim(),
+                            workingHour: model.manHour,
                             purpose: purposeController.text.trim(),
                             keyPoints: keyPointsController.text.trim(),
                             address: addressController.text.trim(),
