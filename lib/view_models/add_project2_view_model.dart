@@ -80,15 +80,6 @@ class NewProjectViewModel extends BaseViewModel {
     required String address,
     required String timeZone,
   }) async {
-    print('userId: $userId');
-    print('Token: $token');
-    print('Id: $id');
-    print('AdminS: $adminStatus');
-    print('Working: $workingHour');
-    print('purpose: $purpose');
-    print('KeyPoints: $keyPoints');
-    print('Address: $address');
-    print('time: $timeZone');
     if (workingHour == '' ||
         purpose == '' ||
         keyPoints == '' ||
