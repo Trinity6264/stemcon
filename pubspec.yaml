@@ -37,6 +37,7 @@ dependencies:
   image_picker: ^0.8.4+4
   dio: ^4.0.4
   sms_autofill: ^2.2.0
+  contacts_service: ^0.6.3
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,4 +1,3 @@
-
 import 'package:stemcon/views/category/add_category_view.dart';
 import 'package:stemcon/views/category/dpr/dpr_view.dart';
 import 'package:stemcon/views/category/selected_cat_view.dart';
@@ -18,11 +17,12 @@ import 'package:stemcon/views/authentication/startup_view.dart';
 
 import '../views/category/dpr/add_new_dpr_view.dart';
 import '../views/category/tasks/task_view.dart';
+import '../views/profile/profile_view.dart';
 
 @StackedApp(routes: [
   MaterialRoute(page: StartUpView, initial: true),
   MaterialRoute(page: CompanyCodeView),
-  MaterialRoute(page: LoginView ),
+  MaterialRoute(page: LoginView),
   MaterialRoute(page: HomeView),
   MaterialRoute(page: AddProjectView),
   MaterialRoute(page: TaskView),
@@ -32,6 +32,7 @@ import '../views/category/tasks/task_view.dart';
   MaterialRoute(page: selectedCatViews),
   MaterialRoute(page: AddNewDprView),
   MaterialRoute(page: DprView),
+  MaterialRoute(page: ProfileView),
 ], dependencies: [
 // local services
   LazySingleton<NavigationService>(classType: NavigationService),

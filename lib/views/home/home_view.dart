@@ -119,6 +119,8 @@ class HomeView extends StatelessWidget with $HomeView {
                         onSelected: (val) {
                           if (val == 2) {
                             model.askLogoutPermission();
+                          } else {
+                            model.toProfileView();
                           }
                         },
                         itemBuilder: (context) => [

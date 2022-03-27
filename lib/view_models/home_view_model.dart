@@ -127,6 +127,10 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
+  void toProfileView() {
+    _navService.navigateTo(Routes.profileView);
+  }
+
 // logout
 
   void askLogoutPermission() async {

@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/app/app.locator.dart';
 import 'package:stemcon/app/app.router.dart';
-import 'package:stemcon/models/add_project1_model.dart';
+
 import 'package:stemcon/services/api_service.dart';
 import 'package:stemcon/services/file_selector_service.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';

@@ -10,6 +10,8 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:stemcon/models/project_list_model.dart';
 
+import '../models/add_profile_model.dart';
+
 class ApiService {
   // create an account
   Future<http.Response> createAccount({required NewUser userModel}) async {
@@ -18,6 +20,63 @@ class ApiService {
       Uri.parse(serverUrl),
       headers: {'Content-Type': 'application/json'},
       body: userModel.toJson(),
+    );
+    return response;
+  }
+
+  // add profile details
+  Future<http.Response> addProfileDetails(
+      {required AddProfileModel addProfile}) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/profile/add';
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: addProfile.toJson(),
+    );
+    return response;
+  }
+
+  // edit profile deatails
+  Future<http.Response> editProfileDetails(
+      {required AddProfileModel addProfile}) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/profile/edit';
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: addProfile.toJson(),
+    );
+    return response;
+  }
+
+  // delete profile details
+  Future<http.Response> deleteProfileDetails({
+    required String userId,
+    required String token,
+    required String id,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/profile/delete';
+    final _data = {'user_id':userId,'token':token,'id':id};
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(_data),
+    );
+    return response;
+  }
+
+  // select user profile
+
+  Future<http.Response> selectProfileDetails({
+    required String userId,
+    required String token,
+    required String id,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/profile/select';
+    final _data = {'user_id':userId,'token':token,'id':id};
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(_data),
     );
     return response;
   }
@@ -278,7 +337,6 @@ class ApiService {
     return response;
   }
 
-
   // TODO search
 
   Future<List<ProjectListModel>> searchProject({
@@ -287,7 +345,7 @@ class ApiService {
     required String search,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/project/search';
-    final data = {"user_id": userId, "token": token, 'search':search};
+    final data = {"user_id": userId, "token": token, 'search': search};
     final response = await http.post(
       Uri.parse(serverUrl),
       headers: {'Content-Type': 'application/json'},
@@ -308,5 +366,4 @@ class ApiService {
       return [];
     }
   }
-
 }
