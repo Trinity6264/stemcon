@@ -67,6 +67,7 @@ class HomeViewModel extends BaseViewModel {
   int? authenticationToken;
   String? createdAt = '';
   String? updatedAt = '';
+  int? photoId;
   Future<void> reload() async {
     userId = await _prefService.loadUserId();
     companyCode = await _prefService.loadUserCompanyCode();
@@ -76,6 +77,7 @@ class HomeViewModel extends BaseViewModel {
     status = await _prefService.loadUserStatus();
     createdAt = await _prefService.loadUserCreatedAt();
     updatedAt = await _prefService.loadUserUpdatedAt();
+    photoId = await _prefService.loadUserPhotoId();
     authenticationToken = await _prefService.loadUserAuthenticationToken();
     await _prefService.reloadData();
   }
@@ -128,7 +130,33 @@ class HomeViewModel extends BaseViewModel {
   }
 
   void toProfileView() {
-    _navService.navigateTo(Routes.profileView);
+    if (userId == null || authenticationToken == null) {
+      return;
+    } else if (photoId == null &&
+        userId != null &&
+        authenticationToken != null) {
+      _navService.navigateTo(
+        Routes.profileView,
+        arguments: ProfileViewArguments(
+          token: authenticationToken!,
+          userId: userId!,
+          photoId: '',
+          checkId: 0,
+        ),
+      );
+      return;
+    } else {
+      _navService.navigateTo(
+        Routes.profileView,
+        arguments: ProfileViewArguments(
+          token: authenticationToken!,
+          userId: userId!,
+          photoId: photoId.toString(),
+          checkId: 1,
+        ),
+      );
+      return;
+    }
   }
 
 // logout

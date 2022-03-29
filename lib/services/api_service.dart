@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:mime/mime.dart';
 import 'package:stemcon/models/add_project2_model.dart';
 import 'package:stemcon/models/add_task_model.dart';
 import 'package:stemcon/models/dpr_list_model.dart';
@@ -7,6 +8,7 @@ import 'package:stemcon/models/new_user.dart';
 import 'package:stemcon/models/suggestion_list_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:stemcon/models/project_list_model.dart';
 
@@ -25,14 +27,35 @@ class ApiService {
   }
 
   // add profile details
-  Future<http.Response> addProfileDetails(
-      {required AddProfileModel addProfile}) async {
+  Future<http.Response> addProfileDetails({
+    required int userId,
+    required int token,
+    required String name,
+    required String number,
+    required String post,
+    required File profileImage,
+  }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/profile/add';
-    final response = await http.post(
+    // String fileName = profileImage!.path.split('/').last;
+    final imageUploadRequest = http.MultipartRequest(
+      'POST',
       Uri.parse(serverUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: addProfile.toJson(),
     );
+    final mimeTypeData =
+        lookupMimeType(profileImage.path, headerBytes: [0xFF, 0xD8])!
+            .split('/');
+    final file = await http.MultipartFile.fromPath(
+        'profile_image', profileImage.path,
+        contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    imageUploadRequest.files.add(file);
+    imageUploadRequest.fields['user_id'] = userId.toString();
+    imageUploadRequest.fields['token'] = token.toString();
+    imageUploadRequest.fields['name'] = name;
+    imageUploadRequest.fields['post'] = post;
+    imageUploadRequest.fields['number'] = number;
+    final streamedResponse = await imageUploadRequest.send();
+    final response = await http.Response.fromStream(streamedResponse);
     return response;
   }
 
@@ -55,7 +78,7 @@ class ApiService {
     required String id,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/profile/delete';
-    final _data = {'user_id':userId,'token':token,'id':id};
+    final _data = {'user_id': userId, 'token': token, 'id': id};
     final response = await http.post(
       Uri.parse(serverUrl),
       headers: {'Content-Type': 'application/json'},
@@ -67,12 +90,12 @@ class ApiService {
   // select user profile
 
   Future<http.Response> selectProfileDetails({
-    required String userId,
-    required String token,
+    required int userId,
+    required int token,
     required String id,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/profile/select';
-    final _data = {'user_id':userId,'token':token,'id':id};
+    final _data = {'user_id': userId, 'token': token, 'id': id};
     final response = await http.post(
       Uri.parse(serverUrl),
       headers: {'Content-Type': 'application/json'},

@@ -8,6 +8,16 @@ class SharedPrefsservice {
     _prefs.setInt('isLogin', state);
   }
 
+  Future savedUserPhotoId(int state) async {
+    final _prefs = await SharedPreferences.getInstance();
+    _prefs.setInt('photoId', state);
+  }
+
+  Future<int?> loadUserPhotoId() async {
+    final _prefs = await SharedPreferences.getInstance();
+    return _prefs.getInt('photoId');
+  }
+
   Future<int?> loadUserState() async {
     final _prefs = await SharedPreferences.getInstance();
     return _prefs.getInt('isLogin');

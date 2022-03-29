@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/add_profile_view_model.dart';
@@ -15,13 +17,35 @@ import 'package:stemcon/views/profile/profile_view.form.dart';
   FormTextField(name: 'number'),
 ])
 class ProfileView extends StatelessWidget with $ProfileView {
-  ProfileView({Key? key}) : super(key: key);
+  final int userId;
+  final int token;
+  final int checkId;
+  final String photoId;
+  ProfileView({
+    Key? key,
+    required this.userId,
+    required this.token,
+    required this.checkId,
+    required this.photoId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AddProfileViewModel>.reactive(
-      onModelReady: (model) => model.reload(),
+      onDispose: (model) {
+        disposeForm();
+      },
+      onModelReady: (model) {
+        if (checkId == 1) {
+          model.downloadUserInfo(
+            id: photoId,
+            userId: userId,
+            token: token,
+          );
+          return;
+        }
+      },
       viewModelBuilder: () => AddProfileViewModel(),
       builder: (context, model, child) {
         return Scaffold(
@@ -52,21 +76,44 @@ class ProfileView extends StatelessWidget with $ProfileView {
                     child: Container(
                       width: _size.width * 0.5 - 20,
                       height: _size.height * 0.2,
-                      child: model.imageSelected == null
-                          ? SvgPicture.asset(
-                              'assets/logo/undraw.svg',
-                              height: _size.height * 0.2,
-                            )
-                          : Container(
+                      child: model.profileImageUrl != null
+                          ? Container(
                               width: double.infinity,
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    'http://stemcon.likeview.in${model.profileImageUrl!}',
+                                placeholder: (_, __) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                                errorWidget: (_, __, ___) {
+                                  return SvgPicture.asset(
+                                    'assets/logo/undraw.svg',
+                                    height: _size.height * 0.2,
+                                  );
+                                },
+                                fit: BoxFit.fill,
+                              ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7.0),
-                                image: DecorationImage(
-                                  image: FileImage(model.imageSelected!),
-                                  fit: BoxFit.fill,
-                                ),
                               ),
-                            ),
+                            )
+                          : model.imageSelected == null
+                              ? SvgPicture.asset(
+                                  'assets/logo/undraw.svg',
+                                  height: _size.height * 0.2,
+                                )
+                              : Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7.0),
+                                    image: DecorationImage(
+                                      image: FileImage(model.imageSelected!),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
                       decoration: BoxDecoration(
                         border: Border.all(color: blackColor, width: 1.0),
                         borderRadius: BorderRadius.circular(8),
@@ -77,44 +124,47 @@ class ProfileView extends StatelessWidget with $ProfileView {
                   TextField(
                     textInputAction: TextInputAction.next,
                     controller: nameController,
-                    focusNode: nameFocusNode,
                     decoration: textInputDecor.copyWith(
-                      hintText: 'Enter name',
+                      hintText: model.profileName ?? 'Enter name',
                     ),
                   ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: postController,
-                    focusNode: postFocusNode,
                     textInputAction: TextInputAction.next,
                     decoration: textInputDecor.copyWith(
-                      hintText: 'Enter post',
+                      hintText: model.profilePost ?? 'Enter post',
                     ),
                   ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: numberController,
-                    focusNode: numberFocusNode,
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.phone,
                     decoration: textInputDecor.copyWith(
-                      hintText: 'Enter phone number',
+                      hintText: model.profileNumber ?? 'Enter phone number',
                     ),
                   ),
                   const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        model.addProfile(
-                          name: nameController.text.trim(),
-                          post: postController.text.trim(),
-                          number: numberController.text.trim(),
-                        );
-                      },
-                      child: const Text('SUBMIT'),
-                    ),
-                  ),
+                  model.isBusy
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              model.addProfile(
+                                token: token,
+                                userId: userId,
+                                name: nameController.text,
+                                post: postController.text,
+                                number: numberController.text,
+                              );
+                            },
+                            child: const Text('SUBMIT'),
+                          ),
+                        ),
                 ],
               ),
             ),

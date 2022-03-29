@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -14,7 +15,6 @@ class HomeView extends StatelessWidget with $HomeView {
 
   @override
   Widget build(BuildContext context) {
-    Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<HomeViewModel>.reactive(
       viewModelBuilder: () => HomeViewModel(),
       onModelReady: (model) async {
@@ -23,6 +23,9 @@ class HomeView extends StatelessWidget with $HomeView {
           userId: model.userId!,
           token: model.authenticationToken!.toString(),
         );
+        print(model.userId);
+        print(model.authenticationToken);
+        print(model.photoId);
       },
       builder: (context, model, child) {
         return Scaffold(
@@ -191,12 +194,40 @@ class HomeView extends StatelessWidget with $HomeView {
                                             child: Container(
                                               height: 70,
                                               width: 70,
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    'http://stemcon.likeview.in${data.projectPhotoPath}',
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, value) {
+                                                  return const CircularProgressIndicator();
+                                                },
+                                                errorWidget: (_, __, ___) {
+                                                  return Container(
+                                                    width: 70,
+                                                    height: 70,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        10.0,
+                                                      ),
+                                                      image:
+                                                          const DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: AssetImage(
+                                                          'assets/logo/roundlogo.jpg',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10.0),
                                                 image: DecorationImage(
                                                   fit: BoxFit.cover,
-                                                  image: NetworkImage(
+                                                  image:
+                                                      CachedNetworkImageProvider(
                                                     'http://stemcon.likeview.in${data.projectPhotoPath}',
                                                   ),
                                                 ),

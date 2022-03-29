@@ -214,11 +214,15 @@ class StackedRouter extends RouterBase {
       );
     },
     ProfileView: (data) {
-      var args = data.getArgs<ProfileViewArguments>(
-        orElse: () => ProfileViewArguments(),
-      );
+      var args = data.getArgs<ProfileViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileView(key: args.key),
+        builder: (context) => ProfileView(
+          key: args.key,
+          userId: args.userId,
+          token: args.token,
+          checkId: args.checkId,
+          photoId: args.photoId,
+        ),
         settings: data,
       );
     },
@@ -365,5 +369,14 @@ class DprViewArguments {
 /// ProfileView arguments holder class
 class ProfileViewArguments {
   final Key? key;
-  ProfileViewArguments({this.key});
+  final int userId;
+  final int token;
+  final int checkId;
+  final String photoId;
+  ProfileViewArguments(
+      {this.key,
+      required this.userId,
+      required this.token,
+      required this.checkId,
+      required this.photoId});
 }
