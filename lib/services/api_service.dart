@@ -341,9 +341,10 @@ class ApiService {
     }
   }
 
-  // add dpr
 
-  Future<Response> addDpr({
+ 
+  // add dpr
+  Future<http.Response> addDpr({
     required int userId,
     required int token,
     required String dprTime,
@@ -352,24 +353,20 @@ class ApiService {
     required String projectId,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/dpr/add';
-    String fileName = dprPdf.path.split('/').last;
-    Dio _dio = Dio();
-    FormData _data = FormData.fromMap({
-      'token': token,
-      'user_id': userId,
-      'dpr_time': dprTime,
-      'dpr_pdf': await MultipartFile.fromFile(
-        dprPdf.path,
-        filename: fileName,
-      ),
-      'dpr_description': dprDescription,
-      'project_id': projectId,
-    });
-    final response = await _dio.post(serverUrl, data: _data,
-        onSendProgress: (sent, receive) {
-      final results = sent * receive / 100;
-      debugPrint('$results');
-    });
+    final imageUploadRequest = http.MultipartRequest('POST',Uri.parse(serverUrl),
+    );
+    final mimeTypeData = lookupMimeType(dprPdf.path, headerBytes: [0xFF, 0xD8])!.split('/');
+    final file = await http.MultipartFile.fromPath('dpr_pdf', dprPdf.path,
+        contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    imageUploadRequest.files.add(file);
+    imageUploadRequest.fields['user_id'] = userId.toString();
+    imageUploadRequest.fields['token'] = token.toString();
+    imageUploadRequest.fields['dpr_time'] = dprTime;
+    imageUploadRequest.fields['dpr_description'] = dprDescription;
+    imageUploadRequest.fields['project_id'] = projectId;
+    final streamedResponse = await imageUploadRequest.send();
+    final response = await http.Response.fromStream(streamedResponse);
     return response;
   }
 

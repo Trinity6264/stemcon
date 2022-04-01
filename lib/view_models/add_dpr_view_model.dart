@@ -49,7 +49,7 @@ class AddNewDprViewModel extends BaseViewModel {
         imageSelected == null ||
         token == null ||
         userId == null ||
-        dateTime == '') {
+        dateTime == null) {
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
         messageColor: whiteColor,
       ));
@@ -66,7 +66,7 @@ class AddNewDprViewModel extends BaseViewModel {
           projectId: projectId,
         );
         if (response.statusCode == 200) {
-          final data = jsonDecode(response.data);
+          final data = jsonDecode(response.body);
           if (data['res_code'] == "1") {
             setBusy(false);
             _navservice.replaceWith(

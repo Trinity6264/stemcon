@@ -7,7 +7,7 @@ import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/home_view_model.dart';
 import 'package:stemcon/views/home/home_view.form.dart';
 
-enum CheckingState{Editting, Adding}
+enum CheckingState{editting, adding}
 
 @FormView(fields: [
   FormTextField(name: 'search'),
@@ -25,9 +25,6 @@ class HomeView extends StatelessWidget with $HomeView {
           userId: model.userId!,
           token: model.authenticationToken!.toString(),
         );
-        print(model.userId);
-        print(model.authenticationToken);
-        print(model.photoId);
       },
       builder: (context, model, child) {
         return Scaffold(

@@ -31,6 +31,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AddNewDprViewModel>.reactive(
+      
       viewModelBuilder: () => AddNewDprViewModel(),
       builder: (context, model, child) {
         return Scaffold(
@@ -140,14 +141,20 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
-                      height: _size.height * 0.1 - 20,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        border: Border.all(
-                          width: 1.2,
-                          color: greyColor,
+                    GestureDetector(
+                      onTap: () => endDate(context: context, model: model),
+                      child: Container(
+                        height: _size.height * 0.1 - 20,
+                        width: double.infinity,
+                        child: Center(
+                          child: Text(model.dateTime ?? 'Datetime'),
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(7),
+                          border: Border.all(
+                            width: 1.2,
+                            color: greyColor,
+                          ),
                         ),
                       ),
                     ),
