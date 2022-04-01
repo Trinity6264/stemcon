@@ -50,4 +50,16 @@ class TaskViewModel extends BaseViewModel {
       ),
     );
   }
+
+  void editTask({
+    required String userId,
+    required String token,
+    required String id,
+    required String taskName,
+    required String taskAssignedBy,
+    required String description,
+    required String taskStatus,
+  }) {
+    
+  }
 }

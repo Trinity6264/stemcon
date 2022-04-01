@@ -60,65 +60,68 @@ class TaskView extends StatelessWidget {
                               ),
                               itemBuilder: (context, index) {
                                 final data = model.datas[index];
-                                return SizedBox(
-                                  width: double.infinity,
-                                  height: _size.height * 0.1 + 40,
-                                  child: Card(
-                                    shadowColor: greyColor,
-                                    elevation: 3.0,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Task $index By . Darshan kasundra',
-                                            style: const TextStyle(
-                                              color: greyColor,
+                                return GestureDetector(
+                                  onTap: (){},
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: _size.height * 0.1 + 40,
+                                    child: Card(
+                                      shadowColor: greyColor,
+                                      elevation: 3.0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Task $index By . Darshan kasundra',
+                                              style: const TextStyle(
+                                                color: greyColor,
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 5.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  data.taskName ?? 'Empty',
-                                                  style: const TextStyle(
-                                                    fontSize: 20.0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      data.taskStatus ??
-                                                          'pending',
-                                                      style: const TextStyle(
-                                                        color: primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                  vertical: 5.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    data.taskName ?? 'Empty',
+                                                    style: const TextStyle(
+                                                      fontSize: 20.0,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
-                                                    const Icon(
-                                                        Icons.arrow_right),
-                                                  ],
-                                                ),
-                                              ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        data.taskStatus ??
+                                                            'pending',
+                                                        style: const TextStyle(
+                                                          color: primaryColor,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      const Icon(
+                                                          Icons.arrow_right),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          const Text(
-                                            '+91 92446627462',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: primaryColor,
+                                            const Text(
+                                              '+91 92446627462',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: primaryColor,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),

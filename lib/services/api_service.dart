@@ -149,8 +149,9 @@ class ApiService {
   }
 
   // Add project 2
-  Future<http.Response> addProject2(
-      {required AddProject2Model postContent}) async {
+  Future<http.Response> addProject2({
+    required AddProject2Model postContent,
+  }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/project/addStep2';
     final response = await http.post(
       Uri.parse(serverUrl),
@@ -160,7 +161,59 @@ class ApiService {
     return response;
   }
 
-  // Add project 2
+  // todo: edit project
+  // Edit project 1
+  Future<http.Response> editProject1({
+    required int userId,
+    required int token,
+    required String projectName,
+    required String id,
+    required String projectCode,
+    required File? projectPhotoPath,
+    required String projectStartDate,
+    required String projectEndDate,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/project/editStep1';
+    final imageUploadRequest = http.MultipartRequest(
+      'POST',
+      Uri.parse(serverUrl),
+    );
+    final mimeTypeData =
+        lookupMimeType(projectPhotoPath?.path ?? '', headerBytes: [0xFF, 0xD8])!
+            .split('/');
+    final file = await http.MultipartFile.fromPath(
+       'project_photo',
+      projectPhotoPath?.path ?? '',
+      contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
+    );
+
+     imageUploadRequest.files.add(file);
+    imageUploadRequest.fields['user_id'] = userId.toString();
+    imageUploadRequest.fields['token'] = token.toString();
+    imageUploadRequest.fields['project_name'] = projectName;
+    imageUploadRequest.fields['id'] = id;
+    imageUploadRequest.fields['project_code'] = projectCode;
+    imageUploadRequest.fields['project_start_date'] = projectStartDate;
+    imageUploadRequest.fields['project_end_date'] = projectEndDate;
+    final streamedResponse = await imageUploadRequest.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    return response;
+  }
+
+  // Edit project 2
+  Future<http.Response> editProject2({
+    required AddProject2Model postContent,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/project/editStep2';
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: postContent.toJson(),
+    );
+    return response;
+  }
+
+  // delete project 2
   Future<http.Response> deleteProject({
     required DeleteProjectModel deleteContent,
   }) async {
@@ -239,6 +292,9 @@ class ApiService {
       return [];
     }
   }
+
+
+  // edittask
 
 // TODO: Suggestion Apis
 //Get all suggestion
@@ -341,8 +397,6 @@ class ApiService {
     }
   }
 
-
- 
   // add dpr
   Future<http.Response> addDpr({
     required int userId,
@@ -353,9 +407,12 @@ class ApiService {
     required String projectId,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/dpr/add';
-    final imageUploadRequest = http.MultipartRequest('POST',Uri.parse(serverUrl),
+    final imageUploadRequest = http.MultipartRequest(
+      'POST',
+      Uri.parse(serverUrl),
     );
-    final mimeTypeData = lookupMimeType(dprPdf.path, headerBytes: [0xFF, 0xD8])!.split('/');
+    final mimeTypeData =
+        lookupMimeType(dprPdf.path, headerBytes: [0xFF, 0xD8])!.split('/');
     final file = await http.MultipartFile.fromPath('dpr_pdf', dprPdf.path,
         contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
 

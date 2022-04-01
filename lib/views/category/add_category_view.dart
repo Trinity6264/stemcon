@@ -23,8 +23,6 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
     this.projectId,
   }) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddCategoryViewModel>.reactive(
@@ -41,9 +39,9 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
             elevation: 0.0,
             backgroundColor: whiteColor,
             automaticallyImplyLeading: false,
-            title:  Text(
-              indes == 0 ? 'Add New Task':'Add New DPR',
-              style:const TextStyle(
+            title: Text(
+              indes == 0 ? 'Add New Task' : 'Add New DPR',
+              style: const TextStyle(
                 color: blackColor,
                 fontWeight: FontWeight.w700,
                 fontSize: 16.5,
@@ -173,12 +171,11 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
                     child: ElevatedButton(
                       onPressed: () {
                         model.toAddTaskView(
-                          userId: userId!,
-                          token: token!,
-                          taskName: searchController.text.trim(),
-                          index: indes!,
-                          projectId: projectId!
-                        );
+                            userId: userId!,
+                            token: token!,
+                            taskName: searchController.text.trim(),
+                            index: indes!,
+                            projectId: projectId!);
                       },
                       style: ElevatedButton.styleFrom(
                         primary: primaryColor,

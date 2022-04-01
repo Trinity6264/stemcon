@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+
 import 'package:stemcon/shared/shared_button.dart';
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/add_project2_view_model.dart';
 import 'package:stemcon/views/projects/add_project2_view.form.dart';
+
+import '../../view_models/home_view_model.dart';
 
 @FormView(fields: [
   FormTextField(name: 'workingHour'),
@@ -17,13 +20,33 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
   final int userId;
   final int token;
   final int id;
-  final String adminStatus;
+  final String? adminStatus;
+  final CheckingState state;
+  final String? projectAddress;
+  final String? projectAdmin;
+  final String? projectCode;
+  final String? projectKeyPoint;
+  final String? projectManHour;
+  final String? projectPurpose;
+  final String? projectStatus;
+  final String? projectUnit;
+  final String? projectTimeZone;
   AddProject2View({
     Key? key,
     required this.userId,
     required this.token,
-    required this.adminStatus,
     required this.id,
+    required this.adminStatus,
+    required this.state,
+    this.projectAddress,
+    this.projectAdmin,
+    this.projectCode,
+    this.projectKeyPoint,
+    this.projectManHour,
+    this.projectPurpose,
+    this.projectStatus,
+    this.projectUnit,
+    this.projectTimeZone,
   }) : super(key: key);
 
   @override
@@ -39,6 +62,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
       },
       viewModelBuilder: () => NewProjectViewModel(),
       builder: (context, model, child) {
+        final isEditting = state.index == 0;
         return Scaffold(
           appBar: AppBar(
             backgroundColor: whiteColor,
@@ -47,9 +71,9 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
               icon: const Icon(Icons.close, color: blackColor),
             ),
             elevation: 0,
-            title: const Text(
-              'Add Project',
-              style: TextStyle(
+            title: Text(
+              isEditting ? 'Editting Project' : 'Add Project',
+              style: const TextStyle(
                 color: blackColor,
                 fontWeight: FontWeight.w600,
               ),
@@ -68,7 +92,11 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                       Flexible(
                         fit: FlexFit.loose,
                         child: RadioListTile(
-                          groupValue: model.unit,
+                          groupValue: isEditting &&
+                                  projectUnit != null &&
+                                  model.unit == ''
+                              ? projectUnit
+                              : model.unit,
                           value: 'MM',
                           title: const Text("MM"),
                           onChanged: model.onChangedUnit,
@@ -77,7 +105,11 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                       Flexible(
                         fit: FlexFit.loose,
                         child: RadioListTile(
-                          groupValue: model.unit,
+                          groupValue: isEditting &&
+                                  projectUnit != null &&
+                                  model.unit == ''
+                              ? projectUnit
+                              : model.unit,
                           value: 'Ft',
                           title: const Text("Ft"),
                           onChanged: model.onChangedUnit,
@@ -86,7 +118,11 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                       Flexible(
                         fit: FlexFit.loose,
                         child: RadioListTile(
-                          groupValue: model.unit,
+                          groupValue: isEditting &&
+                                  projectUnit != null &&
+                                  model.unit == ''
+                              ? projectUnit
+                              : model.unit,
                           value: 'CM',
                           title: const Text("CM"),
                           onChanged: model.onChangedUnit,
@@ -113,14 +149,21 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                             ),
                           )
                           .toList(),
-                      hint: Text(model.manHour),
+                      hint: Text(
+                        isEditting &&
+                                model.manHour == '' &&
+                                projectManHour != null
+                            ? projectManHour!
+                            : model.manHour,
+                      ),
                       onChanged: model.onChangedManHour,
                     ),
                   ),
                   titleWidget(text: 'Purpose Of Project'),
                   TextField(
                     controller: purposeController,
-                    decoration: textInputDecor.copyWith(hintText: 'Resudance'),
+                    decoration: textInputDecor.copyWith(
+                        hintText: projectPurpose ?? 'Resudance'),
                   ),
                   titleWidget(text: 'Time Zone'),
                   Container(
@@ -141,7 +184,8 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                             ),
                           )
                           .toList(),
-                      hint: Text(model.selectedTimeZone),
+                      // todo: time
+                      hint: Text(projectTimeZone ?? model.selectedTimeZone),
                       value: model.selectedTimeZone,
                       onChanged: model.onChangedTime,
                     ),
@@ -149,12 +193,14 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                   titleWidget(text: 'Key Points'),
                   TextField(
                     controller: keyPointsController,
-                    decoration: textInputDecor.copyWith(hintText: 'Pints'),
+                    decoration: textInputDecor.copyWith(
+                        hintText: projectKeyPoint ?? 'Points'),
                   ),
                   titleWidget(text: 'Address'),
                   TextField(
                     controller: addressController,
-                    decoration: textInputDecor.copyWith(hintText: 'Address'),
+                    decoration: textInputDecor.copyWith(
+                        hintText: projectAddress ?? 'Address'),
                   ),
                   const SizedBox(height: 20),
                   model.isBusy
@@ -163,18 +209,45 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                         )
                       : SharedButton(
                           title: 'SUBMIT',
-                          onPressed: () => model.submitData(
-                            userId: userId,
-                            token: token,
-                            id: id,
-                            timeZone: model.selectedTimeZone,
-                            adminStatus: adminStatus,
-                            workingHour: model.manHour,
-                            purpose: purposeController.text.trim(),
-                            keyPoints: keyPointsController.text.trim(),
-                            address: addressController.text.trim(),
-                          ),
-                        )
+                          onPressed: () {
+                            if (isEditting) {
+                              model.editSubmitData(
+                                userId: userId,
+                                token: token,
+                                id: id,
+                                adminStatus: adminStatus == ''
+                                    ? projectStatus!
+                                    : adminStatus!,
+                                workingHour: model.manHour == '1'
+                                    ? projectManHour!
+                                    : model.manHour,
+                                purpose: purposeController.text == ''
+                                    ? projectPurpose!
+                                    : purposeController.text.trim(),
+                                keyPoints: keyPointsController.text == ''
+                                    ? projectKeyPoint!
+                                    : keyPointsController.text.trim(),
+                                address: addressController.text == ''
+                                    ? projectAddress!
+                                    : addressController.text.trim(),
+                                timeZone: model.selectedTimeZone == ''
+                                    ? projectTimeZone!
+                                    : model.selectedTimeZone,
+                              );
+                            } else {
+                              model.submitData(
+                                userId: userId,
+                                token: token,
+                                id: id,
+                                timeZone: model.selectedTimeZone,
+                                adminStatus: adminStatus!,
+                                workingHour: model.manHour,
+                                purpose: purposeController.text.trim(),
+                                keyPoints: keyPointsController.text.trim(),
+                                address: addressController.text.trim(),
+                              );
+                            }
+                          })
                 ],
               ),
             ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -14,6 +15,7 @@ class NewProjectViewModel extends BaseViewModel {
   final _navService = locator<NavigationService>();
   final _apiService = locator<ApiService>();
   final _snackbarService = locator<SnackbarService>();
+  final _dialogService = locator<DialogService>();
 
   String selectedTimeZone = '';
 
@@ -69,6 +71,7 @@ class NewProjectViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  // Add project2
   Future<void> submitData({
     required int userId,
     required int token,
@@ -134,6 +137,62 @@ class NewProjectViewModel extends BaseViewModel {
         ));
         _snackbarService.showSnackbar(message: 'Error occurred!');
       }
+    }
+  }
+
+  // Edit project 2
+
+  Future<void> editSubmitData({
+    required int userId,
+    required int token,
+    required int id,
+    required String adminStatus,
+    required String workingHour,
+    required String purpose,
+    required String keyPoints,
+    required String address,
+    required String timeZone,
+  }) async {
+    try {
+      setBusy(true);
+      final projectContent = AddProject2Model(
+        id: id,
+        token: token,
+        userId: userId,
+        projectAddress: address,
+        projectAdmin: adminStatus,
+        projectKeyPoint: keyPoints,
+        projectManHour: workingHour,
+        projectPurpose: purpose,
+        projectStatus: 'active',
+        projectTimezone: timeZone,
+        projectUnit: unit,
+      );
+      final response =
+          await _apiService.editProject2(postContent: projectContent);
+      setBusy(false);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['res_code'] == '1') {
+          _snackbarService.registerSnackbarConfig(SnackbarConfig(
+            messageColor: whiteColor,
+          ));
+          _snackbarService.showSnackbar(
+              message: 'Project Updated successfully');
+          _navService.replaceWith(Routes.homeView);
+          return;
+        }
+      } else {
+        _snackbarService.registerSnackbarConfig(SnackbarConfig(
+          messageColor: whiteColor,
+        ));
+        _snackbarService.showSnackbar(message: 'Error occurred!');
+      }
+    }on HttpException catch (e) {
+      _dialogService.showDialog(
+        title: 'Error',
+        description: e.message,
+      );
     }
   }
 }

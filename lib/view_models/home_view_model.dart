@@ -11,6 +11,8 @@ import 'package:stemcon/services/api_service.dart';
 import 'package:stemcon/services/shared_prefs_service.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 
+enum CheckingState { editting, adding }
+
 class HomeViewModel extends BaseViewModel {
   final _prefService = locator<SharedPrefsservice>();
   final _apiService = locator<ApiService>();
@@ -84,17 +86,70 @@ class HomeViewModel extends BaseViewModel {
     await _prefService.reloadData();
   }
 
-  void toAddProjectView() {
-    if (userId == null || authenticationToken == null || adminStatus == null)
-      return;
-    _navService.navigateTo(
-      Routes.addProjectView,
-      arguments: AddProjectViewArguments(
-        userId: userId!,
-        token: authenticationToken!,
-        adminStatus: adminStatus!,
-      ),
-    );
+  void toAddProjectView(
+    CheckingState state, {
+    String? projectName,
+    String? projectStart,
+    String? projectEnd,
+    int? id,
+    String? projectPhotoPath,
+    String? projectStartTime,
+    String? projectEndTime,
+    String? projectAddress,
+    String? projectAdmin,
+    String? projectCode,
+    String? projectKeyPoint,
+    String? projectManHour,
+    String? projectPurpose,
+    String? projectStatus,
+    String? projectUnit,
+    String? projectTimeZone,
+  }) {
+    switch (state) {
+      case CheckingState.adding:
+        if (userId == null ||
+            authenticationToken == null ||
+            adminStatus == null) return;
+        _navService.navigateTo(
+          Routes.addProjectView,
+          arguments: AddProjectViewArguments(
+            userId: userId!,
+            token: authenticationToken!,
+            adminStatus: adminStatus!,
+            state: state,
+          ),
+        );
+        break;
+      case CheckingState.editting:
+        if (userId == null ||
+            authenticationToken == null ||
+            adminStatus == null) return;
+        _navService.navigateTo(
+          Routes.addProjectView,
+          arguments: AddProjectViewArguments(
+            userId: userId!,
+            token: authenticationToken!,
+            adminStatus: adminStatus!,
+            state: state,
+            id: id,
+            projectEndTime: projectEnd,
+            projectPhotoPath: projectPhotoPath,
+            projectStartTime: projectStart,
+            projectname: projectName,
+            projectAddress: projectAddress,
+            projectAdmin: projectAdmin,
+            projectCode: projectCode,
+            projectKeyPoint: projectKeyPoint,
+            projectManHour: projectManHour,
+            projectPurpose: projectPurpose,
+            projectStatus: projectStatus,
+            projectUnit: projectUnit,
+            projectTimezone: projectTimeZone,
+          ),
+        );
+        break;
+      default:
+    }
   }
 
   void toAddTaskView(String projectId) {

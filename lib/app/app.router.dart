@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
+import '../view_models/home_view_model.dart';
 import '../views/authentication/company_code_view.dart';
 import '../views/authentication/login_view.dart';
 import '../views/authentication/startup_view.dart';
@@ -120,6 +121,21 @@ class StackedRouter extends RouterBase {
           userId: args.userId,
           token: args.token,
           adminStatus: args.adminStatus,
+          projectname: args.projectname,
+          projectPhotoPath: args.projectPhotoPath,
+          projectStartTime: args.projectStartTime,
+          projectEndTime: args.projectEndTime,
+          id: args.id,
+          state: args.state,
+          projectAddress: args.projectAddress,
+          projectAdmin: args.projectAdmin,
+          projectCode: args.projectCode,
+          projectKeyPoint: args.projectKeyPoint,
+          projectManHour: args.projectManHour,
+          projectPurpose: args.projectPurpose,
+          projectStatus: args.projectStatus,
+          projectUnit: args.projectUnit,
+          projectTimezone: args.projectTimezone,
         ),
         settings: data,
       );
@@ -143,8 +159,18 @@ class StackedRouter extends RouterBase {
           key: args.key,
           userId: args.userId,
           token: args.token,
-          adminStatus: args.adminStatus,
           id: args.id,
+          adminStatus: args.adminStatus,
+          state: args.state,
+          projectAddress: args.projectAddress,
+          projectAdmin: args.projectAdmin,
+          projectCode: args.projectCode,
+          projectKeyPoint: args.projectKeyPoint,
+          projectManHour: args.projectManHour,
+          projectPurpose: args.projectPurpose,
+          projectStatus: args.projectStatus,
+          projectUnit: args.projectUnit,
+          projectTimeZone: args.projectTimeZone,
         ),
         settings: data,
       );
@@ -258,11 +284,41 @@ class AddProjectViewArguments {
   final int userId;
   final int token;
   final String adminStatus;
+  final String? projectname;
+  final String? projectPhotoPath;
+  final String? projectStartTime;
+  final String? projectEndTime;
+  final int? id;
+  final CheckingState state;
+  final String? projectAddress;
+  final String? projectAdmin;
+  final String? projectCode;
+  final String? projectKeyPoint;
+  final String? projectManHour;
+  final String? projectPurpose;
+  final String? projectStatus;
+  final String? projectUnit;
+  final String? projectTimezone;
   AddProjectViewArguments(
       {this.key,
       required this.userId,
       required this.token,
-      required this.adminStatus});
+      required this.adminStatus,
+      this.projectname,
+      this.projectPhotoPath,
+      this.projectStartTime,
+      this.projectEndTime,
+      this.id,
+      required this.state,
+      this.projectAddress,
+      this.projectAdmin,
+      this.projectCode,
+      this.projectKeyPoint,
+      this.projectManHour,
+      this.projectPurpose,
+      this.projectStatus,
+      this.projectUnit,
+      this.projectTimezone});
 }
 
 /// TaskView arguments holder class
@@ -283,14 +339,34 @@ class AddProject2ViewArguments {
   final Key? key;
   final int userId;
   final int token;
-  final String adminStatus;
   final int id;
+  final String? adminStatus;
+  final CheckingState state;
+  final String? projectAddress;
+  final String? projectAdmin;
+  final String? projectCode;
+  final String? projectKeyPoint;
+  final String? projectManHour;
+  final String? projectPurpose;
+  final String? projectStatus;
+  final String? projectUnit;
+  final String? projectTimeZone;
   AddProject2ViewArguments(
       {this.key,
       required this.userId,
       required this.token,
+      required this.id,
       required this.adminStatus,
-      required this.id});
+      required this.state,
+      this.projectAddress,
+      this.projectAdmin,
+      this.projectCode,
+      this.projectKeyPoint,
+      this.projectManHour,
+      this.projectPurpose,
+      this.projectStatus,
+      this.projectUnit,
+      this.projectTimeZone});
 }
 
 /// AddCategoryView arguments holder class

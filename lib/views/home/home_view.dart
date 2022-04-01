@@ -7,8 +7,6 @@ import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/home_view_model.dart';
 import 'package:stemcon/views/home/home_view.form.dart';
 
-enum CheckingState{editting, adding}
-
 @FormView(fields: [
   FormTextField(name: 'search'),
 ])
@@ -25,11 +23,16 @@ class HomeView extends StatelessWidget with $HomeView {
           userId: model.userId!,
           token: model.authenticationToken!.toString(),
         );
+        print(model.userId!);
+        print(model.authenticationToken!.toString());
       },
       builder: (context, model, child) {
+        
         return Scaffold(
           floatingActionButton: FloatingActionButton(
-            onPressed: model.toAddProjectView,
+            onPressed: () {
+              model.toAddProjectView(CheckingState.adding);
+            },
             child: const Icon(Icons.add),
           ),
           appBar: model.isSearch
@@ -388,7 +391,27 @@ class HomeView extends StatelessWidget with $HomeView {
                                                   const EdgeInsets.all(2.0),
                                               child: OutlinedButton.icon(
                                                 onPressed: () {
-                                                  // Respond to button press
+                                                  // todo: edit
+                                                  model.toAddProjectView(
+                                                    CheckingState.editting,
+                                                    id: data.id,
+                                                    projectEnd: data.projectEndDate,
+                                                    projectName: data.projectName,
+                                                    projectPhotoPath: data.projectPhotoPath,
+                                                    projectStart: data.projectStartDate,
+                                                    projectAddress: data.projectAddress,
+                                                    projectAdmin: data.projectAdmin,
+                                                    projectCode: data.projectCode,
+                                                    projectEndTime: data.projectEndDate,
+                                                    projectKeyPoint: data.projectKeyPoint,
+                                                    projectManHour: data.projectManHour,
+                                                    projectPurpose: data.projectPurpose,
+                                                    projectStartTime: data.projectStartDate,
+                                                    projectStatus: data.projectStatus,
+                                                    projectUnit: data.projectUnit,
+                                                    projectTimeZone: data.projectTimezone,
+
+                                                  );
                                                 },
                                                 icon: const Icon(
                                                   Icons.edit,
