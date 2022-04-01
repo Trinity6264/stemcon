@@ -81,7 +81,7 @@ class ProfileView extends StatelessWidget with $ProfileView {
                               width: double.infinity,
                               child: CachedNetworkImage(
                                 imageUrl:
-                                    'http://stemcon.likeview.in${model.profileImageUrl!}',
+                                    'http://stemcon.likeview.in/${model.profileImageUrl!}',
                                 placeholder: (_, __) {
                                   return const Center(
                                     child: CircularProgressIndicator(),

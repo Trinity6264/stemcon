@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -43,12 +44,12 @@ class AddNewDprViewModel extends BaseViewModel {
     required int? token,
     required int? userId,
   }) async {
-    if (projectId.isEmpty ||
-        dprDescription.isEmpty ||
+    if (projectId == '' ||
+        dprDescription == '' ||
         imageSelected == null ||
         token == null ||
         userId == null ||
-        dateTime!.isEmpty) {
+        dateTime == '') {
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
         messageColor: whiteColor,
       ));
@@ -65,13 +66,16 @@ class AddNewDprViewModel extends BaseViewModel {
           projectId: projectId,
         );
         if (response.statusCode == 200) {
-          final data = response.data;
-          print(data);
+          final data = jsonDecode(response.data);
           if (data['res_code'] == "1") {
             setBusy(false);
             _navservice.replaceWith(
               Routes.dprView,
-              arguments: DprViewArguments(token: token, userId: userId, projectId: projectId,),
+              arguments: DprViewArguments(
+                token: token,
+                userId: userId,
+                projectId: projectId,
+              ),
             );
             return;
           } else {
@@ -93,4 +97,6 @@ class AddNewDprViewModel extends BaseViewModel {
       }
     }
   }
+
+  
 }

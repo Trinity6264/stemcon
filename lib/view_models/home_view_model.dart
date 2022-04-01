@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/app/app.locator.dart';
 import 'package:stemcon/app/app.router.dart';
+import 'package:stemcon/models/delete_project_model.dart';
 import 'package:stemcon/models/new_user.dart';
 import 'package:stemcon/models/project_list_model.dart';
 import 'package:stemcon/services/api_service.dart';
@@ -19,6 +20,7 @@ class HomeViewModel extends BaseViewModel {
 
   bool isSearch = false;
   bool isloginOut = false;
+  bool isDeleting = false;
 
   void changedToSerach() {
     isSearch = !isSearch;
@@ -125,7 +127,7 @@ class HomeViewModel extends BaseViewModel {
       datas = data.reversed.toList();
     } else {
       setBusy(false);
-      errorMessage = 'No Data Found\n Please check your internet connectivity';
+      errorMessage = 'No Data Found\nPlease check your internet connectivity';
     }
   }
 
@@ -159,8 +161,6 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-// logout
-
   void askLogoutPermission() async {
     final res = await _dialogService.showConfirmationDialog(
       title: 'Do you want to logout?',
@@ -168,7 +168,63 @@ class HomeViewModel extends BaseViewModel {
       cancelTitle: 'No',
     );
     if (res!.confirmed) {
-      logOut();
+      return;
+    }
+  }
+
+  // delete project
+
+  Future<void> deleteProject({
+    required String projectId,
+  }) async {
+    final deleteContent = DeleteProjectModel(
+      token: authenticationToken.toString(),
+      userId: userId.toString(),
+      projectId: projectId,
+    );
+    isDeleting = true;
+    notifyListeners();
+    final data = await _apiService.deleteProject(deleteContent: deleteContent);
+    final response = jsonDecode(data.body);
+    if (data.statusCode == 200) {
+      if (response['res_code'] == '1') {
+        _snackbarService.registerSnackbarConfig(SnackbarConfig(
+          messageColor: whiteColor,
+        ));
+        _snackbarService.showSnackbar(message: response['res_message']);
+        isDeleting = false;
+        notifyListeners();
+        return;
+      } else {
+        isDeleting = false;
+        notifyListeners();
+        _snackbarService.registerSnackbarConfig(SnackbarConfig(
+          messageColor: whiteColor,
+        ));
+        _snackbarService.showSnackbar(message: response['res_message']);
+        return;
+      }
+    } else {
+      isDeleting = false;
+      notifyListeners();
+      _snackbarService.registerSnackbarConfig(SnackbarConfig(
+        messageColor: whiteColor,
+      ));
+      _snackbarService.showSnackbar(message: response['res_message']);
+      return;
+    }
+  }
+
+// logout
+
+  void askDeletetPermission(String projectId) async {
+    final res = await _dialogService.showConfirmationDialog(
+      title: 'Do you want to logout?',
+      confirmationTitle: 'Yes',
+      cancelTitle: 'No',
+    );
+    if (res!.confirmed) {
+      deleteProject(projectId: projectId);
       return;
     }
   }

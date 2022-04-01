@@ -34,7 +34,6 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
       viewModelBuilder: () => AddNewDprViewModel(),
       builder: (context, model, child) {
         return Scaffold(
-          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             elevation: 0.0,
             backgroundColor: whiteColor,
@@ -76,7 +75,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 10),
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -141,13 +140,18 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    TextField(
-                      controller: tomorrowTaskController,
-                      focusNode: tomorrowTaskFocusNode,
-                      decoration: textInputDecor.copyWith(
-                        hintText: 'TOMORROW TASK',
+                    Container(
+                      height: _size.height * 0.1 - 20,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(7),
+                        border: Border.all(
+                          width: 1.2,
+                          color: greyColor,
+                        ),
                       ),
                     ),
+                    const SizedBox(height: 20),
                     model.isBusy
                         ? const Center(
                             child: CircularProgressIndicator(),

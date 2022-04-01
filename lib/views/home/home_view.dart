@@ -7,6 +7,8 @@ import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/home_view_model.dart';
 import 'package:stemcon/views/home/home_view.form.dart';
 
+enum CheckingState{Editting, Adding}
+
 @FormView(fields: [
   FormTextField(name: 'search'),
 ])
@@ -422,7 +424,9 @@ class HomeView extends StatelessWidget with $HomeView {
                                                   const EdgeInsets.all(2.0),
                                               child: OutlinedButton.icon(
                                                 onPressed: () {
-                                                  // Respond to button press
+                                                  model.askDeletetPermission(
+                                                    data.id.toString(),
+                                                  );
                                                 },
                                                 icon: const Icon(
                                                   Icons.delete,

@@ -12,7 +12,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:stemcon/models/project_list_model.dart';
 
-import '../models/add_profile_model.dart';
+import '../models/delete_project_model.dart';
 
 class ApiService {
   // create an account
@@ -60,16 +60,16 @@ class ApiService {
   }
 
   // edit profile deatails
-  Future<http.Response> editProfileDetails(
-      {required AddProfileModel addProfile}) async {
-    const String serverUrl = 'http://stemcon.likeview.in/api/profile/edit';
-    final response = await http.post(
-      Uri.parse(serverUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: addProfile.toJson(),
-    );
-    return response;
-  }
+  // Future<http.Response> editProfileDetails(
+  //     {required AddProfileModel addProfile}) async {
+  //   const String serverUrl = 'http://stemcon.likeview.in/api/profile/edit';
+  //   final response = await http.post(
+  //     Uri.parse(serverUrl),
+  //     headers: {'Content-Type': 'application/json'},
+  //     body: addProfile.toJson(),
+  //   );
+  //   return response;
+  // }
 
   // delete profile details
   Future<http.Response> deleteProfileDetails({
@@ -156,6 +156,19 @@ class ApiService {
       Uri.parse(serverUrl),
       headers: {'Content-Type': 'application/json'},
       body: postContent.toJson(),
+    );
+    return response;
+  }
+
+  // Add project 2
+  Future<http.Response> deleteProject({
+    required DeleteProjectModel deleteContent,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/project/delete';
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: deleteContent.toJson(),
     );
     return response;
   }

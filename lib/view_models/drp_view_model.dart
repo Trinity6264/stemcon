@@ -19,7 +19,7 @@ class DprViewModel extends BaseViewModel {
   }) async {
     setBusy(true);
     final data = await _apiService.fetchDprList(userId: userId, token: token);
-    if (!data.isEmpty) {
+    if (data.isNotEmpty) {
       setBusy(false);
       datas = data;
     } else {
