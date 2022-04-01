@@ -27,6 +27,7 @@ class AddTaskViewModel extends BaseViewModel {
     if (taskName.isEmpty ||
         description.isEmpty ||
         token == null ||
+        projectId.isEmpty ||
         userId == null) {
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
         messageColor: whiteColor,

@@ -32,8 +32,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-// TODO
-
-

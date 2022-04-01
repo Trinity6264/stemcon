@@ -168,6 +168,7 @@ class HomeViewModel extends BaseViewModel {
       cancelTitle: 'No',
     );
     if (res!.confirmed) {
+      logOut();
       return;
     }
   }
@@ -193,6 +194,7 @@ class HomeViewModel extends BaseViewModel {
         ));
         _snackbarService.showSnackbar(message: response['res_message']);
         isDeleting = false;
+        loadData(token: authenticationToken.toString(), userId: userId!);
         notifyListeners();
         return;
       } else {
@@ -219,7 +221,7 @@ class HomeViewModel extends BaseViewModel {
 
   void askDeletetPermission(String projectId) async {
     final res = await _dialogService.showConfirmationDialog(
-      title: 'Do you want to logout?',
+      title: 'Do you want to delete this project?',
       confirmationTitle: 'Yes',
       cancelTitle: 'No',
     );
@@ -233,7 +235,9 @@ class HomeViewModel extends BaseViewModel {
     isloginOut = true;
     notifyListeners();
     final logOut = LogoutModel(
-        token: authenticationToken.toString(), userId: userId.toString());
+      token: authenticationToken.toString(),
+      userId: userId.toString(),
+    );
     final data = await _apiService.signOut(logoutModel: logOut);
     final response = jsonDecode(data.body);
     if (data.statusCode == 200) {
