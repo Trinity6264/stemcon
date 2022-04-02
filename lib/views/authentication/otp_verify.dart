@@ -14,10 +14,12 @@ import '../../services/shared_prefs_service.dart';
 import '../../utils/color/color_pallets.dart';
 
 class OtpVerify extends StatefulWidget {
+  final String companyCode;
   final String countryCode;
-  final int countryNumber;
+  final String countryNumber;
   const OtpVerify({
     Key? key,
+    required this.companyCode,
     required this.countryCode,
     required this.countryNumber,
   }) : super(key: key);
