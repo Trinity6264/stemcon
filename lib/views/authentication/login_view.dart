@@ -14,7 +14,7 @@ import '../../utils/dialog/custom_dialog.dart';
   FormTextField(name: 'number'),
 ])
 class LoginView extends StatelessWidget with $LoginView {
-  final int? companyCode;
+  final String? companyCode;
   LoginView({
     Key? key,
     this.companyCode,
@@ -112,8 +112,8 @@ class LoginView extends StatelessWidget with $LoginView {
                         : SharedButton(
                             title: 'LOG IN',
                             onPressed: () => model.toOtpView(
-                              number: int.parse(numberController.text),
-                              companyCode: companyCode.toString(),
+                              companyCode: companyCode!,
+                              number: numberController.text,
                             ),
                           ),
                     SizedBox(height: _size.height * 0.1),

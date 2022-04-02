@@ -32,8 +32,8 @@ class AuthenticationViewModel extends BaseViewModel {
   CountryCodesModel? countryCode = countryCodeDatas[0];
 
   void toOtpView({
-    required String? companyCode,  
-    required int? number,
+    required String companyCode,
+    required String number,
   }) async {
     if (number == null || countryCode == null || appSignature == null) {
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
@@ -61,6 +61,7 @@ class AuthenticationViewModel extends BaseViewModel {
         if (data['res_code'] == "1") {
           _navService.navigateToView(
             OtpVerify(
+              companyCode: companyCode,
               countryCode: countryCode!.callingCode!,
               countryNumber: number,
             ),

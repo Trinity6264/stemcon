@@ -268,7 +268,7 @@ class CompanyCodeViewArguments {
 /// LoginView arguments holder class
 class LoginViewArguments {
   final Key? key;
-  final int? companyCode;
+  final String? companyCode;
   LoginViewArguments({this.key, this.companyCode});
 }
 

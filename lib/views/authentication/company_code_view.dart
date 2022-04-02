@@ -61,7 +61,7 @@ class CompanyCodeView extends StatelessWidget with $CompanyCodeView {
                 SharedButton(
                   title: 'Next',
                   onPressed: () => model.toLoginView(
-                    int.parse(companyCodeController.text),
+                    companyCodeController.text,
                     companyCodeController.text,
                   ),
                 ),

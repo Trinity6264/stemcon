@@ -3,7 +3,7 @@ import 'dart:convert';
 class NewUser {
   String? countryCode;
   String? companyCode;
-  int? number;
+  String? number;
   String? appSignature;
   NewUser({
     required this.countryCode,

@@ -23,7 +23,7 @@ class StartUpViewModel extends BaseViewModel {
     });
   }
 
-  Future<void> toLoginView(int code, String text) async {
+  Future<void> toLoginView(String code, String text) async {
     if (text.isEmpty) {
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
         messageColor: whiteColor,
