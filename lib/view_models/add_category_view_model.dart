@@ -7,6 +7,7 @@ import 'package:stemcon/services/api_service.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:stemcon/view_models/home_view_model.dart';
 
 class AddCategoryViewModel extends IndexTrackingViewModel {
   final _navService = locator<NavigationService>();
@@ -101,6 +102,7 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
               taskName: taskName,
               taskAssignedBy: '8',
               projectId: projectId,
+              state: CheckingState.adding,
             ),
           )
         : _navService.navigateTo(

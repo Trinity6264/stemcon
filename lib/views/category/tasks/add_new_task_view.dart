@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
-import 'package:stemcon/shared/shared_button.dart';
 
+import 'package:stemcon/shared/shared_button.dart';
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/add_new_task_view_model.dart';
+import 'package:stemcon/view_models/home_view_model.dart';
 import 'package:stemcon/views/category/tasks/add_new_task_view.form.dart';
 
 @FormView(fields: [
@@ -18,6 +19,11 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
   final String taskName;
   final String taskAssignedBy;
   final String projectId;
+  final CheckingState state;
+  final String? description;
+  final String? taskStatus;
+  final String? taskId;
+
   AddNewTaskView({
     Key? key,
     required this.userId,
@@ -25,6 +31,10 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
     required this.taskName,
     required this.taskAssignedBy,
     required this.projectId,
+    required this.state,
+    this.description,
+    this.taskStatus,
+    this.taskId,
   }) : super(key: key);
 
   @override

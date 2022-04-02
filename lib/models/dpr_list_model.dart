@@ -8,6 +8,8 @@ class DprListModel {
   String? createdAt;
   String? updatedAt;
 
+
+
   DprListModel({
     this.id,
     this.dprTime,

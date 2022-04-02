@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
+import 'package:stemcon/shared/text_input_decor.dart';
 
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/task_view_model.dart';
+import 'package:stemcon/views/category/tasks/task_view.form.dart';
 
-class TaskView extends StatelessWidget {
+import '../../../models/add_task_model.dart';
+
+@FormView(fields: [
+  FormTextField(name: 'name'),
+  FormTextField(name: 'description'),
+])
+class TaskView extends StatelessWidget with $TaskView {
   final int id;
   final int token;
   final String projectId;
-  const TaskView({
+  TaskView({
     Key? key,
     required this.id,
     required this.token,
@@ -60,67 +69,104 @@ class TaskView extends StatelessWidget {
                               ),
                               itemBuilder: (context, index) {
                                 final data = model.datas[index];
+                                final String key =
+                                    model.datas[index].toString();
                                 return GestureDetector(
-                                  onTap: (){},
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    height: _size.height * 0.1 + 40,
-                                    child: Card(
-                                      shadowColor: greyColor,
-                                      elevation: 3.0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Task $index By . Darshan kasundra',
-                                              style: const TextStyle(
-                                                color: greyColor,
+                                  onTap: () => showCustomDialog(
+                                    context,
+                                    data,
+                                    _size,
+                                    model,
+                                    nameController,
+                                    descriptionController,
+                                    id.toString(),
+                                    token.toString(),
+                                  ),
+                                  child: Dismissible(
+                                    key: Key(UniqueKey().toString()),
+                                    background: Container(
+                                      color: Colors.red,
+                                      alignment: Alignment.centerRight,
+                                      child: const Icon(
+                                        Icons.delete,
+                                        color: whiteColor,
+                                      ),
+                                    ),
+                                    direction: DismissDirection.endToStart,
+                                    onDismissed: (direction) {
+                                      if (direction ==
+                                          DismissDirection.endToStart) {
+                                        model.deleteTask(
+                                          token: token,
+                                          userId: id,
+                                          index: index,
+                                          id: data.id.toString(),
+                                        );
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: _size.height * 0.1 + 40,
+                                      child: Card(
+                                        shadowColor: greyColor,
+                                        elevation: 3.0,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Task $index By . Darshan kasundra',
+                                                style: const TextStyle(
+                                                  color: greyColor,
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 5.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    data.taskName ?? 'Empty',
-                                                    style: const TextStyle(
-                                                      fontSize: 20.0,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        data.taskStatus ??
-                                                            'pending',
-                                                        style: const TextStyle(
-                                                          color: primaryColor,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 5.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      data.taskName ?? 'Empty',
+                                                      style: const TextStyle(
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
-                                                      const Icon(
-                                                          Icons.arrow_right),
-                                                    ],
-                                                  ),
-                                                ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          data.taskStatus ??
+                                                              'pending',
+                                                          style:
+                                                              const TextStyle(
+                                                            color: primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                        const Icon(
+                                                            Icons.arrow_right),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            const Text(
-                                              '+91 92446627462',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: primaryColor,
+                                              const Text(
+                                                '+91 92446627462',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: primaryColor,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -203,6 +249,110 @@ class TaskView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void showCustomDialog(
+    BuildContext context,
+    AddTaskModel model,
+    Size size,
+    TaskViewModel contoller,
+    TextEditingController nameController,
+    TextEditingController desController,
+    String userId,
+    String token,
+  ) {
+    showGeneralDialog(
+      context: context,
+      barrierLabel: "Barrier",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.2),
+      transitionDuration: const Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return Center(
+          child: Container(
+            height: size.height * 0.5,
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Edit Task',
+                    style: TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: nameController,
+                    decoration: textInputDecor.copyWith(
+                      hintText: model.taskName ?? 'Task name',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: desController,
+                    decoration: textInputDecor.copyWith(
+                      hintText: model.description ?? 'Task Description',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeIn,
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: contoller.isEdittingTask == true
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: () {
+                              if (nameController.text == '' ||
+                                  desController.text == '') {
+                                return;
+                              } else {
+                                contoller.editTask(
+                                  taskName: nameController.text.trim(),
+                                  description: desController.text.trim(),
+                                  projectId: model.projectId ?? '',
+                                  taskAssignedBy: model.taskAssignedBy,
+                                  token: token,
+                                  userId: userId,
+                                  id: model.id,
+                                );
+                              }
+                            },
+                            child: const Text('Edit Task'),
+                          ),
+                  ),
+                ],
+              ),
+            ),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(40)),
+          ),
+        );
+      },
+      transitionBuilder: (_, anim, __, child) {
+        Tween<Offset> tween;
+        if (anim.status == AnimationStatus.reverse) {
+          tween = Tween(begin: const Offset(-1, 0), end: Offset.zero);
+        } else {
+          tween = Tween(begin: const Offset(1, 0), end: Offset.zero);
+        }
+
+        return SlideTransition(
+          position: tween.animate(anim),
+          child: FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
+        );
+      },
     );
   }
 }

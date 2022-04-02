@@ -31,7 +31,6 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AddNewDprViewModel>.reactive(
-      
       viewModelBuilder: () => AddNewDprViewModel(),
       builder: (context, model, child) {
         return Scaffold(
@@ -90,7 +89,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                     TextField(
                       controller: taskController,
                       decoration: textInputDecor.copyWith(
-                        hintText: 'Task ',
+                        hintText: 'Description',
                       ),
                     ),
                     const SizedBox(height: 20),

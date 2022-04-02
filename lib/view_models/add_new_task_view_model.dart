@@ -41,7 +41,8 @@ class AddTaskViewModel extends BaseViewModel {
           token: token,
           taskName: taskName,
           description: description,
-          taskAssignedBy: '8',
+          taskAssignedBy: userId.toString(),
+          projectId: projectId,
         );
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
@@ -51,9 +52,13 @@ class AddTaskViewModel extends BaseViewModel {
               messageColor: whiteColor,
             ));
             _snackbarService.showSnackbar(message: 'Task Added');
-            _navService.pushNamedAndRemoveUntil(
+            _navService.replaceWith(
               Routes.taskView,
-              arguments: TaskViewArguments(id: userId, token: token,projectId: projectId),
+              arguments: TaskViewArguments(
+                id: userId,
+                token: token,
+                projectId: projectId,
+              ),
             );
           } else {
             setBusy(false);
@@ -67,10 +72,10 @@ class AddTaskViewModel extends BaseViewModel {
         }
       } on Exception catch (e) {
         setBusy(false);
-         _snackbarService.registerSnackbarConfig(SnackbarConfig(
-              messageColor: whiteColor,
-            ));
-            _snackbarService.showSnackbar(message: e.toString());
+        _snackbarService.registerSnackbarConfig(SnackbarConfig(
+          messageColor: whiteColor,
+        ));
+        _snackbarService.showSnackbar(message: e.toString());
         return;
       }
     }

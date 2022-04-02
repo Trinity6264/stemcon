@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stemcon/models/dpr_list_model.dart';
+import 'package:stemcon/views/category/dpr/editting_dpr_view.dart';
 
 import '../../../utils/color/color_pallets.dart';
 import '../../../view_models/drp_view_model.dart';
@@ -58,33 +60,67 @@ class DprView extends StatelessWidget {
                               ),
                               itemBuilder: (context, index) {
                                 final data = model.datas[index];
-                                return SizedBox(
-                                  width: double.infinity,
-                                  height: _size.height * 0.1 + 40,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Task $index By . Darshan kasundra',
-                                          style: const TextStyle(
-                                            color: greyColor,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 5.0),
-                                          child: Text(
-                                            data.dprDescription ?? 'Empty',
-                                            style: const TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold,
+                                return GestureDetector(
+                                  onTap: () {
+                                    showCustomDialog(
+                                      context,
+                                      data,
+                                      token,
+                                      userId,
+                                    );
+                                  },
+                                  child: Dismissible(
+                                    key: Key(UniqueKey().toString()),
+                                    background: Container(
+                                      color: Colors.red,
+                                      alignment: Alignment.centerRight,
+                                      child: const Icon(
+                                        Icons.delete,
+                                        color: whiteColor,
+                                      ),
+                                    ),
+                                    direction: DismissDirection.endToStart,
+                                    onDismissed: (direction) {
+                                      if (direction ==
+                                          DismissDirection.endToStart) {
+                                        model.deleteDpr(
+                                          token: token,
+                                          userId: userId,
+                                          index: index,
+                                          id: data.id.toString(),
+                                        );
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: _size.height * 0.1 + 40,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Task $index By . Darshan kasundra',
+                                              style: const TextStyle(
+                                                color: greyColor,
+                                              ),
                                             ),
-                                          ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 5.0),
+                                              child: Text(
+                                                data.dprDescription ?? 'Empty',
+                                                style: const TextStyle(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 );
@@ -165,6 +201,40 @@ class DprView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void showCustomDialog(
+    BuildContext context,
+    DprListModel model,
+    int token,
+    int userId,
+  ) {
+    showGeneralDialog(
+      context: context,
+      barrierLabel: "Barrier",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.2),
+      transitionDuration: const Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return EdittingDprView(data: model, token: token, userId: userId);
+      },
+      transitionBuilder: (_, anim, __, child) {
+        Tween<Offset> tween;
+        if (anim.status == AnimationStatus.reverse) {
+          tween = Tween(begin: const Offset(1, 0), end: Offset.zero);
+        } else {
+          tween = Tween(begin: const Offset(1, 0), end: Offset.zero);
+        }
+
+        return SlideTransition(
+          position: tween.animate(anim),
+          child: FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
+        );
+      },
     );
   }
 }

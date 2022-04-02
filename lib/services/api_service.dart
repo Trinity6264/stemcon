@@ -182,12 +182,12 @@ class ApiService {
         lookupMimeType(projectPhotoPath?.path ?? '', headerBytes: [0xFF, 0xD8])!
             .split('/');
     final file = await http.MultipartFile.fromPath(
-       'project_photo',
+      'project_photo',
       projectPhotoPath?.path ?? '',
       contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
     );
 
-     imageUploadRequest.files.add(file);
+    imageUploadRequest.files.add(file);
     imageUploadRequest.fields['user_id'] = userId.toString();
     imageUploadRequest.fields['token'] = token.toString();
     imageUploadRequest.fields['project_name'] = projectName;
@@ -293,7 +293,6 @@ class ApiService {
     }
   }
 
-
   // edittask
 
 // TODO: Suggestion Apis
@@ -343,12 +342,12 @@ class ApiService {
   }
 
   // todo: add new task
-
   Future<http.Response> addNewTask({
     required int userId,
     required int token,
     required String taskName,
     required String description,
+    required String projectId,
     required String taskAssignedBy,
   }) async {
     final _data = {
@@ -358,8 +357,58 @@ class ApiService {
       'task_name': taskName,
       'task_assigned_by': taskAssignedBy,
       'task_status': 'active',
+      'project_id': projectId,
     };
     const String serverUrl = 'http://stemcon.likeview.in/api/task/add';
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(_data),
+    );
+    return response;
+  }
+
+  // edit task
+  Future<http.Response> editNewTask({
+    required String userId,
+    required String token,
+    required String id,
+    required String? taskName,
+    required String? projectId,
+    required String? description,
+    required String? taskAssignedBy,
+  }) async {
+    final _data = {
+      'user_id': userId,
+      'token': token,
+      'id': id,
+      'project_id': projectId,
+      'description': description,
+      'task_name': taskName,
+      'task_assigned_by': taskAssignedBy,
+      'task_status': 'active',
+    };
+    const String serverUrl = 'http://stemcon.likeview.in/api/task/edit';
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(_data),
+    );
+    return response;
+  }
+
+  // edit task
+  Future<http.Response> deleteTask({
+    required int userId,
+    required int token,
+    required String id,
+  }) async {
+    final _data = {
+      'user_id': userId,
+      'token': token,
+      'id': id,
+    };
+    const String serverUrl = 'http://stemcon.likeview.in/api/task/delete';
     final response = await http.post(
       Uri.parse(serverUrl),
       headers: {'Content-Type': 'application/json'},
@@ -424,6 +473,56 @@ class ApiService {
     imageUploadRequest.fields['project_id'] = projectId;
     final streamedResponse = await imageUploadRequest.send();
     final response = await http.Response.fromStream(streamedResponse);
+    return response;
+  }
+
+  //  edit dpr
+  Future<http.Response> editDpr({
+    required int userId,
+    required int token,
+    required String id,
+    required String? dprTime,
+    required File dprPdf,
+    required String? dprDescription,
+    required String? projectId,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/dpr/edit';
+    final imageUploadRequest = http.MultipartRequest(
+      'POST',
+      Uri.parse(serverUrl),
+    );
+    final mimeTypeData =
+        lookupMimeType(dprPdf.path, headerBytes: [0xFF, 0xD8])!.split('/');
+    final file = await http.MultipartFile.fromPath(
+      'dpr_pdf',
+      dprPdf.path,
+      contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
+    );
+    imageUploadRequest.files.add(file);
+    imageUploadRequest.fields['user_id'] = userId.toString();
+    imageUploadRequest.fields['token'] = token.toString();
+    imageUploadRequest.fields['dpr_time'] = dprTime!;
+    imageUploadRequest.fields['id'] = id;
+    imageUploadRequest.fields['dpr_description'] = dprDescription ?? '';
+    imageUploadRequest.fields['project_id'] = projectId!;
+    final streamedResponse = await imageUploadRequest.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    return response;
+  }
+
+  // delete suggestions
+  Future<http.Response> deleteDpr({
+    required int userId,
+    required int token,
+    required String id,
+  }) async {
+    final _data = {'user_id': userId, 'token': token, 'id': id};
+    const String serverUrl = 'http://stemcon.likeview.in/api/dpr/delete';
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(_data),
+    );
     return response;
   }
 

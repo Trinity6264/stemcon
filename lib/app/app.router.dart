@@ -198,6 +198,10 @@ class StackedRouter extends RouterBase {
           taskName: args.taskName,
           taskAssignedBy: args.taskAssignedBy,
           projectId: args.projectId,
+          state: args.state,
+          description: args.description,
+          taskStatus: args.taskStatus,
+          taskId: args.taskId,
         ),
         settings: data,
       );
@@ -392,13 +396,21 @@ class AddNewTaskViewArguments {
   final String taskName;
   final String taskAssignedBy;
   final String projectId;
+  final CheckingState state;
+  final String? description;
+  final String? taskStatus;
+  final String? taskId;
   AddNewTaskViewArguments(
       {this.key,
       required this.userId,
       required this.token,
       required this.taskName,
       required this.taskAssignedBy,
-      required this.projectId});
+      required this.projectId,
+      required this.state,
+      this.description,
+      this.taskStatus,
+      this.taskId});
 }
 
 /// selectedCatViews arguments holder class
