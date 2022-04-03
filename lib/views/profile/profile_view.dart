@@ -46,127 +46,140 @@ class ProfileView extends StatelessWidget with $ProfileView {
       },
       viewModelBuilder: () => AddProfileViewModel(),
       builder: (context, model, child) {
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: whiteColor,
-            elevation: 0,
-            title: const Text(
-              'Profile',
-              style: TextStyle(
-                color: blackColor,
-                fontWeight: FontWeight.bold,
+        return WillPopScope(
+          onWillPop: () async {
+            model.toDashBoard();
+            return true;
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: model.toDashBoard,
+                icon: const Icon(Icons.arrow_back),
+              ),
+              backgroundColor: whiteColor,
+              elevation: 0,
+              title: const Text(
+                'Profile',
+                style: TextStyle(
+                  color: blackColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          backgroundColor: whiteColor,
-          body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: _size.height * 0.1),
-                  GestureDetector(
-                    onTap: model.picImage,
-                    child: Container(
-                      width: _size.width * 0.5 - 20,
-                      height: _size.height * 0.2,
-                      child: model.profileImageUrl != null
-                          ? Container(
-                              width: double.infinity,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(7.0),
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      'http://stemcon.likeview.in/${model.profileImageUrl!}',
-                                  placeholder: (_, __) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
-                                  errorWidget: (_, __, ___) {
-                                    return SvgPicture.asset(
-                                      'assets/logo/undraw.svg',
-                                      height: _size.height * 0.2,
-                                    );
-                                  },
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7.0),
-                              ),
-                            )
-                          : model.imageSelected == null
-                              ? SvgPicture.asset(
-                                  'assets/logo/undraw.svg',
-                                  height: _size.height * 0.2,
-                                )
-                              : Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7.0),
-                                    image: DecorationImage(
-                                      image: FileImage(model.imageSelected!),
-                                      fit: BoxFit.fill,
-                                    ),
+            backgroundColor: whiteColor,
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: _size.height * 0.1),
+                    GestureDetector(
+                      onTap: model.picImage,
+                      child: Container(
+                        width: _size.width * 0.5 - 20,
+                        height: _size.height * 0.2,
+                        child: model.profileImageUrl != null &&
+                                model.imageSelected == null
+                            ? Container(
+                                width: double.infinity,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(7.0),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        'http://stemcon.likeview.in/${model.profileImageUrl!}',
+                                    placeholder: (_, __) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                    errorWidget: (_, __, ___) {
+                                      return SvgPicture.asset(
+                                        'assets/logo/undraw.svg',
+                                        height: _size.height * 0.2,
+                                      );
+                                    },
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: blackColor, width: 1.0),
-                        borderRadius: BorderRadius.circular(8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7.0),
+                                ),
+                              )
+                            : model.imageSelected == null
+                                ? SvgPicture.asset(
+                                    'assets/logo/undraw.svg',
+                                    height: _size.height * 0.2,
+                                  )
+                                : Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(7.0),
+                                      image: DecorationImage(
+                                        image: FileImage(model.imageSelected!),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: blackColor, width: 1.0),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    textInputAction: TextInputAction.next,
-                    controller: nameController,
-                    decoration: textInputDecor.copyWith(
-                      hintText: model.profileName ?? 'Enter name',
+                    const SizedBox(height: 20),
+                    TextField(
+                      textInputAction: TextInputAction.next,
+                      controller: nameController,
+                      decoration: textInputDecor.copyWith(
+                        hintText: model.profileName ?? 'Enter name',
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: postController,
-                    textInputAction: TextInputAction.next,
-                    decoration: textInputDecor.copyWith(
-                      hintText: model.profilePost ?? 'Enter post',
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: postController,
+                      textInputAction: TextInputAction.next,
+                      decoration: textInputDecor.copyWith(
+                        hintText: model.profilePost ?? 'Enter post',
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: numberController,
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.phone,
-                    decoration: textInputDecor.copyWith(
-                      hintText: model.profileNumber ?? 'Enter phone number',
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: numberController,
+                      focusNode: numberFocusNode,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.phone,
+                      decoration: textInputDecor.copyWith(
+                        hintText: model.profileNumber ?? 'Enter phone number',
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  model.isBusy
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              model.addProfile(
-                                token: token,
-                                userId: userId,
-                                name: nameController.text,
-                                post: postController.text,
-                                number: numberController.text,
-                              );
-                            },
-                            child: const Text('SUBMIT'),
+                    const SizedBox(height: 20),
+                    model.isBusy
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                numberFocusNode.unfocus();
+                                model.addProfile(
+                                  token: token,
+                                  userId: userId,
+                                  name: nameController.text,
+                                  post: postController.text,
+                                  number: numberController.text,
+                                );
+                              },
+                              child: const Text('SUBMIT'),
+                            ),
                           ),
-                        ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

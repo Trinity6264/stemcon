@@ -8,6 +8,7 @@ import 'package:stemcon/services/api_service.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 
 import '../app/app.locator.dart';
+import '../app/app.router.dart';
 import '../services/file_selector_service.dart';
 import '../services/shared_prefs_service.dart';
 
@@ -38,6 +39,7 @@ class AddProfileViewModel extends BaseViewModel {
     required int userId,
     required int token,
   }) async {
+    print('object');
     setBusy(true);
     final reponse = await _service.selectProfileDetails(
       userId: userId,
@@ -55,6 +57,12 @@ class AddProfileViewModel extends BaseViewModel {
     } else {
       throw 'data not found';
     }
+  }
+
+  void toDashBoard() {
+    _navService.replaceWith(
+      Routes.homeView,
+    );
   }
 
   Future<void> addProfile({
@@ -92,9 +100,13 @@ class AddProfileViewModel extends BaseViewModel {
         if (response.statusCode == 200) {
           setBusy(false);
           final data = jsonDecode(response.body);
-
           if (data['res_code'] == '1') {
             _prefService.savedUserPhotoId(data['res_data']['id']);
+            downloadUserInfo(
+              id: data['res_data']['id'].toString(),
+              userId: userId,
+              token: token,
+            );
             _snackService.registerSnackbarConfig(
               SnackbarConfig(
                 messageColor: whiteColor,

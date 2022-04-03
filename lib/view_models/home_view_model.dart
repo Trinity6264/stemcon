@@ -216,7 +216,7 @@ class HomeViewModel extends BaseViewModel {
     } else if (photoId == null &&
         userId != null &&
         authenticationToken != null) {
-      _navService.navigateTo(
+      _navService.replaceWith(
         Routes.profileView,
         arguments: ProfileViewArguments(
           token: authenticationToken!,
