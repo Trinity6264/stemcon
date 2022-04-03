@@ -24,6 +24,7 @@ class LoginView extends StatelessWidget with $LoginView {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AuthenticationViewModel>.reactive(
+      onDispose: (model) => disposeForm(),
       onModelReady: (model) => model.getSignature(),
       viewModelBuilder: () => AuthenticationViewModel(),
       builder: (context, model, child) {

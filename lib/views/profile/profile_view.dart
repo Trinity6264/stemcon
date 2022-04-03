@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -79,21 +77,24 @@ class ProfileView extends StatelessWidget with $ProfileView {
                       child: model.profileImageUrl != null
                           ? Container(
                               width: double.infinity,
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    'http://stemcon.likeview.in/${model.profileImageUrl!}',
-                                placeholder: (_, __) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                                errorWidget: (_, __, ___) {
-                                  return SvgPicture.asset(
-                                    'assets/logo/undraw.svg',
-                                    height: _size.height * 0.2,
-                                  );
-                                },
-                                fit: BoxFit.fill,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(7.0),
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      'http://stemcon.likeview.in/${model.profileImageUrl!}',
+                                  placeholder: (_, __) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                  errorWidget: (_, __, ___) {
+                                    return SvgPicture.asset(
+                                      'assets/logo/undraw.svg',
+                                      height: _size.height * 0.2,
+                                    );
+                                  },
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(7.0),

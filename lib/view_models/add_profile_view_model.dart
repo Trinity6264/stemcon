@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-
+import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/services/api_service.dart';
@@ -89,14 +89,11 @@ class AddProfileViewModel extends BaseViewModel {
           token: token,
           userId: userId,
         );
-        
-        
         if (response.statusCode == 200) {
           setBusy(false);
           final data = jsonDecode(response.body);
 
           if (data['res_code'] == '1') {
-            
             _prefService.savedUserPhotoId(data['res_data']['id']);
             _snackService.registerSnackbarConfig(
               SnackbarConfig(
@@ -114,13 +111,18 @@ class AddProfileViewModel extends BaseViewModel {
           _dialogService.showDialog(
             title: 'Error Occured',
             buttonTitle: 'Ok',
-            description: data,
+            description: data['res_mes'],
           );
           return;
         }
       } on SocketException catch (e) {
         setBusy(false);
-        
+        _dialogService.showDialog(
+          title: 'Error Occured',
+          buttonTitle: 'Ok',
+          description: 'Check your internet connection',
+        );
+        return;
       }
     }
   }

@@ -17,6 +17,9 @@ class HomeView extends StatelessWidget with $HomeView {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       viewModelBuilder: () => HomeViewModel(),
+      onDispose: (model) {
+        disposeForm();
+      },
       onModelReady: (model) async {
         await model.reload();
         await model.loadData(
@@ -74,6 +77,7 @@ class HomeView extends StatelessWidget with $HomeView {
                       IconButton(
                         onPressed: () {
                           model.changedToSerach();
+                          searchController.clear();
                           model.loadData(
                             userId: model.userId!,
                             token: model.authenticationToken!.toString(),
@@ -106,7 +110,7 @@ class HomeView extends StatelessWidget with $HomeView {
                       icon: const Icon(Icons.search, color: blackColor),
                       onPressed: () {
                         model.changedToSerach();
-                        
+
                         searchFocusNode.requestFocus();
                       },
                     ),

@@ -20,6 +20,9 @@ class CompanyCodeView extends StatelessWidget with $CompanyCodeView {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<StartUpViewModel>.reactive(
       viewModelBuilder: () => StartUpViewModel(),
+      onDispose: (model) {
+        disposeForm();
+      },
       builder: (context, model, child) {
         return Scaffold(
           backgroundColor: whiteColor,
