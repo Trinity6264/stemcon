@@ -27,7 +27,6 @@ class HomeView extends StatelessWidget with $HomeView {
         print(model.authenticationToken!.toString());
       },
       builder: (context, model, child) {
-        
         return Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -89,18 +88,13 @@ class HomeView extends StatelessWidget with $HomeView {
                   automaticallyImplyLeading: false,
                   title: Row(
                     children: [
-                      Image.asset(
-                        'assets/logo/roundlogo.jpg',
-                        height: 40,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
+                      Image.asset('assets/logo/roundlogo.jpg', height: 40),
+                      const SizedBox(width: 5),
                       Container(
                         padding: const EdgeInsets.all(0.0),
                         child: const Text(
                           'STEMCON',
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: blackColor),
                         ),
                       )
                     ],
@@ -109,17 +103,15 @@ class HomeView extends StatelessWidget with $HomeView {
                   elevation: 0,
                   actions: [
                     IconButton(
-                      icon: const Icon(
-                        Icons.search,
-                        color: Colors.black,
-                      ),
+                      icon: const Icon(Icons.search, color: blackColor),
                       onPressed: () {
                         model.changedToSerach();
+                        
                         searchFocusNode.requestFocus();
                       },
                     ),
                     PopupMenuButton(
-                        icon: const Icon(Icons.more_vert, color: Colors.black),
+                        icon: const Icon(Icons.more_vert, color: blackColor),
                         enableFeedback: true,
                         onSelected: (val) {
                           if (val == 2) {
@@ -158,9 +150,10 @@ class HomeView extends StatelessWidget with $HomeView {
                         child: Text(
                           model.errorMessage,
                           style: const TextStyle(
-                              color: blackColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16.0),
+                            color: blackColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.0,
+                          ),
                         ),
                       )
                     : ListView.builder(
@@ -178,8 +171,10 @@ class HomeView extends StatelessWidget with $HomeView {
                               elevation: 2,
                               children: [
                                 ExpansionPanel(
-                                  headerBuilder:
-                                      (BuildContext context, bool isExpanded) {
+                                  headerBuilder: (
+                                    BuildContext context,
+                                    bool isExpanded,
+                                  ) {
                                     return GestureDetector(
                                       onTap: () {
                                         model.toAddTaskView(data.id.toString());
@@ -395,22 +390,36 @@ class HomeView extends StatelessWidget with $HomeView {
                                                   model.toAddProjectView(
                                                     CheckingState.editting,
                                                     id: data.id,
-                                                    projectEnd: data.projectEndDate,
-                                                    projectName: data.projectName,
-                                                    projectPhotoPath: data.projectPhotoPath,
-                                                    projectStart: data.projectStartDate,
-                                                    projectAddress: data.projectAddress,
-                                                    projectAdmin: data.projectAdmin,
-                                                    projectCode: data.projectCode,
-                                                    projectEndTime: data.projectEndDate,
-                                                    projectKeyPoint: data.projectKeyPoint,
-                                                    projectManHour: data.projectManHour,
-                                                    projectPurpose: data.projectPurpose,
-                                                    projectStartTime: data.projectStartDate,
-                                                    projectStatus: data.projectStatus,
-                                                    projectUnit: data.projectUnit,
-                                                    projectTimeZone: data.projectTimezone,
-
+                                                    projectEnd:
+                                                        data.projectEndDate,
+                                                    projectName:
+                                                        data.projectName,
+                                                    projectPhotoPath:
+                                                        data.projectPhotoPath,
+                                                    projectStart:
+                                                        data.projectStartDate,
+                                                    projectAddress:
+                                                        data.projectAddress,
+                                                    projectAdmin:
+                                                        data.projectAdmin,
+                                                    projectCode:
+                                                        data.projectCode,
+                                                    projectEndTime:
+                                                        data.projectEndDate,
+                                                    projectKeyPoint:
+                                                        data.projectKeyPoint,
+                                                    projectManHour:
+                                                        data.projectManHour,
+                                                    projectPurpose:
+                                                        data.projectPurpose,
+                                                    projectStartTime:
+                                                        data.projectStartDate,
+                                                    projectStatus:
+                                                        data.projectStatus,
+                                                    projectUnit:
+                                                        data.projectUnit,
+                                                    projectTimeZone:
+                                                        data.projectTimezone,
                                                   );
                                                 },
                                                 icon: const Icon(

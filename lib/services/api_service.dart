@@ -115,6 +115,17 @@ class ApiService {
     return response;
   }
 
+  // confirm otp
+  Future<http.Response> cornfirmOtp({required ConfirmOtp cornfirmOtp}) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/matchOTP';
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: cornfirmOtp.toJson(),
+    );
+    return response;
+  }
+
   // Add project 1
   Future<Response> addProject1({
     required int userId,
@@ -166,12 +177,12 @@ class ApiService {
   Future<http.Response> editProject1({
     required int userId,
     required int token,
-    required String projectName,
     required String id,
-    required String projectCode,
+    required String? projectName,
+    required String? projectCode,
     required File? projectPhotoPath,
-    required String projectStartDate,
-    required String projectEndDate,
+    required String? projectStartDate,
+    required String? projectEndDate,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/project/editStep1';
     final imageUploadRequest = http.MultipartRequest(
@@ -183,18 +194,17 @@ class ApiService {
             .split('/');
     final file = await http.MultipartFile.fromPath(
       'project_photo',
-      projectPhotoPath?.path ?? '',
+      projectPhotoPath!.path,
       contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
     );
-
     imageUploadRequest.files.add(file);
     imageUploadRequest.fields['user_id'] = userId.toString();
     imageUploadRequest.fields['token'] = token.toString();
-    imageUploadRequest.fields['project_name'] = projectName;
     imageUploadRequest.fields['id'] = id;
-    imageUploadRequest.fields['project_code'] = projectCode;
-    imageUploadRequest.fields['project_start_date'] = projectStartDate;
-    imageUploadRequest.fields['project_end_date'] = projectEndDate;
+    imageUploadRequest.fields['project_name'] = projectName ?? '';
+    imageUploadRequest.fields['project_code'] = projectCode ?? '';
+    imageUploadRequest.fields['project_start_date'] = projectStartDate ?? '';
+    imageUploadRequest.fields['project_end_date'] = projectEndDate ?? '';
     final streamedResponse = await imageUploadRequest.send();
     final response = await http.Response.fromStream(streamedResponse);
     return response;
@@ -213,7 +223,7 @@ class ApiService {
     return response;
   }
 
-  // delete project 2
+  // delete project
   Future<http.Response> deleteProject({
     required DeleteProjectModel deleteContent,
   }) async {
@@ -222,17 +232,6 @@ class ApiService {
       Uri.parse(serverUrl),
       headers: {'Content-Type': 'application/json'},
       body: deleteContent.toJson(),
-    );
-    return response;
-  }
-
-// confirm otp
-  Future<http.Response> cornfirmOtp({required ConfirmOtp cornfirmOtp}) async {
-    const String serverUrl = 'http://stemcon.likeview.in/api/matchOTP';
-    final response = await http.post(
-      Uri.parse(serverUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: cornfirmOtp.toJson(),
     );
     return response;
   }
@@ -292,8 +291,6 @@ class ApiService {
       return [];
     }
   }
-
-  // edittask
 
 // TODO: Suggestion Apis
 //Get all suggestion
@@ -528,7 +525,7 @@ class ApiService {
 
   // TODO search
 
-  Future<List<ProjectListModel>> searchProject({
+  Future<http.Response> searchProject({
     required int userId,
     required String token,
     required String search,
@@ -540,19 +537,6 @@ class ApiService {
       headers: {'Content-Type': 'application/json'},
       body: json.encode(data),
     );
-
-    if (response.statusCode == 200) {
-      final datas = jsonDecode(response.body);
-      if (datas['res_code'] == '1') {
-        final List<dynamic> data = datas['res_data'];
-        return data.map((e) {
-          return ProjectListModel.fromJson(e);
-        }).toList();
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
+    return response;
   }
 }

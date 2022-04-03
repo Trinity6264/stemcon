@@ -8,7 +8,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked/stacked_annotations.dart';
+// import 'package:stacked/stacked_annotations.dart';
 
 import '../view_models/home_view_model.dart';
 import '../views/authentication/company_code_view.dart';

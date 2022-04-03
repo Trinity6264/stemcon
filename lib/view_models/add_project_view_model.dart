@@ -45,7 +45,6 @@ class AddProjectViewModel extends BaseViewModel {
   }
 
   // Edit project
-
   Future<void> editProject(
     CheckingState state, {
     String? projectName,
@@ -62,23 +61,23 @@ class AddProjectViewModel extends BaseViewModel {
     String? projectUnit,
     String? projectTimezone,
     File? image,
-    required int? token,
-    required int? userId,
+    required int token,
+    required int userId,
   }) async {
     try {
       setBusy(true);
       final _data = await _apiService.editProject1(
-        userId: userId!,
-        token: token!,
-        projectCode: projectCode!,
-        projectName: projectName!,
+        userId: userId,
+        token: token,
+        projectCode: projectCode,
+        projectName: projectName,
         projectPhotoPath: image,
-        projectStartDate: projectStartTime!,
-        projectEndDate: projectEndTime!,
+        projectStartDate: projectStartTime,
+        projectEndDate: projectEndTime,
         id: id.toString(),
       );
       setBusy(false);
-      print(_data.statusCode);
+
       if (_data.statusCode == 200) {
         final response = jsonDecode(_data.body);
         if (response['res_code'] == '1') {
@@ -91,25 +90,29 @@ class AddProjectViewModel extends BaseViewModel {
             state: CheckingState.editting,
             token: token,
             userId: userId,
-            adminStatus: projectAdmin,
-            projectAddress: projectAddress,
-            projectAdmin: projectAdmin,
-            projectCode: projectCode,
-            projectKeyPoint: projectKeyPoint,
-            projectManHour: projectManHour,
-            projectPurpose: projectPurpose,
-            projectStatus: projectStatus,
-            projectTimeZone: projectTimezone,
-            projectUnit: projectUnit,
+            adminStatus: projectAdmin ?? '',
+            projectAddress: projectAddress ?? '',
+            projectAdmin: projectAdmin ?? '',
+            projectCode: projectCode ?? '',
+            projectKeyPoint: projectKeyPoint ?? '',
+            projectManHour: projectManHour ?? '',
+            projectPurpose: projectPurpose ?? '',
+            projectStatus: projectStatus ?? '',
+            projectTimeZone: projectTimezone ?? '',
+            projectUnit: projectUnit ?? '',
           );
           return;
         } else {
           _dialogService.showDialog(
-              title: 'Error', description: response['res_message']);
+            title: 'Error',
+            description: response['res_message'],
+          );
         }
       } else {
         _dialogService.showDialog(
-            title: 'Error', description: 'Please try again');
+          title: 'Error',
+          description: 'Please try again',
+        );
       }
     } on HttpException catch (e) {
       _dialogService.showDialog(

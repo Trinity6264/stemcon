@@ -165,24 +165,48 @@ class HomeViewModel extends BaseViewModel {
   }
 
 // search
-  Future<void> searchDatas({
+  Future searchDatas({
     required int userId,
     required String token,
     required String value,
   }) async {
     setBusy(true);
-    final data = await _apiService.searchProject(
+    final response = await _apiService.searchProject(
       userId: userId,
       token: token,
       search: value,
     );
-    if (data.isNotEmpty) {
-      setBusy(false);
-      data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-      datas = data.reversed.toList();
+    if (response.statusCode == 200) {
+      final dat = jsonDecode(response.body);
+      if (dat['res_code'] == '1') {
+        final List<dynamic> data = dat['res_data'];
+        final dartobject =
+            data.map((e) => ProjectListModel.fromJson(e)).toList();
+        if (dartobject.isNotEmpty) {
+          setBusy(false);
+          dartobject.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+          datas = dartobject.reversed.toList();
+          return;
+        } else {
+          setBusy(false);
+          datas = [];
+          errorMessage = 'No Data Project found';
+          notifyListeners();
+          return;
+        }
+      } else {
+        setBusy(false);
+        datas = [];
+        errorMessage = 'No Data Project found';
+        notifyListeners();
+        return;
+      }
     } else {
       setBusy(false);
-      errorMessage = 'No Data Found\nPlease check your internet connectivity';
+      datas = [];
+      errorMessage = 'No Data Project found';
+      notifyListeners();
+      return;
     }
   }
 

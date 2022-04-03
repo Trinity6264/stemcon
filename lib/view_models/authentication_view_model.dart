@@ -35,7 +35,7 @@ class AuthenticationViewModel extends BaseViewModel {
     required String companyCode,
     required String number,
   }) async {
-    if (number == null || countryCode == null || appSignature == null) {
+    if (number == '' || countryCode == null || appSignature == null) {
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
         messageColor: whiteColor,
       ));

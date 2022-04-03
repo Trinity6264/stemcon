@@ -89,14 +89,14 @@ class AddProfileViewModel extends BaseViewModel {
           token: token,
           userId: userId,
         );
-        final data = jsonDecode(response.body);
-        print(data);
+        
+        
         if (response.statusCode == 200) {
           setBusy(false);
           final data = jsonDecode(response.body);
 
           if (data['res_code'] == '1') {
-            print(data['res_code']);
+            
             _prefService.savedUserPhotoId(data['res_data']['id']);
             _snackService.registerSnackbarConfig(
               SnackbarConfig(
@@ -120,7 +120,7 @@ class AddProfileViewModel extends BaseViewModel {
         }
       } on SocketException catch (e) {
         setBusy(false);
-        print(e.message);
+        
       }
     }
   }
