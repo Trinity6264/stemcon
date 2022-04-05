@@ -9,7 +9,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/services/file_selector_service.dart';
 
 import '../app/app.router.dart';
-import '../services/shared_prefs_service.dart';
+
 import '../utils/color/color_pallets.dart';
 
 class DprViewModel extends BaseViewModel {
@@ -18,7 +18,7 @@ class DprViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   final _snackbarService = locator<SnackbarService>();
   final _imagePicker = locator<FileSelectorService>();
-  final _prefService = locator<SharedPrefsservice>();
+  
 
   List<DprListModel> datas = [];
   String errorMessage = '';
@@ -51,11 +51,11 @@ class DprViewModel extends BaseViewModel {
     tok = token;
     setBusy(true);
     final data = await _apiService.fetchDprList(userId: userId, token: token);
+      setBusy(false);
     if (data.isNotEmpty) {
-      setBusy(false);
-      datas = data;
+      data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+      datas = data.reversed.toList();
     } else {
-      setBusy(false);
       datas = [];
       errorMessage = 'No Data Found\n Please check your internet connectivity';
       _snackbarService.registerSnackbarConfig(SnackbarConfig(

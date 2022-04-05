@@ -27,7 +27,8 @@ class TaskViewModel extends BaseViewModel {
     final data = await _apiService.fetchTask(userId: userId, token: token);
     if (data.isNotEmpty) {
       setBusy(false);
-      datas = data;
+      data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+      datas = data.reversed.toList();
     } else {
       setBusy(false);
       errorMessage = 'No Data Found\n Please check your internet connectivity';

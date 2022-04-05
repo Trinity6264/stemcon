@@ -107,6 +107,7 @@ class AddProfileViewModel extends BaseViewModel {
               userId: userId,
               token: token,
             );
+            toDashBoard();
             _snackService.registerSnackbarConfig(
               SnackbarConfig(
                 messageColor: whiteColor,
@@ -115,7 +116,6 @@ class AddProfileViewModel extends BaseViewModel {
             _snackService.showSnackbar(
               message: 'Profile Added!',
             );
-            _navService.back();
           }
         } else {
           setBusy(false);
