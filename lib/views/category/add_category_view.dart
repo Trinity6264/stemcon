@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stemcon/shared/shared_button.dart';
 
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
@@ -96,79 +97,86 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
                             ? const Center(
                                 child: CircularProgressIndicator(),
                               )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: model.datas.length,
-                                itemBuilder: (context, index) {
-                                  final data = model.datas[index];
-                                  return GestureDetector(
-                                    onTap: () {
-                                      model.toAddTaskView(
-                                        userId: userId!,
-                                        token: token!,
-                                        taskName: data.suggestionTaskName!,
-                                        index: indes!,
-                                        projectId: projectId!,
-                                      );
-                                    },
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      height: _size.height * 0.1 + 20,
-                                      child: Card(
-                                        shadowColor: greyColor,
-                                        elevation: 3.0,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                data.suggestionTaskName!,
-                                                style: const TextStyle(
-                                                  color: blackColor,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 16.0,
-                                                ),
-                                              ),
-                                              Row(
+                            : SizedBox(
+                                height: _size.height * 0.5 + 40,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: model.datas.length,
+                                    itemBuilder: (context, index) {
+                                      final data = model.datas[index];
+                                      return GestureDetector(
+                                        onTap: () {
+                                          model.toAddTaskView(
+                                            userId: userId!,
+                                            token: token!,
+                                            taskName: data.suggestionTaskName!,
+                                            index: indes!,
+                                            projectId: projectId!,
+                                          );
+                                        },
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          height: _size.height * 0.1 + 20,
+                                          child: Card(
+                                            shadowColor: greyColor,
+                                            elevation: 3.0,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  icnBtn(
-                                                    icon: const Icon(
-                                                      Icons.delete_outlined,
+                                                  Text(
+                                                    data.suggestionTaskName!,
+                                                    style: const TextStyle(
+                                                      color: blackColor,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 16.0,
                                                     ),
-                                                    onPressed: () {
-                                                      model.deleteData(
-                                                        userId: userId!,
-                                                        token: token!,
-                                                        id: data.id!,
-                                                        message: data
-                                                            .suggestionTaskName!,
-                                                      );
-                                                    },
                                                   ),
-                                                  icnBtn(
-                                                    icon: const Icon(
-                                                      Icons.edit_outlined,
-                                                    ),
-                                                    onPressed: () {},
+                                                  Row(
+                                                    children: [
+                                                      icnBtn(
+                                                        icon: const Icon(
+                                                          Icons.delete_outlined,
+                                                        ),
+                                                        onPressed: () {
+                                                          model.deleteData(
+                                                            userId: userId!,
+                                                            token: token!,
+                                                            id: data.id!,
+                                                            message: data
+                                                                .suggestionTaskName!,
+                                                          );
+                                                        },
+                                                      ),
+                                                      icnBtn(
+                                                        icon: const Icon(
+                                                          Icons.edit_outlined,
+                                                        ),
+                                                        onPressed: () {},
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                }),
+                                      );
+                                    }),
+                              ),
                   ],
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    child: SharedButton(
+                      title: 'Next',
                       onPressed: () {
                         model.toAddTaskView(
                             userId: userId!,
@@ -177,10 +185,6 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
                             index: indes!,
                             projectId: projectId!);
                       },
-                      style: ElevatedButton.styleFrom(
-                        primary: primaryColor,
-                      ),
-                      child: const Text('Next'),
                     ),
                   ),
                 ),

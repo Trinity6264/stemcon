@@ -91,9 +91,11 @@ class DprView extends StatelessWidget {
                                         );
                                       }
                                     },
-                                    child: SizedBox(
+                                    child: Container(
+                                      color: greyColor.withOpacity(0.2),
+                                      margin: const EdgeInsets.only(bottom: 5),
                                       width: double.infinity,
-                                      height: _size.height * 0.1 + 40,
+                                      height: (_size.height * 0.1) + 5,
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Column(
@@ -101,9 +103,12 @@ class DprView extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'Task $index By . Darshan kasundra',
-                                              style: const TextStyle(
-                                                color: greyColor,
+                                              'Task ${index + 1} By . Darshan kasundra',
+                                              style: TextStyle(
+                                                color: blackColor.withOpacity(
+                                                  0.4,
+                                                ),
+                                                fontWeight: FontWeight.w800,
                                               ),
                                             ),
                                             Padding(

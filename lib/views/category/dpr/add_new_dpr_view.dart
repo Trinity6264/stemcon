@@ -157,7 +157,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     model.isBusy
                         ? const Center(
                             child: CircularProgressIndicator(),
