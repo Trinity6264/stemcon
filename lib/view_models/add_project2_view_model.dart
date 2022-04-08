@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:stacked/stacked.dart';
@@ -18,6 +18,7 @@ class NewProjectViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
 
   String selectedTimeZone = '';
+  List<Contact> listOfContact = [];
 
   List<String> listOfselectedTimeZone = [];
 
@@ -51,8 +52,14 @@ class NewProjectViewModel extends BaseViewModel {
     List.generate(12, (index) => manWorkingHour.add(index));
   }
 
+  void gettingSelectedNumber(List<Contact> value) {
+    listOfContact = value;
+    notifyListeners();
+  }
+
   void onChangedUnit(String? value) {
     unit = value!;
+    debugPrint(listOfContact.toString());
     notifyListeners();
   }
   //
@@ -70,6 +77,20 @@ class NewProjectViewModel extends BaseViewModel {
     manHour = selected;
     notifyListeners();
   }
+
+  // Start contact implemtation
+
+  void selectContact(Contact contact) {
+    if (listOfContact.contains(contact)) {
+      listOfContact.removeWhere((element) => element == contact);
+      notifyListeners();
+    } else {
+      listOfContact.add(contact);
+      notifyListeners();
+    }
+  }
+
+  // End contact implemtation
 
   // Add project2
   Future<void> submitData({
@@ -94,6 +115,12 @@ class NewProjectViewModel extends BaseViewModel {
       ));
       _snackbarService.showSnackbar(message: 'Entry can\'t be empty');
       return;
+    } else if (listOfContact.isEmpty) {
+      _snackbarService.registerSnackbarConfig(SnackbarConfig(
+        messageColor: whiteColor,
+      ));
+      _snackbarService.showSnackbar(message: 'Add at least one member');
+      return;
     } else {
       setBusy(true);
       final projectContent = AddProject2Model(
@@ -114,6 +141,24 @@ class NewProjectViewModel extends BaseViewModel {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['res_code'] == '1') {
+          for (Contact item in listOfContact) {
+            final res = await _apiService.addMember(
+              projectId: id.toString(),
+              memberName: item.displayName ?? 'No name',
+              memberMobileNumber: item.phones!.isEmpty
+                  ? 'none'
+                  : item.phones?.elementAt(0).value ?? '',
+              token: token.toString(),
+              userId: userId.toString(),
+            );
+            if (res.statusCode == 200) {
+              _snackbarService.registerSnackbarConfig(SnackbarConfig(
+                messageColor: whiteColor,
+              ));
+              _snackbarService.showSnackbar(
+                  message: 'Members add successfully');
+            }
+          }
           setBusy(false);
           _snackbarService.registerSnackbarConfig(SnackbarConfig(
             messageColor: whiteColor,
@@ -188,7 +233,7 @@ class NewProjectViewModel extends BaseViewModel {
         ));
         _snackbarService.showSnackbar(message: 'Error occurred!');
       }
-    }on HttpException catch (e) {
+    } on HttpException catch (e) {
       _dialogService.showDialog(
         title: 'Error',
         description: e.message,

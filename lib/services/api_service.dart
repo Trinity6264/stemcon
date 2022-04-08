@@ -126,6 +126,32 @@ class ApiService {
     return response;
   }
 
+  // add members to project
+
+  Future<http.Response> addMember({
+    required String projectId,
+    required String memberName,
+    required String memberMobileNumber,
+    required String token,
+    required String userId,
+  }) async {
+    const String serverUrl =
+        'http://stemcon.likeview.in/api/project/addProjectStep3';
+    final content = {
+      'project_id':projectId,
+      'member_name': memberName,
+      'member_mobile_number': memberMobileNumber,
+      'token':token,
+      'user_id': userId,
+    };
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(content),
+    );
+    return response;
+  }
+
   // Add project 1
   Future<Response> addProject1({
     required int userId,

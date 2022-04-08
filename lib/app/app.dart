@@ -1,3 +1,4 @@
+import 'package:stemcon/services/contact_pick_service.dart';
 import 'package:stemcon/views/category/add_category_view.dart';
 import 'package:stemcon/views/category/dpr/dpr_view.dart';
 import 'package:stemcon/views/category/selected_cat_view.dart';
@@ -44,5 +45,6 @@ import '../views/profile/profile_view.dart';
   LazySingleton<ApiService>(classType: ApiService),
   LazySingleton<SharedPrefsservice>(classType: SharedPrefsservice),
   LazySingleton<FileSelectorService>(classType: FileSelectorService),
+  LazySingleton<ContactPickService>(classType: ContactPickService),
 ])
 class App {}

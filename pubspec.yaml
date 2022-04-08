@@ -39,6 +39,7 @@ dependencies:
   sms_autofill: ^2.2.0
   contacts_service: ^0.6.3
   cached_network_image: ^3.2.0
+  permission_handler: ^9.2.0
 
 
   # The following adds the Cupertino Icons font to your application.

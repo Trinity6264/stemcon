@@ -1,3 +1,4 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -7,6 +8,7 @@ import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/add_project2_view_model.dart';
 import 'package:stemcon/views/projects/add_project2_view.form.dart';
+import 'package:stemcon/views/projects/selectable_widget.dart';
 
 import '../../view_models/home_view_model.dart';
 
@@ -49,6 +51,15 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
     this.projectTimeZone,
   }) : super(key: key);
 
+  static final List<Color> _colors = [
+    Colors.blue,
+    Colors.green,
+    Colors.red,
+    Colors.yellow,
+    Colors.indigo,
+    Colors.brown,
+  ];
+
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
@@ -79,131 +90,252 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
               ),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  titleWidget(text: 'Work unit'),
-                  Row(
+          body: Stack(
+            children: [
+              SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: RadioListTile(
-                          groupValue: isEditting &&
-                                  projectUnit != null &&
-                                  model.unit == ''
-                              ? projectUnit
-                              : model.unit,
-                          value: 'MM',
-                          title: const Text("MM"),
-                          onChanged: model.onChangedUnit,
+                      titleWidget(text: 'Work unit'),
+                      Row(
+                        children: [
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: RadioListTile(
+                              groupValue: isEditting &&
+                                      projectUnit != null &&
+                                      model.unit == ''
+                                  ? projectUnit
+                                  : model.unit,
+                              value: 'MM',
+                              title: const Text("MM"),
+                              onChanged: model.onChangedUnit,
+                            ),
+                          ),
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: RadioListTile(
+                              groupValue: isEditting &&
+                                      projectUnit != null &&
+                                      model.unit == ''
+                                  ? projectUnit
+                                  : model.unit,
+                              value: 'Ft',
+                              title: const Text("Ft"),
+                              onChanged: model.onChangedUnit,
+                            ),
+                          ),
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: RadioListTile(
+                              groupValue: isEditting &&
+                                      projectUnit != null &&
+                                      model.unit == ''
+                                  ? projectUnit
+                                  : model.unit,
+                              value: 'CM',
+                              title: const Text("CM"),
+                              onChanged: model.onChangedUnit,
+                            ),
+                          ),
+                        ],
+                      ),
+                      titleWidget(text: 'Man Working Hour'),
+                      Container(
+                        width: double.infinity,
+                        height: _size.height * 0.2 / 2.3,
+                        padding: const EdgeInsets.only(left: 10.0),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(color: blackColor, width: 1.2),
+                        ),
+                        child: DropdownButtonFormField(
+                          items: model.manWorkingHour
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e.toString(),
+                                  child: Text(e.toString()),
+                                ),
+                              )
+                              .toList(),
+                          hint: Text(
+                            isEditting &&
+                                    model.manHour == '' &&
+                                    projectManHour != null
+                                ? projectManHour!
+                                : model.manHour,
+                          ),
+                          onChanged: model.onChangedManHour,
                         ),
                       ),
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: RadioListTile(
-                          groupValue: isEditting &&
-                                  projectUnit != null &&
-                                  model.unit == ''
-                              ? projectUnit
-                              : model.unit,
-                          value: 'Ft',
-                          title: const Text("Ft"),
-                          onChanged: model.onChangedUnit,
+                      titleWidget(text: 'Purpose Of Project'),
+                      TextField(
+                        controller: purposeController,
+                        decoration: textInputDecor.copyWith(
+                            hintText: projectPurpose ?? 'Resudance'),
+                      ),
+                      titleWidget(text: 'Time Zone'),
+                      Container(
+                        width: double.infinity,
+                        height: _size.height * 0.2 / 2.3,
+                        padding: const EdgeInsets.only(left: 10.0),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          border: Border.all(color: blackColor, width: 1.2),
+                        ),
+                        child: DropdownButtonFormField(
+                          items: model.listOfselectedTimeZone
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e),
+                                ),
+                              )
+                              .toList(),
+                          // todo: time
+                          hint: Text(projectTimeZone ?? model.selectedTimeZone),
+                          value: model.selectedTimeZone,
+                          onChanged: model.onChangedTime,
                         ),
                       ),
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: RadioListTile(
-                          groupValue: isEditting &&
-                                  projectUnit != null &&
-                                  model.unit == ''
-                              ? projectUnit
-                              : model.unit,
-                          value: 'CM',
-                          title: const Text("CM"),
-                          onChanged: model.onChangedUnit,
+                      titleWidget(text: 'Key Points'),
+                      TextField(
+                        controller: keyPointsController,
+                        decoration: textInputDecor.copyWith(
+                            hintText: projectKeyPoint ?? 'Points'),
+                      ),
+                      titleWidget(text: 'Address'),
+                      TextField(
+                        controller: addressController,
+                        decoration: textInputDecor.copyWith(
+                            hintText: projectAddress ?? 'Address'),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Member List',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return SelectableWidget(onChnaged: (value) {
+                                      model.gettingSelectedNumber(value);
+                                    });
+                                  },
+                                );
+                              },
+                              child: const Text(
+                                'ADD MEMBER',
+                                style: TextStyle(
+                                  fontSize: 16.5,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                primary: Colors.red,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      model.listOfContact.isEmpty
+                          ? const SizedBox.shrink()
+                          : Column(
+                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: model.listOfContact
+                                  .map(
+                                    (e) => SizedBox(
+                                      width: double.infinity,
+                                      height: _size.height * 0.1,
+                                      child: Card(
+                                        shadowColor: greyColor,
+                                        elevation: 3.0,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 20,
+                                            top: 2,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Text(
+                                                'Contractor ',
+                                                style: TextStyle(
+                                                  color: greyColor,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    e.displayName!,
+                                                    style: const TextStyle(
+                                                      color: blackColor,
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontSize: 18.0,
+                                                    ),
+                                                  ),
+                                                  const Icon(
+                                                    Icons.arrow_right,
+                                                    color: blackColor,
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                e.phones!.isEmpty
+                                                    ? 'none'
+                                                    : e.phones
+                                                            ?.elementAt(0)
+                                                            .value ??
+                                                        '',
+                                                style: const TextStyle(
+                                                  color: primaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                      SizedBox(height: _size.height * 0.1),
                     ],
                   ),
-                  titleWidget(text: 'Man Working Hour'),
-                  Container(
-                    width: double.infinity,
-                    height: _size.height * 0.2 / 2.3,
-                    padding: const EdgeInsets.only(left: 10.0),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(color: blackColor, width: 1.2),
-                    ),
-                    child: DropdownButtonFormField(
-                      items: model.manWorkingHour
-                          .map(
-                            (e) => DropdownMenuItem(
-                              value: e.toString(),
-                              child: Text(e.toString()),
-                            ),
-                          )
-                          .toList(),
-                      hint: Text(
-                        isEditting &&
-                                model.manHour == '' &&
-                                projectManHour != null
-                            ? projectManHour!
-                            : model.manHour,
-                      ),
-                      onChanged: model.onChangedManHour,
-                    ),
-                  ),
-                  titleWidget(text: 'Purpose Of Project'),
-                  TextField(
-                    controller: purposeController,
-                    decoration: textInputDecor.copyWith(
-                        hintText: projectPurpose ?? 'Resudance'),
-                  ),
-                  titleWidget(text: 'Time Zone'),
-                  Container(
-                    width: double.infinity,
-                    height: _size.height * 0.2 / 2.3,
-                    padding: const EdgeInsets.only(left: 10.0),
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      border: Border.all(color: blackColor, width: 1.2),
-                    ),
-                    child: DropdownButtonFormField(
-                      items: model.listOfselectedTimeZone
-                          .map(
-                            (e) => DropdownMenuItem(
-                              value: e,
-                              child: Text(e),
-                            ),
-                          )
-                          .toList(),
-                      // todo: time
-                      hint: Text(projectTimeZone ?? model.selectedTimeZone),
-                      value: model.selectedTimeZone,
-                      onChanged: model.onChangedTime,
-                    ),
-                  ),
-                  titleWidget(text: 'Key Points'),
-                  TextField(
-                    controller: keyPointsController,
-                    decoration: textInputDecor.copyWith(
-                        hintText: projectKeyPoint ?? 'Points'),
-                  ),
-                  titleWidget(text: 'Address'),
-                  TextField(
-                    controller: addressController,
-                    decoration: textInputDecor.copyWith(
-                        hintText: projectAddress ?? 'Address'),
-                  ),
-                  const SizedBox(height: 20),
-                  model.isBusy
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  height: 80,
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: model.isBusy
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
@@ -247,10 +379,10 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                                 address: addressController.text.trim(),
                               );
                             }
-                          })
-                ],
+                          }),
+                ),
               ),
-            ),
+            ],
           ),
         );
       },

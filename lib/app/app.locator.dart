@@ -11,6 +11,7 @@ import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../services/api_service.dart';
+import '../services/contact_pick_service.dart';
 import '../services/file_selector_service.dart';
 import '../services/shared_prefs_service.dart';
 
@@ -29,4 +30,5 @@ void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
   locator.registerLazySingleton(() => ApiService());
   locator.registerLazySingleton(() => SharedPrefsservice());
   locator.registerLazySingleton(() => FileSelectorService());
+  locator.registerLazySingleton(() => ContactPickService());
 }

@@ -92,38 +92,39 @@ class DprView extends StatelessWidget {
                                       }
                                     },
                                     child: Container(
-                                      color: greyColor.withOpacity(0.2),
                                       margin: const EdgeInsets.only(bottom: 5),
                                       width: double.infinity,
                                       height: (_size.height * 0.1) + 5,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Task ${index + 1} By . Darshan kasundra',
-                                              style: TextStyle(
-                                                color: blackColor.withOpacity(
-                                                  0.4,
-                                                ),
-                                                fontWeight: FontWeight.w800,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 5.0),
-                                              child: Text(
-                                                data.dprDescription ?? 'Empty',
+                                      child: Card(
+                                        // color: greyColor.withOpacity(0.2),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Task ${index + 1} By . Darshan kasundra',
                                                 style: const TextStyle(
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.bold,
+                                                  color: primaryColor,
+                                                  fontWeight: FontWeight.w800,
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 5.0),
+                                                child: Text(
+                                                  data.dprDescription ??
+                                                      'Empty',
+                                                  style: const TextStyle(
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
