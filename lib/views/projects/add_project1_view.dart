@@ -76,7 +76,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
               'Add Project',
               style: TextStyle(
                 color: blackColor,
-                fontSize: 20.0,
+                fontSize: 18.0,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -86,6 +86,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
                     onTap: () {
@@ -164,43 +165,66 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                     title: 'Project Code',
                     controller: projectCodeController,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Flexible(
-                        child: SizedBox(
-                          child: ElevatedButton(
-                            onPressed: () =>
-                                startDate(context: context, model: model),
-                            child: Text(
-                              isEditting &&
-                                      projectStartTime != null &&
-                                      model.startDate == null
-                                  ? projectStartTime!
-                                  : model.startDate ?? "Start Date",
-                            ),
-                          ),
+                  const Text('Start Date'),
+                  const SizedBox(height: 10.0),
+                  GestureDetector(
+                    onTap: () => startDate(context: context, model: model),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      width: double.infinity,
+                      height: _size.height * 0.1 / 1.4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: greyColor,
                         ),
                       ),
-                      const SizedBox(width: 5.0),
-                      Flexible(
-                        child: SizedBox(
-                          child: ElevatedButton(
-                            onPressed: () =>
-                                endDate(context: context, model: model),
-                            child: Text(
-                              isEditting &&
-                                      projectEndTime != null &&
-                                      model.endDate == null
-                                  ? projectEndTime!
-                                  : model.endDate ?? "End Date",
-                            ),
-                          ),
+                      child: Text(
+                        isEditting &&
+                                projectStartTime != null &&
+                                model.startDate == null
+                            ? projectStartTime!
+                            : model.startDate ?? "2022-05-01",
+                        style: const TextStyle(
+                          color: greyColor,
                         ),
                       ),
-                    ],
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 40.0),
+                  const Text('End Date'),
+                  const SizedBox(height: 10.0),
+                  GestureDetector(
+                    onTap: () => endDate(context: context, model: model),
+                    child: Container(
+                      width: double.infinity,
+                      height: _size.height * 0.1 / 1.4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: greyColor,
+                        ),
+                      ),
+                      child: Text(
+                        isEditting &&
+                                projectEndTime != null &&
+                                model.endDate == null
+                            ? projectEndTime!
+                            : model.endDate ?? "2024-06-01",
+                        style: const TextStyle(
+                          color: greyColor,
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
                   model.isBusy
                       ? const Center(
                           child: CircularProgressIndicator(),
@@ -218,10 +242,15 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                                 userId: userId,
                                 id: id,
                                 projectEndTime: model.endDate ?? projectEndTime,
-                                projectStartTime: model.startDate ?? projectStartTime,
-                                projectCode: projectCodeController.text == '' ? projectCode:projectCodeController.text,
+                                projectStartTime:
+                                    model.startDate ?? projectStartTime,
+                                projectCode: projectCodeController.text == ''
+                                    ? projectCode
+                                    : projectCodeController.text,
                                 projectAddress: projectAddress,
-                                projectName: projectNameController.text == '' ? projectname:projectNameController.text,
+                                projectName: projectNameController.text == ''
+                                    ? projectname
+                                    : projectNameController.text,
                                 projectAdmin: projectAdmin,
                                 projectKeyPoint: projectKeyPoint,
                                 projectManHour: projectManHour,
@@ -241,6 +270,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                             }
                           },
                         ),
+                  const SizedBox(height: 20.0),
                 ],
               ),
             ),

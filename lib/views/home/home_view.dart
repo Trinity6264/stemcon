@@ -98,7 +98,10 @@ class HomeView extends StatelessWidget with $HomeView {
                         padding: const EdgeInsets.all(0.0),
                         child: const Text(
                           'STEMCON',
-                          style: TextStyle(color: blackColor),
+                          style: TextStyle(
+                            color: blackColor,
+                            fontSize: 18.0,
+                          ),
                         ),
                       )
                     ],

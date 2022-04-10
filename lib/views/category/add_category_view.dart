@@ -95,7 +95,7 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
                           )
                         : !model.isBusy && model.datas.isEmpty
                             ? const Center(
-                                child: CircularProgressIndicator(),
+                                child: Text('No suggestions found'),
                               )
                             : SizedBox(
                                 height: _size.height * 0.5 + 40,
@@ -116,7 +116,7 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
                                         },
                                         child: SizedBox(
                                           width: double.infinity,
-                                          height: _size.height * 0.1 + 20,
+                                          height: _size.height * 0.1,
                                           child: Card(
                                             shadowColor: greyColor,
                                             elevation: 3.0,

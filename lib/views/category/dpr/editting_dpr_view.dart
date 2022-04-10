@@ -52,7 +52,7 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
                       style: TextStyle(
                         color: blackColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
                     const SizedBox(height: 20),

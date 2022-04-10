@@ -51,7 +51,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                 'SELECTED WORK CATEGORY',
                 style: TextStyle(
                   color: greyColor,
-                  fontSize: 14,
+                  fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
               ),

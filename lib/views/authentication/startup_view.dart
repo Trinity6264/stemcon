@@ -9,7 +9,7 @@ class StartUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size _size = MediaQuery.of(context).size;
+    // Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<StartUpViewModel>.nonReactive(
       onModelReady: (model) => model.toCompanyView(),
       viewModelBuilder: () => StartUpViewModel(),

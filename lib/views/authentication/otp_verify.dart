@@ -176,6 +176,7 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
           'OTP Verification',
           style: TextStyle(
             color: blackColor,
+            fontSize: 18.0,
             fontWeight: FontWeight.w700,
           ),
         ),

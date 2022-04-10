@@ -87,6 +87,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
               style: const TextStyle(
                 color: blackColor,
                 fontWeight: FontWeight.w600,
+                fontSize: 18.0,
               ),
             ),
           ),
@@ -257,7 +258,6 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                       model.listOfContact.isEmpty
                           ? const SizedBox.shrink()
                           : Column(
-                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: model.listOfContact
                                   .map(
                                     (e) => SizedBox(

@@ -42,7 +42,7 @@ class TaskView extends StatelessWidget with $TaskView {
               "GOKUL MATHURA",
               style: TextStyle(
                 color: blackColor,
-                fontSize: 24.0,
+                fontSize: 18.0,
                 fontWeight: FontWeight.w500,
               ),
             ),

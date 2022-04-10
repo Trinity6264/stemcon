@@ -9,6 +9,7 @@ final textInputDecor = InputDecoration(
     borderRadius: BorderRadius.circular(10.0),
     borderSide: const BorderSide(
       width: 1.0,
+      color: greyColor,
     ),
   ),
   filled: true,
@@ -16,7 +17,7 @@ final textInputDecor = InputDecoration(
     borderRadius: BorderRadius.circular(10.0),
     borderSide: const BorderSide(
       width: 1.0,
-      color: primaryColor,
+      color: greyColor,
     ),
   ),
 );
