@@ -21,7 +21,7 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
     required this.userId,
     required this.token,
     required this.indes,
-    this.projectId,
+    required this.projectId,
   }) : super(key: key);
 
   @override

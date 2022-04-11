@@ -8,6 +8,8 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/services/api_service.dart';
 import 'package:stemcon/services/shared_prefs_service.dart';
 import 'package:stemcon/services/file_selector_service.dart';
+import 'package:stemcon/views/category/wrapper/dpr_wrapper_view.dart';
+import 'package:stemcon/views/category/wrapper/task_wrapper_view.dart';
 import 'package:stemcon/views/projects/add_project1_view.dart';
 import 'package:stemcon/views/authentication/company_code_view.dart';
 import 'package:stemcon/views/home/home_view.dart';
@@ -26,13 +28,24 @@ import '../views/profile/profile_view.dart';
   MaterialRoute(page: LoginView),
   MaterialRoute(page: HomeView),
   MaterialRoute(page: AddProjectView),
-  MaterialRoute(page: TaskView),
   MaterialRoute(page: AddProject2View),
-  MaterialRoute(page: AddCategoryView),
-  MaterialRoute(page: AddNewTaskView),
+  MaterialRoute(
+    page: DprWrapper,
+    children: [
+      MaterialRoute(page: DprView, initial: true),
+      MaterialRoute(page: AddCategoryView),
+      MaterialRoute(page: AddNewDprView),
+    ],
+  ),
+  MaterialRoute(
+    page: TaskWrapperView,
+    children: [
+      MaterialRoute(page: TaskView, initial: true),
+      MaterialRoute(page: AddCategoryView),
+      MaterialRoute(page: AddNewTaskView),
+    ],
+  ),
   MaterialRoute(page: selectedCatViews),
-  MaterialRoute(page: AddNewDprView),
-  MaterialRoute(page: DprView),
   MaterialRoute(page: ProfileView),
 ], dependencies: [
 // local services

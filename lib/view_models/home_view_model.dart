@@ -154,13 +154,9 @@ class HomeViewModel extends BaseViewModel {
 
   void toAddTaskView(String projectId) {
     if (userId == null || authenticationToken == null) return;
+    _prefService.savedProjectId(projectId);
     _navService.navigateTo(
       Routes.selectedCatViews,
-      arguments: selectedCatViewsArguments(
-        userId: userId!,
-        token: authenticationToken!,
-        projectId: projectId,
-      ),
     );
   }
 

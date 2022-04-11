@@ -95,7 +95,8 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
     
     index == 0
         ? _navService.navigateTo(
-            Routes.addNewTaskView,
+          
+            TaskWrapperViewRoutes.addNewTaskView,
             arguments: AddNewTaskViewArguments(
               userId: userId,
               token: token,
@@ -104,15 +105,17 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
               projectId: projectId,
               state: CheckingState.adding,
             ),
+            id:1,
           )
         : _navService.navigateTo(
-            Routes.addNewDprView,
+            DprWrapperRoutes.addNewDprView,
             arguments: AddNewDprViewArguments(
               userId: userId,
               token: token,
               taskName: taskName,
               projectId:projectId, 
             ),
+            id:2,
           );
   }
 }

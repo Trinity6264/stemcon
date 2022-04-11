@@ -15,14 +15,8 @@ import '../../../models/add_task_model.dart';
   FormTextField(name: 'description'),
 ])
 class TaskView extends StatelessWidget with $TaskView {
-  final int id;
-  final int token;
-  final String projectId;
   TaskView({
     Key? key,
-    required this.id,
-    required this.token,
-    required this.projectId,
   }) : super(key: key);
 
   @override
@@ -30,7 +24,8 @@ class TaskView extends StatelessWidget with $TaskView {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<TaskViewModel>.reactive(
       onModelReady: (model) {
-        model.loadData(userId: id, token: token);
+        model.loadData();
+        print(model.projectId);
       },
       viewModelBuilder: () => TaskViewModel(),
       builder: (context, model, child) {
@@ -69,8 +64,7 @@ class TaskView extends StatelessWidget with $TaskView {
                               ),
                               itemBuilder: (context, index) {
                                 final data = model.datas[index];
-                                final String key =
-                                    model.datas[index].toString();
+
                                 return GestureDetector(
                                   onTap: () => showCustomDialog(
                                     context,
@@ -79,8 +73,8 @@ class TaskView extends StatelessWidget with $TaskView {
                                     model,
                                     nameController,
                                     descriptionController,
-                                    id.toString(),
-                                    token.toString(),
+                                    model.userId.toString(),
+                                    model.token.toString(),
                                   ),
                                   child: Dismissible(
                                     key: Key(UniqueKey().toString()),
@@ -97,8 +91,8 @@ class TaskView extends StatelessWidget with $TaskView {
                                       if (direction ==
                                           DismissDirection.endToStart) {
                                         model.deleteTask(
-                                          token: token,
-                                          userId: id,
+                                          token: model.token!,
+                                          userId: model.userId!,
                                           index: index,
                                           id: data.id.toString(),
                                         );
@@ -187,9 +181,8 @@ class TaskView extends StatelessWidget with $TaskView {
                             button(
                               onPressed: () {
                                 model.toAddNewTaskView(
-                                  token: token,
-                                  userId: id,
-                                  projectId: projectId,
+                                  token: model.token,
+                                  userId: model.userId,
                                 );
                               },
                               size: _size,
@@ -198,6 +191,11 @@ class TaskView extends StatelessWidget with $TaskView {
                               text: 'Add Task',
                             ),
                             button(
+                              onPressed: () {
+                                print(model.projectId);
+                                print(model.token);
+                                print(model.userId);
+                              },
                               size: _size,
                               color: primaryColor,
                               icon: Icons.format_align_left,

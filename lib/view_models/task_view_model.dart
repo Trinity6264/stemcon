@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:stemcon/models/add_task_model.dart';
 import 'package:stemcon/services/api_service.dart';
+import 'package:stemcon/services/shared_prefs_service.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -14,17 +15,27 @@ class TaskViewModel extends BaseViewModel {
   final _snackbarService = locator<SnackbarService>();
   final _dialogService = locator<DialogService>();
   final _apiService = locator<ApiService>();
+  final _prefService = locator<SharedPrefsservice>();
+
+  int? userId;
+  int? token;
+  String? projectId;
+
+  Future<void> reload() async {
+    userId = await _prefService.loadUserId();
+    token = await _prefService.loadUserAuthenticationToken();
+    projectId = await _prefService.loadProjectId();
+    await _prefService.reloadData();
+  }
 
   List<String> tasks = ['9'];
 
   List<AddTaskModel> datas = [];
   String errorMessage = '';
-  Future<void> loadData({
-    required int userId,
-    required int token,
-  }) async {
+  Future<void> loadData() async {
     setBusy(true);
-    final data = await _apiService.fetchTask(userId: userId, token: token);
+    await reload();
+    final data = await _apiService.fetchTask(userId: userId!, token: token!);
     if (data.isNotEmpty) {
       setBusy(false);
       data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
@@ -95,11 +106,11 @@ class TaskViewModel extends BaseViewModel {
   void toAddNewTaskView({
     required int? userId,
     required int? token,
-    required String? projectId,
   }) {
     if (userId == null || token == null) return;
     _navService.navigateTo(
-      Routes.addCategoryView,
+      TaskWrapperViewRoutes.addCategoryView,
+      id: 1,
       arguments: AddCategoryViewArguments(
         userId: userId,
         token: token,
@@ -140,10 +151,8 @@ class TaskViewModel extends BaseViewModel {
             messageColor: whiteColor,
           ));
           _snackbarService.showSnackbar(message: 'Task Editted successfully');
-          loadData(
-            userId: int.parse(userId),
-            token: int.parse(token),
-          );
+          reload();
+          loadData();
         } else {
           _dialogService.showDialog(
             title: 'Error Message',

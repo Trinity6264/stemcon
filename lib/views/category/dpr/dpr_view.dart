@@ -8,21 +8,15 @@ import '../../../utils/color/color_pallets.dart';
 import '../../../view_models/drp_view_model.dart';
 
 class DprView extends StatelessWidget {
-  final int token;
-  final int userId;
-  final String projectId;
   const DprView({
     Key? key,
-    required this.token,
-    required this.userId,
-    required this.projectId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<DprViewModel>.reactive(
-      onModelReady: (model) => model.loadData(userId: userId, token: token),
+      onModelReady: (model) => model.loadData(),
       viewModelBuilder: () => DprViewModel(),
       builder: (context, model, child) {
         return Scaffold(
@@ -65,8 +59,8 @@ class DprView extends StatelessWidget {
                                     showCustomDialog(
                                       context,
                                       data,
-                                      token,
-                                      userId,
+                                      model.token!,
+                                      model.userId!,
                                     );
                                   },
                                   child: Dismissible(
@@ -84,8 +78,8 @@ class DprView extends StatelessWidget {
                                       if (direction ==
                                           DismissDirection.endToStart) {
                                         model.deleteDpr(
-                                          token: token,
-                                          userId: userId,
+                                          token: model.token!,
+                                          userId: model.userId!,
                                           index: index,
                                           id: data.id.toString(),
                                         );
@@ -94,7 +88,7 @@ class DprView extends StatelessWidget {
                                     child: Container(
                                       margin: const EdgeInsets.only(bottom: 5),
                                       width: double.infinity,
-                                      height: (_size.height * 0.1) + 5,
+                                      height: _size.height * 0.1 + 20,
                                       child: Card(
                                         // color: greyColor.withOpacity(0.2),
                                         child: Padding(
@@ -144,11 +138,7 @@ class DprView extends StatelessWidget {
                           children: [
                             button(
                               onPressed: () {
-                                model.toCategoryView(
-                                  userId: userId,
-                                  token: token,
-                                  projectId: projectId,
-                                );
+                                model.toCategoryView();
                               },
                               size: _size,
                               color: blackColor,

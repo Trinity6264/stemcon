@@ -70,12 +70,8 @@ class AddNewDprViewModel extends BaseViewModel {
           if (data['res_code'] == "1") {
             setBusy(false);
             _navservice.replaceWith(
-              Routes.dprView,
-              arguments: DprViewArguments(
-                token: token,
-                userId: userId,
-                projectId: projectId,
-              ),
+              DprWrapperRoutes.dprView,
+              
             );
             return;
           } else {

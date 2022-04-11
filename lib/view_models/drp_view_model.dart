@@ -10,15 +10,16 @@ import 'package:stemcon/services/file_selector_service.dart';
 
 import '../app/app.router.dart';
 
+import '../services/shared_prefs_service.dart';
 import '../utils/color/color_pallets.dart';
 
 class DprViewModel extends BaseViewModel {
   final _apiService = locator<ApiService>();
+  final _prefService = locator<SharedPrefsservice>();
   final _navService = locator<NavigationService>();
   final _dialogService = locator<DialogService>();
   final _snackbarService = locator<SnackbarService>();
   final _imagePicker = locator<FileSelectorService>();
-  
 
   List<DprListModel> datas = [];
   String errorMessage = '';
@@ -43,15 +44,25 @@ class DprViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> loadData({
-    required int userId,
-    required int token,
-  }) async {
+  int? userId;
+  int? token;
+  String? projectId;
+
+  Future<void> reload() async {
+    userId = await _prefService.loadUserId();
+    token = await _prefService.loadUserAuthenticationToken();
+    projectId = await _prefService.loadProjectId();
+    await _prefService.reloadData();
+  }
+
+  Future<void> loadData() async {
+    
+    setBusy(true);
+    await reload();
     id = userId;
     tok = token;
-    setBusy(true);
-    final data = await _apiService.fetchDprList(userId: userId, token: token);
-      setBusy(false);
+    final data = await _apiService.fetchDprList(userId: id!, token: tok!);
+    setBusy(false);
     if (data.isNotEmpty) {
       data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
       datas = data.reversed.toList();
@@ -67,14 +78,11 @@ class DprViewModel extends BaseViewModel {
 
   // to cat
 
-  void toCategoryView({
-    required int? userId,
-    required int? token,
-    required String? projectId,
-  }) {
+  void toCategoryView() {
     if (userId == null || token == null) return;
     _navService.navigateTo(
-      Routes.addCategoryView,
+      DprWrapperRoutes.addCategoryView,
+      id: 2,
       arguments: AddCategoryViewArguments(
         userId: userId,
         token: token,
@@ -156,11 +164,10 @@ class DprViewModel extends BaseViewModel {
         dprTime: dprTime,
         projectId: projectId,
       );
-      
+
       isEdittingTask = false;
       notifyListeners();
       if (response.statusCode == 200) {
-        
         final data = jsonDecode(response.body);
         if (data['res_code'] == '1') {
           _navService.back();
@@ -168,7 +175,7 @@ class DprViewModel extends BaseViewModel {
             messageColor: whiteColor,
           ));
           _snackbarService.showSnackbar(message: 'Task Editted successfully');
-          loadData(userId: userId, token: token);
+          loadData();
         } else {
           _dialogService.showDialog(
             title: 'Error Message',

@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-
 import 'package:stemcon/utils/color/color_pallets.dart';
-import 'package:stemcon/views/category/dpr/dpr_view.dart';
-import 'package:stemcon/views/category/tasks/task_view.dart';
+import 'package:stemcon/views/category/wrapper/dpr_wrapper_view.dart';
+import 'package:stemcon/views/category/wrapper/task_wrapper_view.dart';
 
 import '../../view_models/selected_view_model.dart';
 
 // ignore: camel_case_types
 class selectedCatViews extends StatelessWidget {
-  final int? userId;
-  final int? token;
-  final String? projectId;
-  const selectedCatViews({
-    Key? key,
-    required this.userId,
-    required this.token,
-    required this.projectId,
-  }) : super(key: key);
+  const selectedCatViews({Key? key}) : super(key: key);
 
   static const _navBarItems = [
     BottomNavigationBarItem(icon: Icon(Icons.task), label: 'Task'),
@@ -31,7 +22,13 @@ class selectedCatViews extends StatelessWidget {
       builder: (context, model, child) {
         return Scaffold(
           backgroundColor: whiteColor,
-          body: getViewFormIndex(model.currentIndex, userId!, token!),
+          body: IndexedStack(
+            index: model.currentIndex,
+            children: const [
+              TaskWrapperView(),
+              DprWrapper(),
+            ],
+          ),
           bottomNavigationBar: BottomNavigationBar(
             items: _navBarItems,
             currentIndex: model.currentIndex,
@@ -40,19 +37,6 @@ class selectedCatViews extends StatelessWidget {
         );
       },
     );
-  }
-
-  Widget? getViewFormIndex(int index, int userId, int token) {
-    switch (index) {
-      case 0:
-        return TaskView(id: userId, token: token, projectId: projectId!);
-
-      case 1:
-        return DprView(token: token, userId: userId, projectId: projectId!);
-
-      default:
-        return TaskView(id: userId, token: token, projectId: projectId!);
-    }
   }
 
   Widget icnBtn({

@@ -1,6 +1,17 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsservice {
+
+  Future savedProjectId(String projectId) async {
+    final _prefs = await SharedPreferences.getInstance();
+    await _prefs.setString('projectId', projectId);
+  }
+
+  Future loadProjectId() async {
+    final _prefs = await SharedPreferences.getInstance();
+    return _prefs.getString('projectId');
+  }
+
   // saving data
 
   Future savedUserState(int state) async {

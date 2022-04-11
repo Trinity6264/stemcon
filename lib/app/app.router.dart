@@ -20,6 +20,8 @@ import '../views/category/dpr/dpr_view.dart';
 import '../views/category/selected_cat_view.dart';
 import '../views/category/tasks/add_new_task_view.dart';
 import '../views/category/tasks/task_view.dart';
+import '../views/category/wrapper/dpr_wrapper_view.dart';
+import '../views/category/wrapper/task_wrapper_view.dart';
 import '../views/home/home_view.dart';
 import '../views/profile/profile_view.dart';
 import '../views/projects/add_project1_view.dart';
@@ -31,13 +33,10 @@ class Routes {
   static const String loginView = '/login-view';
   static const String homeView = '/home-view';
   static const String addProjectView = '/add-project-view';
-  static const String taskView = '/task-view';
   static const String addProject2View = '/add-project2-view';
-  static const String addCategoryView = '/add-category-view';
-  static const String addNewTaskView = '/add-new-task-view';
+  static const String dprWrapper = '/dpr-wrapper';
+  static const String taskWrapperView = '/task-wrapper-view';
   static const String selectedCatViews = '/selected-cat-views';
-  static const String addNewDprView = '/add-new-dpr-view';
-  static const String dprView = '/dpr-view';
   static const String profileView = '/profile-view';
   static const all = <String>{
     startUpView,
@@ -45,13 +44,10 @@ class Routes {
     loginView,
     homeView,
     addProjectView,
-    taskView,
     addProject2View,
-    addCategoryView,
-    addNewTaskView,
+    dprWrapper,
+    taskWrapperView,
     selectedCatViews,
-    addNewDprView,
-    dprView,
     profileView,
   };
 }
@@ -65,13 +61,18 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.loginView, page: LoginView),
     RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.addProjectView, page: AddProjectView),
-    RouteDef(Routes.taskView, page: TaskView),
     RouteDef(Routes.addProject2View, page: AddProject2View),
-    RouteDef(Routes.addCategoryView, page: AddCategoryView),
-    RouteDef(Routes.addNewTaskView, page: AddNewTaskView),
+    RouteDef(
+      Routes.dprWrapper,
+      page: DprWrapper,
+      generator: DprWrapperRouter(),
+    ),
+    RouteDef(
+      Routes.taskWrapperView,
+      page: TaskWrapperView,
+      generator: TaskWrapperViewRouter(),
+    ),
     RouteDef(Routes.selectedCatViews, page: selectedCatViews),
-    RouteDef(Routes.addNewDprView, page: AddNewDprView),
-    RouteDef(Routes.dprView, page: DprView),
     RouteDef(Routes.profileView, page: ProfileView),
   ];
   @override
@@ -140,18 +141,6 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
-    TaskView: (data) {
-      var args = data.getArgs<TaskViewArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => TaskView(
-          key: args.key,
-          id: args.id,
-          token: args.token,
-          projectId: args.projectId,
-        ),
-        settings: data,
-      );
-    },
     AddProject2View: (data) {
       var args = data.getArgs<AddProject2ViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
@@ -172,6 +161,128 @@ class StackedRouter extends RouterBase {
           projectUnit: args.projectUnit,
           projectTimeZone: args.projectTimeZone,
         ),
+        settings: data,
+      );
+    },
+    DprWrapper: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const DprWrapper(),
+        settings: data,
+      );
+    },
+    TaskWrapperView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const TaskWrapperView(),
+        settings: data,
+      );
+    },
+    selectedCatViews: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const selectedCatViews(),
+        settings: data,
+      );
+    },
+    ProfileView: (data) {
+      var args = data.getArgs<ProfileViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ProfileView(
+          key: args.key,
+          userId: args.userId,
+          token: args.token,
+          checkId: args.checkId,
+          photoId: args.photoId,
+        ),
+        settings: data,
+      );
+    },
+  };
+}
+
+class DprWrapperRoutes {
+  static const String dprView = '/';
+  static const String addCategoryView = '/add-category-view';
+  static const String addNewDprView = '/add-new-dpr-view';
+  static const all = <String>{
+    dprView,
+    addCategoryView,
+    addNewDprView,
+  };
+}
+
+class DprWrapperRouter extends RouterBase {
+  @override
+  List<RouteDef> get routes => _routes;
+  final _routes = <RouteDef>[
+    RouteDef(DprWrapperRoutes.dprView, page: DprView),
+    RouteDef(DprWrapperRoutes.addCategoryView, page: AddCategoryView),
+    RouteDef(DprWrapperRoutes.addNewDprView, page: AddNewDprView),
+  ];
+  @override
+  Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
+  final _pagesMap = <Type, StackedRouteFactory>{
+    DprView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const DprView(),
+        settings: data,
+      );
+    },
+    AddCategoryView: (data) {
+      var args = data.getArgs<AddCategoryViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => AddCategoryView(
+          key: args.key,
+          userId: args.userId,
+          token: args.token,
+          indes: args.indes,
+          projectId: args.projectId,
+        ),
+        settings: data,
+      );
+    },
+    AddNewDprView: (data) {
+      var args = data.getArgs<AddNewDprViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => AddNewDprView(
+          key: args.key,
+          userId: args.userId,
+          token: args.token,
+          projectId: args.projectId,
+          taskName: args.taskName,
+        ),
+        settings: data,
+      );
+    },
+  };
+}
+
+class TaskWrapperViewRoutes {
+  static const String taskView = '/';
+  static const String addCategoryView = '/add-category-view';
+  static const String addNewTaskView = '/add-new-task-view';
+  static const all = <String>{
+    taskView,
+    addCategoryView,
+    addNewTaskView,
+  };
+}
+
+class TaskWrapperViewRouter extends RouterBase {
+  @override
+  List<RouteDef> get routes => _routes;
+  final _routes = <RouteDef>[
+    RouteDef(TaskWrapperViewRoutes.taskView, page: TaskView),
+    RouteDef(TaskWrapperViewRoutes.addCategoryView, page: AddCategoryView),
+    RouteDef(TaskWrapperViewRoutes.addNewTaskView, page: AddNewTaskView),
+  ];
+  @override
+  Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
+  final _pagesMap = <Type, StackedRouteFactory>{
+    TaskView: (data) {
+      var args = data.getArgs<TaskViewArguments>(
+        orElse: () => TaskViewArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => TaskView(key: args.key),
         settings: data,
       );
     },
@@ -202,56 +313,6 @@ class StackedRouter extends RouterBase {
           description: args.description,
           taskStatus: args.taskStatus,
           taskId: args.taskId,
-        ),
-        settings: data,
-      );
-    },
-    selectedCatViews: (data) {
-      var args = data.getArgs<selectedCatViewsArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => selectedCatViews(
-          key: args.key,
-          userId: args.userId,
-          token: args.token,
-          projectId: args.projectId,
-        ),
-        settings: data,
-      );
-    },
-    AddNewDprView: (data) {
-      var args = data.getArgs<AddNewDprViewArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => AddNewDprView(
-          key: args.key,
-          userId: args.userId,
-          token: args.token,
-          projectId: args.projectId,
-          taskName: args.taskName,
-        ),
-        settings: data,
-      );
-    },
-    DprView: (data) {
-      var args = data.getArgs<DprViewArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => DprView(
-          key: args.key,
-          token: args.token,
-          userId: args.userId,
-          projectId: args.projectId,
-        ),
-        settings: data,
-      );
-    },
-    ProfileView: (data) {
-      var args = data.getArgs<ProfileViewArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => ProfileView(
-          key: args.key,
-          userId: args.userId,
-          token: args.token,
-          checkId: args.checkId,
-          photoId: args.photoId,
         ),
         settings: data,
       );
@@ -325,19 +386,6 @@ class AddProjectViewArguments {
       this.projectTimezone});
 }
 
-/// TaskView arguments holder class
-class TaskViewArguments {
-  final Key? key;
-  final int id;
-  final int token;
-  final String projectId;
-  TaskViewArguments(
-      {this.key,
-      required this.id,
-      required this.token,
-      required this.projectId});
-}
-
 /// AddProject2View arguments holder class
 class AddProject2ViewArguments {
   final Key? key;
@@ -373,6 +421,21 @@ class AddProject2ViewArguments {
       this.projectTimeZone});
 }
 
+/// ProfileView arguments holder class
+class ProfileViewArguments {
+  final Key? key;
+  final int userId;
+  final int token;
+  final int checkId;
+  final String photoId;
+  ProfileViewArguments(
+      {this.key,
+      required this.userId,
+      required this.token,
+      required this.checkId,
+      required this.photoId});
+}
+
 /// AddCategoryView arguments holder class
 class AddCategoryViewArguments {
   final Key? key;
@@ -386,6 +449,27 @@ class AddCategoryViewArguments {
       required this.token,
       required this.indes,
       this.projectId});
+}
+
+/// AddNewDprView arguments holder class
+class AddNewDprViewArguments {
+  final Key? key;
+  final int userId;
+  final int token;
+  final String projectId;
+  final String taskName;
+  AddNewDprViewArguments(
+      {this.key,
+      required this.userId,
+      required this.token,
+      required this.projectId,
+      required this.taskName});
+}
+
+/// TaskView arguments holder class
+class TaskViewArguments {
+  final Key? key;
+  TaskViewArguments({this.key});
 }
 
 /// AddNewTaskView arguments holder class
@@ -411,60 +495,4 @@ class AddNewTaskViewArguments {
       this.description,
       this.taskStatus,
       this.taskId});
-}
-
-/// selectedCatViews arguments holder class
-class selectedCatViewsArguments {
-  final Key? key;
-  final int? userId;
-  final int? token;
-  final String? projectId;
-  selectedCatViewsArguments(
-      {this.key,
-      required this.userId,
-      required this.token,
-      required this.projectId});
-}
-
-/// AddNewDprView arguments holder class
-class AddNewDprViewArguments {
-  final Key? key;
-  final int userId;
-  final int token;
-  final String projectId;
-  final String taskName;
-  AddNewDprViewArguments(
-      {this.key,
-      required this.userId,
-      required this.token,
-      required this.projectId,
-      required this.taskName});
-}
-
-/// DprView arguments holder class
-class DprViewArguments {
-  final Key? key;
-  final int token;
-  final int userId;
-  final String projectId;
-  DprViewArguments(
-      {this.key,
-      required this.token,
-      required this.userId,
-      required this.projectId});
-}
-
-/// ProfileView arguments holder class
-class ProfileViewArguments {
-  final Key? key;
-  final int userId;
-  final int token;
-  final int checkId;
-  final String photoId;
-  ProfileViewArguments(
-      {this.key,
-      required this.userId,
-      required this.token,
-      required this.checkId,
-      required this.photoId});
 }
