@@ -35,14 +35,14 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
-            elevation: 2.0,
+            elevation: 0.0,
             backgroundColor: whiteColor,
-            automaticallyImplyLeading: false,
+            
             title: const Text(
               'Add New DPR',
               style: TextStyle(
                 color: blackColor,
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -66,7 +66,8 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                         const Text(
                           'SELECTED WORK CATEGORY',
                           style: TextStyle(
-                            color: blackColor,
+                            color: greyColor,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         TextButton(

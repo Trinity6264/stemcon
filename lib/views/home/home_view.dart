@@ -31,6 +31,7 @@ class HomeView extends StatelessWidget with $HomeView {
         print(model.authenticationToken!.toString());
       },
       builder: (context, model, child) {
+        final _textSize = MediaQuery.of(context).size;
         return Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -96,12 +97,13 @@ class HomeView extends StatelessWidget with $HomeView {
                       Image.asset('assets/logo/roundlogo.jpg', height: 40),
                       const SizedBox(width: 5),
                       Container(
-                        padding: const EdgeInsets.all(0.0),
-                        child: const Text(
+                        margin: const EdgeInsets.only(left: 10.0),
+                        child: Text(
                           'STEMCON',
                           style: TextStyle(
                             color: blackColor,
-                            fontSize: 18.0,
+                            fontSize: (_textSize.width * 0.1) / 1.5,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       )

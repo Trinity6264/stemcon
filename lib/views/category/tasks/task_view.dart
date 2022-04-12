@@ -32,13 +32,19 @@ class TaskView extends StatelessWidget with $TaskView {
         return Scaffold(
           appBar: AppBar(
             elevation: 0.0,
+            leading: IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+            ),
             backgroundColor: whiteColor,
-            title: const Text(
+            title: Text(
               "GOKUL MATHURA",
               style: TextStyle(
                 color: blackColor,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w500,
+                fontSize: (_size.width * 0.1) / 1.8,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),

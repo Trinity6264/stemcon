@@ -42,10 +42,10 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
             automaticallyImplyLeading: false,
             title: Text(
               indes == 0 ? 'Add New Task' : 'Add New DPR',
-              style: const TextStyle(
+              style: TextStyle(
                 color: blackColor,
-                fontWeight: FontWeight.w700,
-                fontSize: 18.0,
+                fontWeight: FontWeight.w400,
+                fontSize: (_size.width * 0.1) / 1.6,
               ),
             ),
             actions: [

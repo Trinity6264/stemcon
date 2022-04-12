@@ -44,28 +44,21 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
         builder: (context, model, child) {
           return Scaffold(
             appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.arrow_back),
+              ),
               elevation: 0.0,
               backgroundColor: whiteColor,
               automaticallyImplyLeading: false,
               title: const Text(
-                'SELECTED WORK CATEGORY',
+                'Add New Task',
                 style: TextStyle(
                   color: blackColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              actions: [
-                TextButton(
-                  onPressed: model.back,
-                  child: const Text(
-                    'Change',
-                    style: TextStyle(
-                      color: primaryColor,
-                    ),
-                  ),
-                ),
-              ],
             ),
             backgroundColor: whiteColor,
             body: WillPopScope(
@@ -79,6 +72,31 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'SELECTED WORK CATEGORY',
+                            style: TextStyle(
+                              color: greyColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: model.back,
+                            child: const Text(
+                              'Change',
+                              style: TextStyle(
+                                color: primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Text(
                       taskName,
                       style: const TextStyle(
