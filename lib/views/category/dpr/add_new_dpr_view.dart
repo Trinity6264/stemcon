@@ -35,144 +35,137 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
-            elevation: 0.0,
+            elevation: 2.0,
             backgroundColor: whiteColor,
             automaticallyImplyLeading: false,
             title: const Text(
               'Add New DPR',
               style: TextStyle(
-                color: greyColor,
+                color: blackColor,
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
           backgroundColor: whiteColor,
-          body: Container(
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('SELECTED WORK CATEGORY'),
-                      TextButton(
-                        onPressed: model.back,
-                        child: const Text(
-                          'Change',
+          body: WillPopScope(
+            onWillPop: () async {
+              await model.backHome();
+              return false;
+            },
+            child: Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'SELECTED WORK CATEGORY',
                           style: TextStyle(
-                            color: primaryColor,
+                            color: blackColor,
                           ),
                         ),
+                        TextButton(
+                          onPressed: model.back,
+                          child: const Text(
+                            'Change',
+                            style: TextStyle(
+                              color: primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      taskName,
+                      style: const TextStyle(
+                        color: blackColor,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w700,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    taskName,
-                    style: const TextStyle(
-                      color: blackColor,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w700,
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: taskController,
-                    decoration: textInputDecor.copyWith(
-                      hintText: 'Description',
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: taskController,
+                      decoration: textInputDecor.copyWith(
+                        hintText: 'Description',
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: model.picImage,
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      width: double.infinity,
-                      height: _size.height * 0.3 / 1.2,
-                      child: model.imageSelected != null
-                          ? Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                image: DecorationImage(
-                                  image: FileImage(model.imageSelected!),
-                                  fit: BoxFit.fill,
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: model.picImage,
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        width: double.infinity,
+                        height: _size.height * 0.3 / 1.2,
+                        child: model.imageSelected != null
+                            ? Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  image: DecorationImage(
+                                    image: FileImage(model.imageSelected!),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              )
+                            : Center(
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/logo/undraw.svg',
+                                      height: _size.height * 0.2,
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    const Text(
+                                      'Tap to upload product image Here',
+                                      style: TextStyle(
+                                        color: greyColor,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18.0,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            )
-                          : Center(
-                              child: Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/logo/undraw.svg',
-                                    height: _size.height * 0.2,
-                                  ),
-                                  const SizedBox(height: 5.0),
-                                  const Text(
-                                    'Tap to upload product image Here',
-                                    style: TextStyle(
-                                      color: greyColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          style: BorderStyle.solid,
-                          width: 1.5,
-                          color: greyColor,
-                        ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () => endDate(context: context, model: model),
-                    child: Container(
-                      height: _size.height * 0.1 - 20,
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 20,
-                      ),
-                      child: Text(
-                        model.dateTime ?? 'TOMMOROW TASK',
-                        style: const TextStyle(
-                          color: greyColor,
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(7),
-                        border: Border.all(
-                          width: 1.2,
-                          color: greyColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: _size.height * 0.2 / 1.5),
-                  model.isBusy
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : SharedButton(
-                          title: 'SUBMIT',
-                          onPressed: () => model.addDpr(
-                            projectId: projectId,
-                            dprDescription: taskController.text.trim(),
-                            token: token,
-                            userId: userId,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            style: BorderStyle.solid,
+                            width: 1.5,
+                            color: greyColor,
                           ),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: tomorrowTaskController,
+                      decoration: textInputDecor.copyWith(
+                        hintText: 'Tomorrow Task',
+                      ),
+                    ),
+                    SizedBox(height: _size.height * 0.2 / 1.5),
+                    model.isBusy
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : SharedButton(
+                            title: 'SUBMIT',
+                            onPressed: () => model.addDpr(
+                              projectId: projectId,
+                              dprDescription: taskController.text.trim(),
+                              token: token,
+                              userId: userId,
+                            ),
+                          ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -45,7 +45,7 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
               style: const TextStyle(
                 color: blackColor,
                 fontWeight: FontWeight.w700,
-                fontSize: 16.5,
+                fontSize: 18.0,
               ),
             ),
             actions: [
@@ -116,10 +116,10 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
                                         },
                                         child: SizedBox(
                                           width: double.infinity,
-                                          height: _size.height * 0.1,
+                                          height: (_size.height * 0.1 - 10),
                                           child: Card(
                                             shadowColor: greyColor,
-                                            elevation: 3.0,
+                                            elevation: 5.0,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),

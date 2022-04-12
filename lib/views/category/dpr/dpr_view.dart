@@ -21,7 +21,7 @@ class DprView extends StatelessWidget {
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
-            elevation: 0.0,
+            elevation: 2.0,
             backgroundColor: whiteColor,
             title: const Text(
               "Dpr View",

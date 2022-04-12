@@ -38,6 +38,10 @@ class AddNewDprViewModel extends BaseViewModel {
     _navservice.back();
   }
 
+  Future<void> backHome() async{
+    _navservice.pushNamedAndRemoveUntil(Routes.homeView, predicate:(_)=> false);
+  }
+
   Future<void> addDpr({
     required String projectId,
     required String dprDescription,
@@ -69,10 +73,10 @@ class AddNewDprViewModel extends BaseViewModel {
           final data = jsonDecode(response.body);
           if (data['res_code'] == "1") {
             setBusy(false);
-            _navservice.replaceWith(
-              DprWrapperRoutes.dprView,
-              
-            );
+            _snackbarService.registerSnackbarConfig(SnackbarConfig(
+              messageColor: whiteColor,
+            ));
+            _snackbarService.showSnackbar(message: 'Dpr added Succesfully');
             return;
           } else {
             setBusy(false);
@@ -93,6 +97,4 @@ class AddNewDprViewModel extends BaseViewModel {
       }
     }
   }
-
-  
 }

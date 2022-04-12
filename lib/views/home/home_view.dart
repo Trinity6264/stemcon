@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stemcon/animations/dashboard_effect.dart';
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/home_view_model.dart';
@@ -149,9 +150,7 @@ class HomeView extends StatelessWidget with $HomeView {
               );
             },
             child: model.isBusy
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? const DashboardEffect()
                 : model.datas.isEmpty && !model.isBusy
                     ? Center(
                         child: Text(
@@ -184,7 +183,6 @@ class HomeView extends StatelessWidget with $HomeView {
                                   ) {
                                     return GestureDetector(
                                       onTap: () {
-                                        print('Home ${data.id}');
                                         model.toAddTaskView(data.id.toString());
                                       },
                                       child: Row(
@@ -204,7 +202,7 @@ class HomeView extends StatelessWidget with $HomeView {
                                                     'http://stemcon.likeview.in${data.projectPhotoPath}',
                                                 fit: BoxFit.cover,
                                                 placeholder: (context, value) {
-                                                  return const CircularProgressIndicator();
+                                                  return const PictureEffect();
                                                 },
                                                 errorWidget: (_, __, ___) {
                                                   return Container(
@@ -263,13 +261,12 @@ class HomeView extends StatelessWidget with $HomeView {
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
+                                              const SizedBox(height: 3),
                                               Text(
                                                 data.projectAddress ?? '',
                                                 style: const TextStyle(
-                                                    fontSize: 10),
+                                                  fontSize: 10,
+                                                ),
                                               ),
                                             ],
                                           )
@@ -302,9 +299,9 @@ class HomeView extends StatelessWidget with $HomeView {
                                                 Text(
                                                   data.projectEndDate ?? '',
                                                   style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 )
                                               ],
                                             ),
@@ -325,9 +322,9 @@ class HomeView extends StatelessWidget with $HomeView {
                                                   data.projectTimezone ??
                                                       'India',
                                                   style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 )
                                               ],
                                             ),
@@ -345,7 +342,8 @@ class HomeView extends StatelessWidget with $HomeView {
                                                 const Text(
                                                   "Unit",
                                                   style: TextStyle(
-                                                      color: Colors.grey),
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                                 const SizedBox(
                                                   height: 5,
@@ -353,9 +351,9 @@ class HomeView extends StatelessWidget with $HomeView {
                                                 Text(
                                                   data.projectUnit ?? '5',
                                                   style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 )
                                               ],
                                             ),
@@ -366,7 +364,8 @@ class HomeView extends StatelessWidget with $HomeView {
                                                 const Text(
                                                   "Man Hour   ",
                                                   style: TextStyle(
-                                                      color: Colors.grey),
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
                                                 const SizedBox(
                                                   height: 5,
@@ -382,9 +381,7 @@ class HomeView extends StatelessWidget with $HomeView {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
+                                        const SizedBox(height: 10),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

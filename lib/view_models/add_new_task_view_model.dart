@@ -17,6 +17,10 @@ class AddTaskViewModel extends BaseViewModel {
     _navService.back();
   }
 
+  Future<void> backHome() async{
+    _navService.pushNamedAndRemoveUntil(Routes.homeView, predicate:(_)=> false);
+  }
+
   Future<void> addTask({
     required String taskName,
     required String description,
@@ -52,9 +56,7 @@ class AddTaskViewModel extends BaseViewModel {
               messageColor: whiteColor,
             ));
             _snackbarService.showSnackbar(message: 'Task Added');
-            _navService.replaceWith(
-              TaskWrapperViewRoutes.taskView,
-            );
+            
           } else {
             setBusy(false);
             _snackbarService.registerSnackbarConfig(SnackbarConfig(
