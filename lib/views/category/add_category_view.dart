@@ -61,115 +61,94 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
             margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Stack(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      child: Text(
-                        'Create new work category',
-                        style: TextStyle(
-                          color: blackColor,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15.0),
+                        child: Text(
+                          'Create new work category',
+                          style: TextStyle(
+                            color: blackColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                          ),
                         ),
                       ),
-                    ),
-                    TextField(
-                      controller: searchController,
-                      decoration:
-                          textInputDecor.copyWith(hintText: 'Type here...'),
-                    ),
-                    const SizedBox(height: 30),
-                    const Text(
-                      'CHOOSE FROM',
-                      style: TextStyle(
-                        color: greyColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18.0,
+                      TextField(
+                        controller: searchController,
+                        decoration:
+                            textInputDecor.copyWith(hintText: 'Type here...'),
                       ),
-                    ),
-                    model.isBusy
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : !model.isBusy && model.datas.isEmpty
-                            ? const Center(
-                                child: Text('No suggestions found'),
-                              )
-                            : SizedBox(
-                                height: _size.height * 0.5 + 40,
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: model.datas.length,
-                                    itemBuilder: (context, index) {
-                                      final data = model.datas[index];
-                                      return GestureDetector(
-                                        onTap: () {
-                                          model.toAddTaskView(
-                                            userId: userId!,
-                                            token: token!,
-                                            taskName: data.suggestionTaskName!,
-                                            index: indes!,
-                                            projectId: projectId!,
-                                          );
-                                        },
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          height: (_size.height * 0.1 - 10),
-                                          child: Card(
-                                            shadowColor: greyColor,
-                                            elevation: 5.0,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    data.suggestionTaskName!,
-                                                    style: const TextStyle(
-                                                      color: blackColor,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 16.0,
+                      const SizedBox(height: 30),
+                      const Text(
+                        'CHOOSE FROM',
+                        style: TextStyle(
+                          color: greyColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18.0,
+                        ),
+                      ),
+                      model.isBusy
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : !model.isBusy && model.datas.isEmpty
+                              ? const Center(
+                                  child: Text('No suggestions found'),
+                                )
+                              : SizedBox(
+                                  height: _size.height * 0.5 + 40,
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: model.datas.length,
+                                      itemBuilder: (context, index) {
+                                        final data = model.datas[index];
+                                        return GestureDetector(
+                                          onTap: () {
+                                            model.toAddTaskView(
+                                              userId: userId!,
+                                              token: token!,
+                                              taskName:
+                                                  data.suggestionTaskName!,
+                                              index: indes!,
+                                              projectId: projectId!,
+                                            );
+                                          },
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            height: (_size.height * 0.1 - 10),
+                                            child: Card(
+                                              shadowColor: greyColor,
+                                              elevation: 5.0,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      data.suggestionTaskName!,
+                                                      style: const TextStyle(
+                                                        color: blackColor,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontSize: 16.0,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      icnBtn(
-                                                        icon: const Icon(
-                                                          Icons.delete_outlined,
-                                                        ),
-                                                        onPressed: () {
-                                                          model.deleteData(
-                                                            userId: userId!,
-                                                            token: token!,
-                                                            id: data.id!,
-                                                            message: data
-                                                                .suggestionTaskName!,
-                                                          );
-                                                        },
-                                                      ),
-                                                      icnBtn(
-                                                        icon: const Icon(
-                                                          Icons.edit_outlined,
-                                                        ),
-                                                        onPressed: () {},
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    }),
-                              ),
-                  ],
+                                        );
+                                      }),
+                                ),
+                    ],
+                  ),
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,

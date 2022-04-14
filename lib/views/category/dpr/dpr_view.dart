@@ -21,7 +21,7 @@ class DprView extends StatelessWidget {
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
-            elevation: 2.0,
+            elevation: 5.0,
             backgroundColor: whiteColor,
             title: const Text(
               "Dpr View",
@@ -90,7 +90,8 @@ class DprView extends StatelessWidget {
                                       width: double.infinity,
                                       height: _size.height * 0.1 + 20,
                                       child: Card(
-                                        // color: greyColor.withOpacity(0.2),
+                                        
+                                        elevation: 3.0,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Column(

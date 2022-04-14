@@ -33,7 +33,7 @@ class TaskView extends StatelessWidget with $TaskView {
           appBar: AppBar(
             elevation: 0.0,
             leading: IconButton(
-              onPressed: () {},
+              onPressed: model.back,
               icon: const Icon(
                 Icons.arrow_back,
               ),

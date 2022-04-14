@@ -45,7 +45,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                onPressed: () {},
+                onPressed: model.backPop,
                 icon: const Icon(Icons.arrow_back),
               ),
               elevation: 0.0,
@@ -124,14 +124,19 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : SharedButton(
-                            title: 'Add Task',
-                            onPressed: () => model.addTask(
-                              taskName: taskName,
-                              description: descriptionController.text.trim(),
-                              token: token,
-                              userId: userId,
-                              projectId: projectId,
+                        : Container(
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 30,
+                            ),
+                            child: SharedButton(
+                              title: 'Add Task',
+                              onPressed: () => model.addTask(
+                                taskName: taskName,
+                                description: descriptionController.text.trim(),
+                                token: token,
+                                userId: userId,
+                                projectId: projectId,
+                              ),
                             ),
                           ),
                   ],

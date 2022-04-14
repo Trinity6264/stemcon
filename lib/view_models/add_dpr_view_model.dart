@@ -35,11 +35,12 @@ class AddNewDprViewModel extends BaseViewModel {
   }
 
   void back() {
-    _navservice.back();
+    _navservice.back(id: 2);
   }
 
-  Future<void> backHome() async{
-    _navservice.pushNamedAndRemoveUntil(Routes.homeView, predicate:(_)=> false);
+  Future<void> backHome() async {
+    _navservice.pushNamedAndRemoveUntil(Routes.homeView,
+        predicate: (_) => false);
   }
 
   Future<void> addDpr({

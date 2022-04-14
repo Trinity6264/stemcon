@@ -28,6 +28,10 @@ class TaskViewModel extends BaseViewModel {
     await _prefService.reloadData();
   }
 
+  Future<void> back() async {
+    _navService.popRepeated(1);
+  }
+
   List<String> tasks = ['9'];
 
   List<AddTaskModel> datas = [];

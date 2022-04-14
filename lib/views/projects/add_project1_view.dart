@@ -330,7 +330,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
       lastDate: DateTime(initial.year + 10),
     );
     if (date == null) return null;
-    final datePicked = "${date.day}/${date.month}/${date.year}";
+    final datePicked = "${date.year}/${date.month}/${date.day}";
     model.onChanged(index: 0, text: datePicked);
   }
 
@@ -346,7 +346,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
       lastDate: DateTime(initial.year + 10),
     );
     if (date == null) return null;
-    final datePicked = "${date.day}/${date.month}/${date.year}";
+    final datePicked = "${date.year}/${date.month}/${date.day}";
     model.onChanged(index: 1, text: datePicked);
   }
 }

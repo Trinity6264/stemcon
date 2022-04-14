@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: blackColor),
         ),
-        iconTheme: const IconThemeData(
-          color: blackColor,
-        ),
+        iconTheme: const IconThemeData(color: blackColor),
       ),
       navigatorKey: StackedService.navigatorKey,
       onGenerateRoute: StackedRouter().onGenerateRoute,
