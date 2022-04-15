@@ -62,10 +62,9 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AddProjectViewModel>.reactive(
+      onModelReady: (model) => model.initDate(),
       viewModelBuilder: () => AddProjectViewModel(),
-      onDispose: (model) {
-        disposeForm();
-      },
+      onDispose: (model) => disposeForm(),
       builder: (context, model, child) {
         final isEditting = state.index == 0;
         return Scaffold(
@@ -185,12 +184,8 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                                 model.startDate == null
                             ? projectStartTime!
                             : model.startDate ?? "2022-05-01",
-                        style: TextStyle(
-                          color: projectStartTime != null ||
-                                  model.startDate != null ||
-                                  model.startDate != null
-                              ? blackColor
-                              : greyColor,
+                        style: const TextStyle(
+                          color: blackColor,
                         ),
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -218,12 +213,8 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                                 model.endDate == null
                             ? projectEndTime!
                             : model.endDate ?? "01/06/2024",
-                        style: TextStyle(
-                          color: projectEndTime != null ||
-                                  model.endDate != null ||
-                                  model.endDate != null
-                              ? blackColor
-                              : greyColor,
+                        style: const TextStyle(
+                          color: blackColor,
                         ),
                       ),
                       padding: const EdgeInsets.symmetric(

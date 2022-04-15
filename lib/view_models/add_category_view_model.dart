@@ -14,8 +14,11 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
   final _apiService = locator<ApiService>();
   final _dialogService = locator<DialogService>();
   final _snackbarService = locator<SnackbarService>();
-  void goBack() {
-    _navService.back();
+  void goBackTask() {
+     _navService.back(id: 1);
+  }
+  void goBackDpr() {
+    _navService.back(id: 2);
   }
 
 // Fetching data method
@@ -92,10 +95,9 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
       _snackbarService.showSnackbar(message: 'Empty field');
       return;
     }
-    
+
     index == 0
         ? _navService.navigateTo(
-          
             TaskWrapperViewRoutes.addNewTaskView,
             arguments: AddNewTaskViewArguments(
               userId: userId,
@@ -105,7 +107,7 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
               projectId: projectId,
               state: CheckingState.adding,
             ),
-            id:1,
+            id: 1,
           )
         : _navService.navigateTo(
             DprWrapperRoutes.addNewDprView,
@@ -113,9 +115,9 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
               userId: userId,
               token: token,
               taskName: taskName,
-              projectId:projectId, 
+              projectId: projectId,
             ),
-            id:2,
+            id: 2,
           );
   }
 }

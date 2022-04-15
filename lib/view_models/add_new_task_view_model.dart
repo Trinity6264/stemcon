@@ -17,13 +17,10 @@ class AddTaskViewModel extends BaseViewModel {
     _navService.back(id: 1);
   }
 
-  void backPop() {
-    _navService.popRepeated(0);
-  }
+ 
 
   Future<void> backHome() async {
-    _navService.pushNamedAndRemoveUntil(Routes.homeView,
-        predicate: (_) => false);
+    _navService.back(id: 1);
   }
 
   Future<void> addTask({

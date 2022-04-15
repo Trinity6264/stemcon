@@ -24,6 +24,12 @@ class AddProjectViewModel extends BaseViewModel {
   String? startDate;
   String? endDate;
 
+  void initDate() {
+    final data = DateTime.now();
+    startDate = '${data.year}-${data.month}-${data.day}';
+    endDate = '${data.year}-${data.month}-${data.day}';
+  }
+
   void onChanged({int? index, String? text}) {
     if (index! == 0) {
       startDate = text;

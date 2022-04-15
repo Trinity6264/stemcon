@@ -45,7 +45,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                onPressed: model.backPop,
+                onPressed: model.back,
                 icon: const Icon(Icons.arrow_back),
               ),
               elevation: 0.0,

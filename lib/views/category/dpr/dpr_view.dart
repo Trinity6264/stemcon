@@ -21,14 +21,20 @@ class DprView extends StatelessWidget {
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
-            elevation: 5.0,
+            elevation: 0.0,
+            leading: IconButton(
+              onPressed: model.back,
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+            ),
             backgroundColor: whiteColor,
-            title: const Text(
-              "Dpr View",
+            title: Text(
+              "GOKUL MATHURA",
               style: TextStyle(
                 color: blackColor,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w500,
+                fontSize: (_size.width * 0.1) / 1.8,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -90,7 +96,7 @@ class DprView extends StatelessWidget {
                                       width: double.infinity,
                                       height: _size.height * 0.1 + 20,
                                       child: Card(
-                                        
+                                        shadowColor: greyColor,
                                         elevation: 3.0,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),

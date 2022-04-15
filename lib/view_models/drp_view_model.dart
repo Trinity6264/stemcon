@@ -32,6 +32,10 @@ class DprViewModel extends BaseViewModel {
     return;
   }
 
+  Future<void> back() async {
+    _navService.popRepeated(1);
+  }
+
   bool? isEdittingTask;
 
   File? imageSelected;
@@ -56,7 +60,6 @@ class DprViewModel extends BaseViewModel {
   }
 
   Future<void> loadData() async {
-    
     setBusy(true);
     await reload();
     id = userId;

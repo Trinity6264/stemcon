@@ -37,12 +37,15 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
           appBar: AppBar(
             elevation: 0.0,
             backgroundColor: whiteColor,
-            
+            leading: IconButton(
+              onPressed: model.back,
+              icon: const Icon(Icons.arrow_back),
+            ),
             title: const Text(
               'Add New DPR',
               style: TextStyle(
                 color: blackColor,
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
