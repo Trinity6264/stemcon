@@ -59,7 +59,6 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
   void dispose() {
     super.dispose();
     cancel();
-    
   }
 
   //
@@ -176,8 +175,8 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
           'OTP Verification',
           style: TextStyle(
             color: blackColor,
-            fontSize: 18.0,
-            fontWeight: FontWeight.w700,
+            fontFamily: 'Roboto-Medium',
+            fontSize: 24.0,
           ),
         ),
       ),
@@ -186,29 +185,30 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: _size.height * 0.1 / 30),
+            SizedBox(height: _size.height * 0.1 / 3),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Enter otp sent to ${widget.countryCode} ${widget.countryNumber}',
                 style: const TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: 18.0,
+                  fontFamily: 'Roboto-Medium',
+                  fontSize: 16.0,
+                  color: borderColor,
                 ),
               ),
             ),
             SizedBox(height: _size.height * 0.01),
             PinFieldAutoFill(
               codeLength: 4,
-              decoration: UnderlineDecoration(
-                textStyle: const TextStyle(
+              decoration: const UnderlineDecoration(
+                textStyle: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
                 ),
                 colorBuilder: FixedColorBuilder(
-                  Colors.black.withOpacity(0.3),
+                  borderColor,
                 ),
               ),
               currentCode: otpCode,
@@ -228,13 +228,16 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
                     text: 'Don\'t receive OTP?  ',
                     style: TextStyle(
                       color: blackColor,
+                      fontSize: 16.0,
+                      fontFamily: 'Roboto-Regular',
                     ),
                   ),
                   TextSpan(
                     text: 'RESEND',
                     style: const TextStyle(
                       color: blackColor,
-                      fontWeight: FontWeight.w800,
+                      fontSize: 16.0,
+                      fontFamily: 'Roboto-Medium',
                     ),
                     recognizer: TapGestureRecognizer()..onTap = back,
                   ),

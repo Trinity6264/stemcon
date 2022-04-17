@@ -30,7 +30,7 @@ class DprView extends StatelessWidget {
             ),
             backgroundColor: whiteColor,
             title: Text(
-              "GOKUL MATHURA",
+              "Add DPR",
               style: TextStyle(
                 color: blackColor,
                 fontSize: (_size.width * 0.1) / 1.8,

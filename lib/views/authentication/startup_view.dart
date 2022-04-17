@@ -27,8 +27,9 @@ class StartUpView extends StatelessWidget {
                     'StemCon',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 18.0,
                       fontWeight: FontWeight.w800,
+                      fontFamily: 'Roboto-Medium',
+                      fontSize: 24.0,
                     ),
                   ),
                 )

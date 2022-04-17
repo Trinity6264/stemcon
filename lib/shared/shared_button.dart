@@ -15,8 +15,8 @@ class SharedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return SizedBox(
-      height: _size.height * 0.1 / 1.8,
-      width: double.infinity,
+      height: 50,
+      width: 343,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: primaryColor,

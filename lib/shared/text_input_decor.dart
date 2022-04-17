@@ -6,18 +6,18 @@ final textInputDecor = InputDecoration(
   fillColor: whiteColor,
   enabled: true,
   enabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10.0),
+    borderRadius: BorderRadius.circular(6.0),
     borderSide: const BorderSide(
       width: 1.0,
-      color: greyColor,
+      color: borderColor,
     ),
   ),
   filled: true,
   focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10.0),
+    borderRadius: BorderRadius.circular(6.0),
     borderSide: const BorderSide(
       width: 1.0,
-      color: greyColor,
+      color: focusedColor,
     ),
   ),
 );

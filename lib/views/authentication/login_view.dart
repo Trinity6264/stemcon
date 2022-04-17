@@ -8,6 +8,7 @@ import 'package:stemcon/view_models/authentication_view_model.dart';
 import 'package:stemcon/views/authentication/login_view.form.dart';
 
 import '../../shared/logo_size.dart';
+import '../../shared/text_input_decor.dart';
 import '../../utils/dialog/custom_dialog.dart';
 
 @FormView(fields: [
@@ -28,6 +29,7 @@ class LoginView extends StatelessWidget with $LoginView {
       onModelReady: (model) => model.getSignature(),
       viewModelBuilder: () => AuthenticationViewModel(),
       builder: (context, model, child) {
+        debugPrint(_size.height.toString());
         return Scaffold(
           backgroundColor: whiteColor,
           body: Center(
@@ -39,19 +41,21 @@ class LoginView extends StatelessWidget with $LoginView {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SizedBox(height: (15 / _size.height) * 100),
                     const LogoSize(),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 30),
-                      child: Text(
-                        'StemCon',
+                    Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 26),
+                      child: const Text(
+                        'STEMCON',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Roboto-Medium',
+                          fontSize: 24.0,
                         ),
                       ),
                     ),
-                    SizedBox(height: _size.height * 0.1 / 30),
+                    SizedBox(height: _size.height * 0.1 / 100),
                     GestureDetector(
                       onTap: () async {
                         await showDialog(
@@ -64,48 +68,58 @@ class LoginView extends StatelessWidget with $LoginView {
                             });
                       },
                       child: Container(
-                        width: double.infinity,
-                        height: _size.height * 0.09,
+                        width: 343,
+                        height: 50,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                model.countryCode!.flag!,
-                                width: 50,
-                                fit: BoxFit.cover,
+                            SizedBox(
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                      model.countryCode!.flag!,
+                                      width: 50,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(model.countryCode!.callingCode!),
+                                ],
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            Text(model.countryCode!.callingCode!),
+                            const SizedBox(
+                              child: Icon(
+                                Icons.arrow_drop_down,
+                                color: blackColor,
+                              ),
+                            ),
                           ],
                         ),
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                            color: greyColor,
+                            color: borderColor,
                             width: 0.8,
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: _size.height * 0.1 - 40),
+                    const SizedBox(height: 16),
                     SizedBox(
+                      height: 50,
+                      width: 343,
                       child: TextField(
                         controller: numberController,
-                        keyboardType: TextInputType.number,
-                        maxLength: 15,
-                        decoration: const InputDecoration(
+                        keyboardType: TextInputType.phone,
+                        decoration: textInputDecor.copyWith(
                           labelText: 'Mobile number',
-                          counter: Text(''),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(),
-                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: 16.0),
                     model.isBusy
                         ? const Center(
                             child: CircularProgressIndicator(),
@@ -117,42 +131,55 @@ class LoginView extends StatelessWidget with $LoginView {
                               number: numberController.text,
                             ),
                           ),
-                    SizedBox(height: _size.height * 0.1),
-                    Row(
-                      children: const [
-                        Expanded(
-                            child: Divider(
-                          color: greyColor,
-                          thickness: 1.0,
-                        )),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Text('Login into app/signup'),
-                        ),
-                        Expanded(
-                            child: Divider(
-                          color: greyColor,
-                          thickness: 1.0,
-                        )),
-                      ],
+                    SizedBox(height: (150 / _size.height) * 100),
+                    SizedBox(
+                      width: _size.width / 1.3,
+                      child: Row(
+                        children: const [
+                          Expanded(
+                              child: Divider(
+                            color: borderColor,
+                            thickness: 1.0,
+                          )),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Text(
+                              'Login into app/signup',
+                              style: TextStyle(
+                                color: borderColor,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                              child: Divider(
+                            color: borderColor,
+                            thickness: 1.0,
+                          )),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: _size.height * 0.1 / 5),
+                    SizedBox(height: _size.height * 0.1 / 3),
                     Container(
                       width: double.infinity,
                       child: const Text(
                         'By continuing you indicate that\nyou have read and agreed to the',
+                        style: TextStyle(
+                          fontFamily: 'Roboto-Regular',
+                          color: borderColor,
+                        ),
                       ),
                       alignment: Alignment.center,
-                      margin: const EdgeInsets.symmetric(horizontal: 45),
+                      margin: const EdgeInsets.only(bottom: 10),
                       height: _size.height * 0.1,
                     ),
                     const Text(
                       'Terms and Services',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
+                        fontFamily: 'Roboto-Bold',
                       ),
                     ),
-                    SizedBox(height: _size.height * 0.1 / 3),
+                    // SizedBox(height: _size.height * 0.1 / 2),
                   ],
                 ),
               ),

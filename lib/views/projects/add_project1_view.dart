@@ -68,6 +68,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
       builder: (context, model, child) {
         final isEditting = state.index == 0;
         return Scaffold(
+          backgroundColor: whiteColor,
           appBar: AppBar(
             elevation: 0,
             backgroundColor: whiteColor,
@@ -164,7 +165,13 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                     title: 'Project Code',
                     controller: projectCodeController,
                   ),
-                  const Text('Start Date'),
+                  const Text(
+                    'Start Date',
+                    style: TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   const SizedBox(height: 10.0),
                   GestureDetector(
                     onTap: () => startDate(context: context, model: model),
@@ -194,7 +201,13 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                       ),
                     ),
                   ),
-                  const Text('End Date'),
+                  const Text(
+                    'End Date',
+                    style: TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   const SizedBox(height: 10.0),
                   GestureDetector(
                     onTap: () => endDate(context: context, model: model),
