@@ -15,7 +15,7 @@ class StartUpViewModel extends BaseViewModel {
   void toCompanyView() async {
     final data = await _prefsService.loadUserState() ?? 0;
     Future.delayed(const Duration(seconds: 3), () {
-      if (data == 3) {
+      if (data == 1) {
         _navService.replaceWith(Routes.homeView);
       } else {
         _navService.replaceWith(Routes.companyCodeView);
