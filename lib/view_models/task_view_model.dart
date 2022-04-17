@@ -137,6 +137,7 @@ class TaskViewModel extends BaseViewModel {
   }) async {
     try {
       isEdittingTask = true;
+      notifyListeners();
       final response = await _apiService.editNewTask(
         userId: userId,
         token: token,
@@ -147,6 +148,7 @@ class TaskViewModel extends BaseViewModel {
         taskAssignedBy: taskAssignedBy,
       );
       isEdittingTask = false;
+        notifyListeners();
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['res_code'] == '1') {
@@ -164,7 +166,7 @@ class TaskViewModel extends BaseViewModel {
           );
         }
       }
-      notifyListeners();
+    
     } catch (e) {
       _dialogService.showDialog(
         title: 'Error Message',

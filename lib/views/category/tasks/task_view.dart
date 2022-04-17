@@ -261,8 +261,8 @@ class TaskView extends StatelessWidget with $TaskView {
     AddTaskModel model,
     Size size,
     TaskViewModel contoller,
-    TextEditingController nameController,
-    TextEditingController desController,
+    TextEditingController? nameController,
+    TextEditingController? desController,
     String userId,
     String token,
   ) {
@@ -314,20 +314,24 @@ class TaskView extends StatelessWidget with $TaskView {
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
                             onPressed: () {
-                              if (nameController.text == '' ||
-                                  desController.text == '') {
-                                return;
-                              } else {
-                                contoller.editTask(
-                                  taskName: nameController.text.trim(),
-                                  description: desController.text.trim(),
-                                  projectId: model.projectId ?? '',
-                                  taskAssignedBy: model.taskAssignedBy,
-                                  token: token,
-                                  userId: userId,
-                                  id: model.id,
-                                );
-                              }
+                              contoller
+                                  .editTask(
+                                taskName: nameController?.text == ''
+                                    ? model.taskName
+                                    : nameController?.text,
+                                description: desController?.text == ''
+                                    ? model.description
+                                    : desController?.text,
+                                projectId: model.projectId ?? '',
+                                taskAssignedBy: model.taskAssignedBy,
+                                token: token,
+                                userId: userId,
+                                id: model.id,
+                              )
+                                  .then((value) {
+                                nameController?.clear();
+                                descriptionController.clear();
+                              });
                             },
                             child: const Text('Edit Task'),
                           ),
@@ -337,7 +341,9 @@ class TaskView extends StatelessWidget with $TaskView {
             ),
             margin: const EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(40)),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(40),
+            ),
           ),
         );
       },
