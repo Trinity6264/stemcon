@@ -59,12 +59,12 @@ class ProfileView extends StatelessWidget with $ProfileView {
               ),
               backgroundColor: whiteColor,
               elevation: 0,
-              title: const Text(
+              title: Text(
                 'Profile',
                 style: TextStyle(
-                  fontSize: 18.0,
                   color: blackColor,
-                  fontWeight: FontWeight.bold,
+                  fontSize: (_size.width * 0.1) / 1.8,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),

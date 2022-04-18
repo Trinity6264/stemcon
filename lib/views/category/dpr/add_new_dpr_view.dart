@@ -41,12 +41,12 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
               onPressed: model.back,
               icon: const Icon(Icons.arrow_back),
             ),
-            title: const Text(
+            title: Text(
               'Add New DPR',
               style: TextStyle(
                 color: blackColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+                fontSize: (_size.width * 0.1) / 1.8,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -86,18 +86,25 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      taskName,
+                      taskName.toUpperCase(),
                       style: const TextStyle(
                         color: blackColor,
                         fontSize: 20.0,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
+                    const SizedBox(height: 18),
+                    TextField(
+                      controller: taskController,
+                      decoration: textInputDecor.copyWith(
+                        hintText: 'DATE',
+                      ),
+                    ),
                     const SizedBox(height: 20),
                     TextField(
                       controller: taskController,
                       decoration: textInputDecor.copyWith(
-                        hintText: 'Description',
+                        hintText: 'Task',
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -141,7 +148,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                           border: Border.all(
                             style: BorderStyle.solid,
                             width: 1.5,
-                            color: greyColor,
+                            color: borderColor,
                           ),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -154,18 +161,21 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                         hintText: 'Tomorrow Task',
                       ),
                     ),
-                    SizedBox(height: _size.height * 0.2 / 1.5),
+                    SizedBox(height: _size.height * 0.1),
                     model.isBusy
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : SharedButton(
-                            title: 'SUBMIT',
-                            onPressed: () => model.addDpr(
-                              projectId: projectId,
-                              dprDescription: taskController.text.trim(),
-                              token: token,
-                              userId: userId,
+                        : Container(
+                            margin: const EdgeInsets.only(bottom: 30),
+                            child: SharedButton(
+                              title: 'SUBMIT',
+                              onPressed: () => model.addDpr(
+                                projectId: projectId,
+                                dprDescription: taskController.text.trim(),
+                                token: token,
+                                userId: userId,
+                              ),
                             ),
                           ),
                   ],

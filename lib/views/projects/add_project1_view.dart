@@ -72,12 +72,12 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
           appBar: AppBar(
             elevation: 0,
             backgroundColor: whiteColor,
-            title: const Text(
+            title: Text(
               'Add Project',
               style: TextStyle(
                 color: blackColor,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w800,
+                fontSize: (_size.width * 0.1) / 1.8,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -271,12 +271,15 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                                 projectUnit: projectUnit,
                               );
                             } else {
-                              model.addProject(
+                              model.toAddProject2View(
                                 projectCode: projectCodeController.text.trim(),
                                 projectName: projectNameController.text.trim(),
                                 token: token,
+                                state: CheckingState.adding,
                                 userId: userId,
-                                image: model.imageSelected,
+                                projectPicture: model.imageSelected,
+                                projectEndDate: model.endDate,
+                                projectStartDate: model.startDate,
                                 adminStatus: adminStatus,
                               );
                             }

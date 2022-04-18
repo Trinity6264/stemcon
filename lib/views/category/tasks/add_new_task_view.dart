@@ -39,6 +39,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
 
   @override
   Widget build(BuildContext context) {
+    Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AddTaskViewModel>.reactive(
         viewModelBuilder: () => AddTaskViewModel(),
         builder: (context, model, child) {
@@ -51,12 +52,12 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
               elevation: 0.0,
               backgroundColor: whiteColor,
               automaticallyImplyLeading: false,
-              title: const Text(
+              title: Text(
                 'Add New Task',
                 style: TextStyle(
                   color: blackColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+                  fontSize: (_size.width * 0.1) / 1.8,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),

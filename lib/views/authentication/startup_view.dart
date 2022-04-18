@@ -24,7 +24,7 @@ class StartUpView extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
-                    'StemCon',
+                    'STEMCON',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w800,

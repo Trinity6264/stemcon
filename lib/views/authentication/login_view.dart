@@ -137,24 +137,20 @@ class LoginView extends StatelessWidget with $LoginView {
                       child: Row(
                         children: const [
                           Expanded(
-                              child: Divider(
-                            color: borderColor,
-                            thickness: 1.0,
-                          )),
+                            child: Divider(color: textColor, thickness: 1.0),
+                          ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 15.0),
                             child: Text(
                               'Login into app/signup',
                               style: TextStyle(
-                                color: borderColor,
+                                color: textColor,
                               ),
                             ),
                           ),
                           Expanded(
-                              child: Divider(
-                            color: borderColor,
-                            thickness: 1.0,
-                          )),
+                            child: Divider(color: textColor, thickness: 1.0),
+                          ),
                         ],
                       ),
                     ),
@@ -165,7 +161,7 @@ class LoginView extends StatelessWidget with $LoginView {
                         'By continuing you indicate that\nyou have read and agreed to the',
                         style: TextStyle(
                           fontFamily: 'Roboto-Regular',
-                          color: borderColor,
+                          color: textColor,
                         ),
                       ),
                       alignment: Alignment.center,

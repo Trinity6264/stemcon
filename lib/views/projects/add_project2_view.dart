@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -21,12 +23,18 @@ import '../../view_models/home_view_model.dart';
 class AddProject2View extends StatelessWidget with $AddProject2View {
   final int userId;
   final int token;
-  final int id;
+  final int? id;
   final String? adminStatus;
   final CheckingState state;
+  // start project1
+  final String? projectName;
+  final File? projectPicture;
+  final String? projectStartDate;
+  final String? projectEndDate;
+  final String? projectCode;
+  // end project1
   final String? projectAddress;
   final String? projectAdmin;
-  final String? projectCode;
   final String? projectKeyPoint;
   final String? projectManHour;
   final String? projectPurpose;
@@ -37,9 +45,13 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
     Key? key,
     required this.userId,
     required this.token,
-    required this.id,
+    this.id,
     required this.adminStatus,
     required this.state,
+    this.projectName,
+    this.projectPicture,
+    this.projectStartDate,
+    this.projectEndDate,
     this.projectAddress,
     this.projectAdmin,
     this.projectCode,
@@ -75,19 +87,20 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
       builder: (context, model, child) {
         final isEditting = state.index == 0;
         return Scaffold(
+          backgroundColor: whiteColor,
           appBar: AppBar(
             backgroundColor: whiteColor,
             leading: IconButton(
-              onPressed: () => model.back(),
+              onPressed: model.back,
               icon: const Icon(Icons.close, color: blackColor),
             ),
             elevation: 0,
             title: Text(
               isEditting ? 'Editting Project' : 'Add Project',
-              style: const TextStyle(
+              style: TextStyle(
                 color: blackColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 18.0,
+                fontSize: (_size.width * 0.1) / 1.8,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -153,9 +166,13 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(color: blackColor, width: 1.2),
+                          border: Border.all(color: borderColor, width: 1.2),
                         ),
                         child: DropdownButtonFormField(
+                          elevation: 0,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                          ),
                           items: model.manWorkingHour
                               .map(
                                 (e) => DropdownMenuItem(
@@ -188,9 +205,13 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(color: blackColor, width: 1.2),
+                          border: Border.all(color: borderColor, width: 1.2),
                         ),
                         child: DropdownButtonFormField(
+                          elevation: 0,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                          ),
                           items: model.listOfselectedTimeZone
                               .map(
                                 (e) => DropdownMenuItem(
@@ -346,7 +367,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                               model.editSubmitData(
                                 userId: userId,
                                 token: token,
-                                id: id,
+                                id: id!,
                                 adminStatus: adminStatus == ''
                                     ? projectStatus!
                                     : adminStatus!,
@@ -367,10 +388,14 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                                     : model.selectedTimeZone,
                               );
                             } else {
-                              model.submitData(
+                              model.addProject(
                                 userId: userId,
                                 token: token,
-                                id: id,
+                                image: projectPicture,
+                                projectCode: projectCode!,
+                                projectEndDate: projectEndDate!,
+                                projectName: projectName!,
+                                projectStartDate: projectStartDate!,
                                 timeZone: model.selectedTimeZone,
                                 adminStatus: adminStatus!,
                                 workingHour: model.manHour,

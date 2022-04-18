@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:stacked/stacked.dart';
@@ -104,25 +105,7 @@ class NewProjectViewModel extends BaseViewModel {
     required String address,
     required String timeZone,
   }) async {
-    if (workingHour == '' ||
-        purpose == '' ||
-        keyPoints == '' ||
-        address == '' ||
-        unit == null ||
-        selectedTimeZone == '') {
-      _snackbarService.registerSnackbarConfig(SnackbarConfig(
-        messageColor: whiteColor,
-      ));
-      _snackbarService.showSnackbar(message: 'Entry can\'t be empty');
-      return;
-    } else if (listOfContact.isEmpty) {
-      _snackbarService.registerSnackbarConfig(SnackbarConfig(
-        messageColor: whiteColor,
-      ));
-      _snackbarService.showSnackbar(message: 'Add at least one member');
-      return;
-    } else {
-      setBusy(true);
+    try {
       final projectContent = AddProject2Model(
         id: id,
         token: token,
@@ -138,6 +121,7 @@ class NewProjectViewModel extends BaseViewModel {
       );
       final response =
           await _apiService.addProject2(postContent: projectContent);
+      
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['res_code'] == '1') {
@@ -151,6 +135,7 @@ class NewProjectViewModel extends BaseViewModel {
               token: token.toString(),
               userId: userId.toString(),
             );
+            setBusy(false);
             if (res.statusCode == 200) {
               _snackbarService.registerSnackbarConfig(SnackbarConfig(
                 messageColor: whiteColor,
@@ -159,7 +144,6 @@ class NewProjectViewModel extends BaseViewModel {
                   message: 'Members add successfully');
             }
           }
-          setBusy(false);
           _snackbarService.registerSnackbarConfig(SnackbarConfig(
             messageColor: whiteColor,
           ));
@@ -182,8 +166,185 @@ class NewProjectViewModel extends BaseViewModel {
         ));
         _snackbarService.showSnackbar(message: 'Error occurred!');
       }
+    } catch (e) {
+      setBusy(false);
+      _snackbarService.registerSnackbarConfig(SnackbarConfig(
+        messageColor: whiteColor,
+      ));
+      _snackbarService.showSnackbar(message: 'Error occurred!');
     }
   }
+
+  Future<void> addProject({
+    required String projectName,
+    required String projectStartDate,
+    required String projectEndDate,
+    required String projectCode,
+    required int? token,
+    required int? userId,
+    required File? image,
+    // project 2
+    required String adminStatus,
+    required String workingHour,
+    required String purpose,
+    required String keyPoints,
+    required String address,
+    required String timeZone,
+  }) async {
+    if (projectCode.isEmpty ||
+        projectName.isEmpty ||
+        image == null ||
+        token == null ||
+        userId == null ||
+        projectStartDate.isEmpty ||
+        projectEndDate.isEmpty ||
+        workingHour == '' ||
+        purpose == '' ||
+        keyPoints == '' ||
+        address == '' ||
+        unit == null ||
+        selectedTimeZone == '') {
+      _snackbarService.registerSnackbarConfig(SnackbarConfig(
+        messageColor: whiteColor,
+      ));
+      _snackbarService.showSnackbar(message: 'Entry can\'t be empty');
+    } else if (listOfContact.isEmpty) {
+      _snackbarService.registerSnackbarConfig(SnackbarConfig(
+        messageColor: whiteColor,
+      ));
+      _snackbarService.showSnackbar(message: 'Add at least one member');
+      return;
+    } else {
+      setBusy(true);
+      try {
+        final response = await _apiService.addProject1(
+          userId: userId,
+          token: token,
+          projectCode: projectCode,
+          projectName: projectName,
+          projectPhotoPath: image,
+          projectStartDate: projectStartDate,
+          projectEndDate: projectEndDate,
+        );
+        if (response.statusCode == 200) {
+          final data = response.data;
+          if (data['res_code'] == "1") {
+            submitData(
+              address: address,
+              adminStatus: adminStatus,
+              id: data['res_data']['id'],
+              keyPoints: keyPoints,
+              purpose: purpose,
+              timeZone: timeZone,
+              token: token,
+              userId: userId,
+              workingHour: workingHour,
+            );
+          } else {
+            setBusy(false);
+            _snackbarService.registerSnackbarConfig(SnackbarConfig(
+              messageColor: whiteColor,
+            ));
+            _snackbarService.showSnackbar(message: 'Error occurred!');
+          }
+        } else {
+          setBusy(false);
+        }
+      } on DioError catch (e) {
+        setBusy(false);
+        debugPrint(e.message);
+        return;
+      }
+    }
+  }
+  /*
+  final projectContent = AddProject2Model(
+          id: id,
+          token: token,
+          userId: userId,
+          projectAddress: address,
+          projectAdmin: adminStatus,
+          projectKeyPoint: keyPoints,
+          projectManHour: workingHour,
+          projectPurpose: purpose,
+          projectStatus: 'active',
+          projectTimezone: timeZone,
+          projectUnit: unit,
+        );
+        setBusy(true);
+        final response =
+            await _apiService.addProject2(postContent: projectContent);
+        setBusy(false);
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          if (data['res_code'] == '1') {
+            for (Contact item in listOfContact) {
+              final res = await _apiService.addMember(
+                projectId: id.toString(),
+                memberName: item.displayName ?? 'No name',
+                memberMobileNumber: item.phones!.isEmpty
+                    ? 'none'
+                    : item.phones?.elementAt(0).value ?? '',
+                token: token.toString(),
+                userId: userId.toString(),
+              );
+              if (res.statusCode == 200) {
+                _snackbarService.registerSnackbarConfig(SnackbarConfig(
+                  messageColor: whiteColor,
+                ));
+                _snackbarService.showSnackbar(
+                    message: 'Members add successfully');
+              }
+            }
+            _snackbarService.registerSnackbarConfig(SnackbarConfig(
+              messageColor: whiteColor,
+            ));
+            _snackbarService.showSnackbar(message: 'Project add successfully');
+            _navService.replaceWith(Routes.homeView);
+            return;
+          }
+          {
+            setBusy(false);
+            _snackbarService.registerSnackbarConfig(SnackbarConfig(
+              messageColor: whiteColor,
+            ));
+            _snackbarService.showSnackbar(
+                message: 'Project add unsuccessfully');
+            return;
+          }
+        } else {
+          setBusy(false);
+          _snackbarService.registerSnackbarConfig(SnackbarConfig(
+            messageColor: whiteColor,
+          ));
+          _snackbarService.showSnackbar(message: 'Error occurred!');
+        }
+
+
+
+
+
+  final response = await _apiService.addProject1(
+          userId: userId,
+          token: token,
+          projectCode: projectCode,
+          projectName: projectName,
+          projectPhotoPath: image,
+          projectStartDate: startDate!,
+          projectEndDate: endDate!,
+        );
+        if (response.statusCode == 200) {
+          final data = response.data;
+          if (data['res_code'] == "1") {
+            setBusy(false);
+            toAddProject2View(
+              id: data['res_data']['id'],
+              token: token,
+              adminStatus: adminStatus,
+              userId: userId,
+              state: CheckingState.adding,
+            );
+  */
 
   // Edit project 2
 

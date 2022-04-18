@@ -129,71 +129,76 @@ class AddProjectViewModel extends BaseViewModel {
   }
 
   // add project
-  Future<void> addProject(
-      {required String projectCode,
-      required String adminStatus,
-      required String projectName,
-      required int? token,
-      required int? userId,
-      required File? image}) async {
-    if (projectCode.isEmpty ||
-        projectName.isEmpty ||
-        image == null ||
-        token == null ||
-        userId == null ||
-        startDate!.isEmpty ||
-        endDate!.isEmpty) {
-      _snackbarService.registerSnackbarConfig(SnackbarConfig(
-        messageColor: whiteColor,
-      ));
-      _snackbarService.showSnackbar(message: 'Entry can\'t be empty');
-    } else {
-      setBusy(true);
-      try {
-        final response = await _apiService.addProject1(
-          userId: userId,
-          token: token,
-          projectCode: projectCode,
-          projectName: projectName,
-          projectPhotoPath: image,
-          projectStartDate: startDate!,
-          projectEndDate: endDate!,
-        );
-        if (response.statusCode == 200) {
-          final data = response.data;
-          if (data['res_code'] == "1") {
-            setBusy(false);
-            toAddProject2View(
-              id: data['res_data']['id'],
-              token: token,
-              adminStatus: adminStatus,
-              userId: userId,
-              state: CheckingState.adding,
-            );
-          } else {
-            setBusy(false);
-            _snackbarService.registerSnackbarConfig(SnackbarConfig(
-              messageColor: whiteColor,
-            ));
-            _snackbarService.showSnackbar(message: 'Error occurred!');
-          }
-        } else {
-          setBusy(false);
-        }
-      } on DioError catch (e) {
-        setBusy(false);
-        debugPrint(e.message);
-        return;
-      }
-    }
-  }
+  // Future<void> addProject({
+  //   required String projectCode,
+  //   required String adminStatus,
+  //   required String projectName,
+  //   required int? token,
+  //   required int? userId,
+  //   required File? image,
+  // }) async {
+  //   if (projectCode.isEmpty ||
+  //       projectName.isEmpty ||
+  //       image == null ||
+  //       token == null ||
+  //       userId == null ||
+  //       startDate!.isEmpty ||
+  //       endDate!.isEmpty) {
+  //     _snackbarService.registerSnackbarConfig(SnackbarConfig(
+  //       messageColor: whiteColor,
+  //     ));
+  //     _snackbarService.showSnackbar(message: 'Entry can\'t be empty');
+  //   } else {
+  //     setBusy(true);
+  //     try {
+  //       final response = await _apiService.addProject1(
+  //         userId: userId,
+  //         token: token,
+  //         projectCode: projectCode,
+  //         projectName: projectName,
+  //         projectPhotoPath: image,
+  //         projectStartDate: startDate!,
+  //         projectEndDate: endDate!,
+  //       );
+  //       if (response.statusCode == 200) {
+  //         final data = response.data;
+  //         if (data['res_code'] == "1") {
+  //           setBusy(false);
+  //           toAddProject2View(
+  //             id: data['res_data']['id'],
+  //             token: token,
+  //             adminStatus: adminStatus,
+  //             userId: userId,
+  //             state: CheckingState.adding,
+  //           );
+  //         } else {
+  //           setBusy(false);
+  //           _snackbarService.registerSnackbarConfig(SnackbarConfig(
+  //             messageColor: whiteColor,
+  //           ));
+  //           _snackbarService.showSnackbar(message: 'Error occurred!');
+  //         }
+  //       } else {
+  //         setBusy(false);
+  //       }
+  //     } on DioError catch (e) {
+  //       setBusy(false);
+  //       debugPrint(e.message);
+  //       return;
+  //     }
+  //   }
+  // }
 
   void toAddProject2View({
-    required int userId,
-    required int token,
+    required int? userId,
+    required int? token,
     required String? adminStatus,
-    required int id,
+    final int? id,
     required CheckingState state,
+    final String? projectName,
+    final File? projectPicture,
+    final String? projectStartDate,
+    final String? projectEndDate,
     // op
     final String? projectAddress,
     final String? projectAdmin,
@@ -206,22 +211,39 @@ class AddProjectViewModel extends BaseViewModel {
     final String? projectTimeZone,
   }) {
     if (state.index == 1) {
+      if (projectCode!.isEmpty ||
+          projectName!.isEmpty ||
+          imageSelected == null ||
+          token == null ||
+          userId == null ||
+          startDate!.isEmpty ||
+          endDate!.isEmpty) {
+        _snackbarService.registerSnackbarConfig(SnackbarConfig(
+          messageColor: whiteColor,
+        ));
+        _snackbarService.showSnackbar(message: 'Entry can\'t be empty');
+        return;
+      }
       _navService.navigateTo(
         Routes.addProject2View,
         arguments: AddProject2ViewArguments(
           userId: userId,
           token: token,
           adminStatus: adminStatus,
-          id: id,
           state: state,
+          projectCode: projectCode,
+          projectPicture: projectPicture,
+          projectName: projectName,
+          projectStartDate: projectStartDate,
+          projectEndDate: projectEndDate,
         ),
       );
     } else {
       _navService.navigateTo(
         Routes.addProject2View,
         arguments: AddProject2ViewArguments(
-          userId: userId,
-          token: token,
+          userId: userId!,
+          token: token!,
           adminStatus: adminStatus,
           id: id,
           state: state,

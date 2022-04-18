@@ -5,7 +5,9 @@
 // **************************************************************************
 
 // ignore_for_file: public_member_api_docs
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -151,6 +153,10 @@ class StackedRouter extends RouterBase {
           id: args.id,
           adminStatus: args.adminStatus,
           state: args.state,
+          projectName: args.projectName,
+          projectPicture: args.projectPicture,
+          projectStartDate: args.projectStartDate,
+          projectEndDate: args.projectEndDate,
           projectAddress: args.projectAddress,
           projectAdmin: args.projectAdmin,
           projectCode: args.projectCode,
@@ -391,9 +397,13 @@ class AddProject2ViewArguments {
   final Key? key;
   final int userId;
   final int token;
-  final int id;
+  final int? id;
   final String? adminStatus;
   final CheckingState state;
+  final String? projectName;
+  final File? projectPicture;
+  final String? projectStartDate;
+  final String? projectEndDate;
   final String? projectAddress;
   final String? projectAdmin;
   final String? projectCode;
@@ -407,9 +417,13 @@ class AddProject2ViewArguments {
       {this.key,
       required this.userId,
       required this.token,
-      required this.id,
+      this.id,
       required this.adminStatus,
       required this.state,
+      this.projectName,
+      this.projectPicture,
+      this.projectStartDate,
+      this.projectEndDate,
       this.projectAddress,
       this.projectAdmin,
       this.projectCode,
@@ -448,7 +462,7 @@ class AddCategoryViewArguments {
       required this.userId,
       required this.token,
       required this.indes,
-      this.projectId});
+      required this.projectId});
 }
 
 /// AddNewDprView arguments holder class

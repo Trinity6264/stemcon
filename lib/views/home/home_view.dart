@@ -102,7 +102,7 @@ class HomeView extends StatelessWidget with $HomeView {
                           'STEMCON',
                           style: TextStyle(
                             color: blackColor,
-                            fontSize: (_textSize.width * 0.1) / 1.5,
+                            fontSize: (_textSize.width * 0.1) / 1.8,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
