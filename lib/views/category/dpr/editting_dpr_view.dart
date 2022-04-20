@@ -159,6 +159,9 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
                       child: model.isEdittingTask == true
                           ? const LinearProgressIndicator()
                           : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: primaryColor,
+                            ),
                               onPressed: () {
                                 if (model.imageSelected == null &&
                                     descriptionController.text.isEmpty &&
@@ -180,7 +183,7 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
                                   );
                                 }
                               },
-                              child: const Text('Edit Task'),
+                              child: const Text('Edit DPR'),
                             ),
                     ),
                   ],

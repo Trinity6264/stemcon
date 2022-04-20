@@ -187,7 +187,7 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: _size.height * 0.1 / 2),
+            SizedBox(height: _size.height * 0.2 ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

@@ -161,11 +161,11 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                       titleWidget(text: 'Man Working Hour'),
                       Container(
                         width: double.infinity,
-                        height: _size.height * 0.2 / 2.3,
+                        height: _size.height * 0.1/1.3,
                         padding: const EdgeInsets.only(left: 10.0),
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
+                          borderRadius: BorderRadius.circular(8.0),
                           border: Border.all(color: borderColor, width: 1.2),
                         ),
                         child: DropdownButtonFormField(
@@ -200,11 +200,11 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                       titleWidget(text: 'Time Zone'),
                       Container(
                         width: double.infinity,
-                        height: _size.height * 0.2 / 2.3,
+                        height: _size.height * 0.1 / 1.3,
                         padding: const EdgeInsets.only(left: 10.0),
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
+                          borderRadius: BorderRadius.circular(8.0),
                           border: Border.all(color: borderColor, width: 1.2),
                         ),
                         child: DropdownButtonFormField(

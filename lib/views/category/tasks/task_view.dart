@@ -313,6 +313,9 @@ class TaskView extends StatelessWidget with $TaskView {
                     child: contoller.isEdittingTask == true
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: primaryColor,
+                            ),
                             onPressed: () {
                               contoller
                                   .editTask(
