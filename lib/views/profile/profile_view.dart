@@ -166,6 +166,9 @@ class ProfileView extends StatelessWidget with $ProfileView {
                         : SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
+                               style: ElevatedButton.styleFrom(
+                                 primary: primaryColor,
+                               ),
                               onPressed: () {
                                 numberFocusNode.unfocus();
                                 model.addProfile(

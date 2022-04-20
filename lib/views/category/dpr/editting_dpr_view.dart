@@ -56,71 +56,10 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: model.picImage,
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        width: double.infinity,
-                        height: size.height * 0.3 / 1.2,
-                        child:
-                            data.dprPdf != null && model.imageSelected == null
-                                ? Container(
-                                    width: double.infinity,
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          'http://stemcon.likeview.in${data.dprPdf}',
-                                      fit: BoxFit.cover,
-                                      placeholder: (_, __) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      },
-                                      width: double.infinity,
-                                      errorWidget: (_, __, ___) {
-                                        return SvgPicture.asset(
-                                          'assets/logo/undraw.svg',
-                                          height: size.height * 0.2,
-                                        );
-                                      },
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                  )
-                                : Center(
-                                    child: model.imageSelected != null
-                                        ? Image.file(
-                                            model.imageSelected!,
-                                            fit: BoxFit.cover,
-                                            width: double.infinity - 20,
-                                            // height: size.height * 0.3 / 1.2,
-                                          )
-                                        : Column(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/logo/undraw.svg',
-                                                height: size.height * 0.2,
-                                              ),
-                                              const SizedBox(height: 5.0),
-                                              const Text(
-                                                'Tap to upload product image Here',
-                                                style: TextStyle(
-                                                  color: greyColor,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 18.0,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                  ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            style: BorderStyle.solid,
-                            width: 1.5,
-                            color: greyColor,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
+                    TextField(
+                      controller: descriptionController,
+                      decoration: textInputDecor.copyWith(
+                        hintText: data.dprTime ?? 'Dpr Description',
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -134,6 +73,7 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
                     GestureDetector(
                       onTap: () => endDate(context: context, model: model),
                       child: Container(
+                        padding: const EdgeInsets.only(top: 15, left: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
                           border: Border.all(
@@ -143,10 +83,8 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
                         ),
                         height: (size.height * 0.1 / 3) + 20,
                         width: double.infinity,
-                        child: Center(
-                          child: Text(
-                            model.dateTime ?? data.dprTime ?? 'Dpr time',
-                          ),
+                        child: Text(
+                          model.dateTime ?? data.dprTime ?? 'Dpr time',
                         ),
                       ),
                     ),
@@ -159,9 +97,9 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
                       child: model.isEdittingTask == true
                           ? const LinearProgressIndicator()
                           : ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: primaryColor,
-                            ),
+                              style: ElevatedButton.styleFrom(
+                                primary: primaryColor,
+                              ),
                               onPressed: () {
                                 if (model.imageSelected == null &&
                                     descriptionController.text.isEmpty &&
