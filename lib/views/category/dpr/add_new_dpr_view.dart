@@ -94,10 +94,27 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                       ),
                     ),
                     const SizedBox(height: 18),
-                    TextField(
-                      controller: taskController,
-                      decoration: textInputDecor.copyWith(
-                        hintText: 'DATE',
+                    GestureDetector(
+                      onTap: () => endDate(context: context, model: model),
+                      child: Container(
+                        width: double.infinity,
+                        height: _size.height * 0.1 / 1.3,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: borderColor,
+                          ),
+                        ),
+                        child: Text(
+                          model.dateTime ?? "2022-4-6",
+                          style: const TextStyle(
+                            color: blackColor,
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),

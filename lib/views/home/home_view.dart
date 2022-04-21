@@ -258,13 +258,14 @@ class HomeView extends StatelessWidget with $HomeView {
                                                 Text(
                                                   'PMC ${data.projectCode ?? '123'}',
                                                   style: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                                 const SizedBox(height: 3),
                                                 Text(
                                                   data.projectAddress ?? '',
+                                                  softWrap: true,
                                                   style: const TextStyle(
                                                     fontSize: 10,
                                                   ),

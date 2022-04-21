@@ -37,7 +37,7 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
       builder: (_, model, ___) {
         return Center(
           child: Container(
-            height: size.height * 0.8,
+            height: size.height * 0.5,
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               body: Container(

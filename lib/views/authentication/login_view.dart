@@ -142,7 +142,7 @@ class LoginView extends StatelessWidget with $LoginView {
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 15.0),
                             child: Text(
-                              'Login into app/signup',
+                              'Login into app',
                               style: TextStyle(
                                 color: textColor,
                               ),

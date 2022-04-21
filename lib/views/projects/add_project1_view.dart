@@ -180,9 +180,9 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                       width: double.infinity,
                       height: _size.height * 0.1 / 1.4,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                          color: greyColor,
+                          color: borderColor,
                         ),
                       ),
                       child: Text(
@@ -215,9 +215,9 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                       width: double.infinity,
                       height: _size.height * 0.1 / 1.4,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                          color: greyColor,
+                          color: borderColor,
                         ),
                       ),
                       child: Text(

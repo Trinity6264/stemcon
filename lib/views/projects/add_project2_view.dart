@@ -161,7 +161,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                       titleWidget(text: 'Man Working Hour'),
                       Container(
                         width: double.infinity,
-                        height: _size.height * 0.1/1.3,
+                        height: _size.height * 0.1 / 1.3,
                         padding: const EdgeInsets.only(left: 10.0),
                         alignment: Alignment.centerLeft,
                         decoration: BoxDecoration(
@@ -229,11 +229,15 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                       titleWidget(text: 'Key Points'),
                       TextField(
                         controller: keyPointsController,
+                        maxLines: 20,
+                        minLines: 1,
                         decoration: textInputDecor.copyWith(
                             hintText: projectKeyPoint ?? 'Points'),
                       ),
                       titleWidget(text: 'Address'),
                       TextField(
+                        maxLines: 20,
+                        minLines: 1,
                         controller: addressController,
                         decoration: textInputDecor.copyWith(
                             hintText: projectAddress ?? 'Address'),
