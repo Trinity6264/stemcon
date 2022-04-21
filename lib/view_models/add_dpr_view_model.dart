@@ -20,6 +20,11 @@ class AddNewDprViewModel extends BaseViewModel {
   String? dateTime;
   File? imageSelected;
 
+  void initDate() {
+    final data = DateTime.now();
+    dateTime = '${data.year}-${data.month}-${data.day}';
+  }
+
   Future<void> picImage() async {
     final data = await _imagePicker.pickFile();
     if (data != null) {
@@ -70,6 +75,7 @@ class AddNewDprViewModel extends BaseViewModel {
           dprDescription: dprDescription,
           projectId: projectId,
         );
+        debugPrint(response.statusCode.toString());
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
           if (data['res_code'] == "1") {
@@ -78,6 +84,11 @@ class AddNewDprViewModel extends BaseViewModel {
               messageColor: whiteColor,
             ));
             _snackbarService.showSnackbar(message: 'Dpr added Succesfully');
+            _navservice.pushNamedAndRemoveUntil(
+              DprWrapperRoutes.dprView,
+              predicate: (_) => false,
+              id: 2,
+            );
             return;
           } else {
             setBusy(false);

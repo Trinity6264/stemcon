@@ -31,6 +31,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AddNewDprViewModel>.reactive(
+      onModelReady: (model) => model.initDate(),
       viewModelBuilder: () => AddNewDprViewModel(),
       builder: (context, model, child) {
         return Scaffold(

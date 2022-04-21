@@ -121,7 +121,7 @@ class NewProjectViewModel extends BaseViewModel {
       );
       final response =
           await _apiService.addProject2(postContent: projectContent);
-      
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['res_code'] == '1') {
@@ -141,15 +141,11 @@ class NewProjectViewModel extends BaseViewModel {
                 messageColor: whiteColor,
               ));
               _snackbarService.showSnackbar(
-                  message: 'Members add successfully');
+                  message: 'Project add successfully');
+              _navService.replaceWith(Routes.homeView);
+              return;
             }
           }
-          _snackbarService.registerSnackbarConfig(SnackbarConfig(
-            messageColor: whiteColor,
-          ));
-          _snackbarService.showSnackbar(message: 'Project add successfully');
-          _navService.replaceWith(Routes.homeView);
-          return;
         }
         {
           setBusy(false);
