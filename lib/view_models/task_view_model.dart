@@ -113,7 +113,7 @@ class TaskViewModel extends BaseViewModel {
   }) {
     if (userId == null || token == null) return;
     _navService.navigateTo(
-      TaskWrapperViewRoutes.addCategoryView,
+      Routes.addCategoryView,
       id: 1,
       arguments: AddCategoryViewArguments(
         userId: userId,

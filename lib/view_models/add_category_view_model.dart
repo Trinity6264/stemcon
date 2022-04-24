@@ -14,12 +14,6 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
   final _apiService = locator<ApiService>();
   final _dialogService = locator<DialogService>();
   final _snackbarService = locator<SnackbarService>();
-  void goBackTask() {
-     _navService.back(id: 1);
-  }
-  void goBackDpr() {
-    _navService.back(id: 2);
-  }
 
 // Fetching data method
   List<SuggestionListModel> datas = [];
@@ -64,7 +58,7 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
         token: token,
         dataId: id,
       );
-      print(response.body);
+
       final data = jsonDecode(response.body);
       if (data['res_code'] == "1") {
         loadData(userId: userId, token: token);
@@ -98,26 +92,24 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
 
     index == 0
         ? _navService.navigateTo(
-            TaskWrapperViewRoutes.addNewTaskView,
+            Routes.addNewTaskView,
             arguments: AddNewTaskViewArguments(
               userId: userId,
               token: token,
               taskName: taskName,
-              taskAssignedBy: '8',
+              taskAssignedBy: userId.toString(),
               projectId: projectId,
               state: CheckingState.adding,
             ),
-            id: 1,
           )
         : _navService.navigateTo(
-            DprWrapperRoutes.addNewDprView,
+            Routes.addNewDprView,
             arguments: AddNewDprViewArguments(
               userId: userId,
               token: token,
               taskName: taskName,
               projectId: projectId,
             ),
-            id: 2,
           );
   }
 }

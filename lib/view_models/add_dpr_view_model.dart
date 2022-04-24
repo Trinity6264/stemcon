@@ -85,9 +85,9 @@ class AddNewDprViewModel extends BaseViewModel {
             ));
             _snackbarService.showSnackbar(message: 'Dpr added Succesfully');
             _navservice.pushNamedAndRemoveUntil(
-              DprWrapperRoutes.dprView,
+              Routes.dprView,
               predicate: (_) => false,
-              id: 2,
+         
             );
             return;
           } else {

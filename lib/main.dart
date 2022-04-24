@@ -21,6 +21,9 @@ class MyApp extends StatelessWidget {
       title: 'Stemcon',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        bottomNavigationBarTheme:const BottomNavigationBarThemeData(
+          elevation: 0.0,
+        ),
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: blackColor),
         ),

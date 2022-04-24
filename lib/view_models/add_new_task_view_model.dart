@@ -14,13 +14,13 @@ class AddTaskViewModel extends BaseViewModel {
   final _apiService = locator<ApiService>();
 
   void back() {
-    _navService.back(id: 1);
+    _navService.back();
   }
 
  
 
   Future<void> backHome() async {
-    _navService.back(id: 1);
+    _navService.back();
   }
 
   Future<void> addTask({
@@ -58,7 +58,7 @@ class AddTaskViewModel extends BaseViewModel {
               messageColor: whiteColor,
             ));
             _snackbarService.showSnackbar(message: 'Task Added');
-            _navService.replaceWith(TaskWrapperViewRoutes.taskView, id: 1);
+            _navService.replaceWith(Routes.taskView);
           } else {
             setBusy(false);
             _snackbarService.registerSnackbarConfig(SnackbarConfig(

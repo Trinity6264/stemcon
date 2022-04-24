@@ -43,126 +43,83 @@ class DprView extends StatelessWidget {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : Stack(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: model.datas.isEmpty
-                          ? Center(
-                              child: SvgPicture.asset(
-                                'assets/logo/undraw.svg',
+              : Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: model.datas.isEmpty
+                      ? Center(
+                          child: SvgPicture.asset(
+                            'assets/logo/undraw.svg',
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: model.datas.length,
+                          physics: const AlwaysScrollableScrollPhysics(
+                            parent: BouncingScrollPhysics(),
+                          ),
+                          itemBuilder: (context, index) {
+                            final data = model.datas[index];
+
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 0,
+                                vertical: 15,
                               ),
-                            )
-                          : ListView.builder(
-                              itemCount: model.datas.length,
-                              physics: const AlwaysScrollableScrollPhysics(
-                                parent: BouncingScrollPhysics(),
-                              ),
-                              itemBuilder: (context, index) {
-                                final data = model.datas[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    showCustomDialog(
-                                      context,
-                                      data,
-                                      model.token!,
-                                      model.userId!,
-                                    );
-                                  },
-                                  child: Dismissible(
-                                    key: Key(UniqueKey().toString()),
-                                    background: Container(
-                                      color: Colors.red,
-                                      alignment: Alignment.centerRight,
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: whiteColor,
-                                      ),
-                                    ),
-                                    direction: DismissDirection.endToStart,
-                                    onDismissed: (direction) {
-                                      if (direction ==
-                                          DismissDirection.endToStart) {
-                                        model.deleteDpr(
-                                          token: model.token!,
-                                          userId: model.userId!,
-                                          index: index,
-                                          id: data.id.toString(),
-                                        );
-                                      }
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(bottom: 5),
-                                      width: double.infinity,
-                                      height: _size.height * 0.1 + 20,
-                                      child: Card(
-                                        shadowColor: greyColor,
-                                        elevation: 3.0,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Task ${index + 1} By . Darshan kasundra',
-                                                style: const TextStyle(
-                                                  color: primaryColor,
-                                                  fontWeight: FontWeight.w800,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 5.0),
-                                                child: Text(
-                                                  data.dprDescription ??
-                                                      'Empty',
-                                                  style: const TextStyle(
-                                                    fontSize: 20.0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                              width: double.infinity,
+                              height: (_size.height * 0.2) + 15,
+                              child: Card(
+                                shadowColor: greyColor,
+                                elevation: 3.0,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data.dprTime ?? 'Empty',
+                                        style: const TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ),
+                                      Text(
+                                        data.dprDescription ?? 'Empty',
+                                        style: const TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.only(
+                                          top: 20,
+                                          left: 20,
+                                          right: 20,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            button(
+                                              size: _size,
+                                              color: greenColor,
+                                              text: 'Edit',
+                                            ),
+                                            button(
+                                              size: _size,
+                                              color: redColor,
+                                              text: 'Delete',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              },
-                            ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: _size.height * 0.1,
-                        color: whiteColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            button(
-                              onPressed: () {
-                                model.toCategoryView();
-                              },
-                              size: _size,
-                              color: blackColor,
-                              icon: Icons.add,
-                              text: 'Add Dpr',
-                            ),
-                            button(
-                              size: _size,
-                              color: primaryColor,
-                              icon: Icons.format_align_left,
-                              text: 'Filter',
-                            ),
-                          ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    ),
-                  ],
                 ),
         );
       },
@@ -171,7 +128,6 @@ class DprView extends StatelessWidget {
 
   GestureDetector button({
     required Size size,
-    required IconData icon,
     required Color color,
     required String text,
     VoidCallback? onPressed,
@@ -179,22 +135,17 @@ class DprView extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: size.width * 0.4,
+        width: size.width * 0.2,
         height: size.height * 0.1 - 30,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: color),
-            const SizedBox(width: 10),
-            Text(
-              text,
-              style: TextStyle(
-                color: color,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w800,
-              ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: color,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w800,
             ),
-          ],
+          ),
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
@@ -204,40 +155,6 @@ class DprView extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void showCustomDialog(
-    BuildContext context,
-    DprListModel model,
-    int token,
-    int userId,
-  ) {
-    showGeneralDialog(
-      context: context,
-      barrierLabel: "Barrier",
-      barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.2),
-      transitionDuration: const Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return EdittingDprView(data: model, token: token, userId: userId);
-      },
-      transitionBuilder: (_, anim, __, child) {
-        Tween<Offset> tween;
-        if (anim.status == AnimationStatus.reverse) {
-          tween = Tween(begin: const Offset(1, 0), end: Offset.zero);
-        } else {
-          tween = Tween(begin: const Offset(1, 0), end: Offset.zero);
-        }
-
-        return SlideTransition(
-          position: tween.animate(anim),
-          child: FadeTransition(
-            opacity: anim,
-            child: child,
-          ),
-        );
-      },
     );
   }
 }

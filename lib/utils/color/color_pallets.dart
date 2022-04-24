@@ -10,3 +10,5 @@ const textColor = Color.fromARGB(255, 153, 153, 153);
 const borderColor = Color.fromARGB(255, 204, 204, 204);
 const baseColor = Color(0xffbdbdbd);
 const highlightColor = Color.fromARGB(255, 255, 255, 255);
+const redColor = Color.fromARGB(255, 240, 63, 51);
+const greenColor = Color.fromARGB(255, 81, 187, 84);

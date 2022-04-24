@@ -84,7 +84,7 @@ class DprViewModel extends BaseViewModel {
   void toCategoryView() {
     if (userId == null || token == null) return;
     _navService.navigateTo(
-      DprWrapperRoutes.addCategoryView,
+      Routes.addCategoryView,
       id: 2,
       arguments: AddCategoryViewArguments(
         userId: userId,

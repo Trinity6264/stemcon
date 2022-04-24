@@ -53,165 +53,83 @@ class TaskView extends StatelessWidget with $TaskView {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : Stack(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: model.datas.isEmpty
-                          ? Center(
-                              child: SvgPicture.asset(
-                                'assets/logo/undraw.svg',
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: model.datas.length,
-                              physics: const AlwaysScrollableScrollPhysics(
-                                parent: BouncingScrollPhysics(),
-                              ),
-                              itemBuilder: (context, index) {
-                                final data = model.datas[index];
+              : Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: model.datas.isEmpty
+                      ? Center(
+                          child: SvgPicture.asset(
+                            'assets/logo/undraw.svg',
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: model.datas.length,
+                          physics: const AlwaysScrollableScrollPhysics(
+                            parent: BouncingScrollPhysics(),
+                          ),
+                          itemBuilder: (context, index) {
+                            final data = model.datas[index];
 
-                                return GestureDetector(
-                                  onTap: () => showCustomDialog(
-                                    context,
-                                    data,
-                                    _size,
-                                    model,
-                                    nameController,
-                                    descriptionController,
-                                    model.userId.toString(),
-                                    model.token.toString(),
-                                  ),
-                                  child: Dismissible(
-                                    key: Key(UniqueKey().toString()),
-                                    background: Container(
-                                      color: Colors.red,
-                                      alignment: Alignment.centerRight,
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: whiteColor,
-                                      ),
-                                    ),
-                                    direction: DismissDirection.endToStart,
-                                    onDismissed: (direction) {
-                                      if (direction ==
-                                          DismissDirection.endToStart) {
-                                        model.deleteTask(
-                                          token: model.token!,
-                                          userId: model.userId!,
-                                          index: index,
-                                          id: data.id.toString(),
-                                        );
-                                      }
-                                    },
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      height: _size.height * 0.1 + 40,
-                                      child: Card(
-                                        shadowColor: greyColor,
-                                        elevation: 3.0,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Task $index By . Darshan kasundra',
-                                                style: const TextStyle(
-                                                  color: greyColor,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 5.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      data.taskName ?? 'Empty',
-                                                      style: const TextStyle(
-                                                        fontSize: 20.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          data.taskStatus ??
-                                                              'pending',
-                                                          style:
-                                                              const TextStyle(
-                                                            color: primaryColor,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                        const Icon(
-                                                            Icons.arrow_right),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const Text(
-                                                '+91 92446627462',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: primaryColor,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 0,
+                                vertical: 15,
+                              ),
+                              width: double.infinity,
+                              height: (_size.height * 0.2) + 15,
+                              child: Card(
+                                shadowColor: greyColor,
+                                elevation: 3.0,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data.taskName ?? 'Empty',
+                                        style: const TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ),
+                                      Text(
+                                        data.description ?? 'Empty',
+                                        style: const TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.only(
+                                          top: 20,
+                                          left: 20,
+                                          right: 20,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            button(
+                                              size: _size,
+                                              color: greenColor,
+                                              text: 'Edit',
+                                            ),
+                                            button(
+                                              size: _size,
+                                              color: redColor,
+                                              text: 'Delete',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              },
-                            ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        height: _size.height * 0.1,
-                        color: whiteColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            button(
-                              onPressed: () {
-                                model.toAddNewTaskView(
-                                  token: model.token,
-                                  userId: model.userId,
-                                );
-                              },
-                              size: _size,
-                              color: blackColor,
-                              icon: Icons.add,
-                              text: 'Add Task',
-                            ),
-                            button(
-                              onPressed: () {
-                                print(model.projectId);
-                                print(model.token);
-                                print(model.userId);
-                              },
-                              size: _size,
-                              color: primaryColor,
-                              icon: Icons.format_align_left,
-                              text: 'Filter',
-                            ),
-                          ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    ),
-                  ],
                 ),
         );
       },
@@ -220,7 +138,6 @@ class TaskView extends StatelessWidget with $TaskView {
 
   GestureDetector button({
     required Size size,
-    required IconData icon,
     required Color color,
     required String text,
     VoidCallback? onPressed,
@@ -228,22 +145,17 @@ class TaskView extends StatelessWidget with $TaskView {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: size.width * 0.4,
+        width: size.width * 0.2,
         height: size.height * 0.1 - 30,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: color),
-            const SizedBox(width: 10),
-            Text(
-              text,
-              style: TextStyle(
-                color: color,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w800,
-              ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: color,
+              fontSize: 20.0,
+              fontWeight: FontWeight.w800,
             ),
-          ],
+          ),
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
@@ -313,7 +225,7 @@ class TaskView extends StatelessWidget with $TaskView {
                     child: contoller.isEdittingTask == true
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
-                          style: ElevatedButton.styleFrom(
+                            style: ElevatedButton.styleFrom(
                               primary: primaryColor,
                             ),
                             onPressed: () {

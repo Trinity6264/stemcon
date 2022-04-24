@@ -36,18 +36,24 @@ class HomeViewModel extends BaseViewModel {
     required String token,
   }) async {
     setBusy(true);
-    final data = await _apiService.fetchProject(userId: userId, token: token);
-    if (data.isNotEmpty) {
-      setBusy(false);
-      data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-      datas = data.reversed.toList();
-    } else {
-      setBusy(false);
+    try {
+      final data = await _apiService.fetchProject(userId: userId, token: token);
+      if (data.isNotEmpty) {
+        setBusy(false);
+        data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+        datas = data.reversed.toList();
+      } else {
+        setBusy(false);
+        errorMessage =
+            'No Data Found\n Please check your internet connectivity';
+        _snackbarService.registerSnackbarConfig(SnackbarConfig(
+          messageColor: whiteColor,
+        ));
+        _snackbarService.showSnackbar(message: 'Something went wrong!');
+      }
+    } on Exception catch (e) {
       errorMessage = 'No Data Found\n Please check your internet connectivity';
-      _snackbarService.registerSnackbarConfig(SnackbarConfig(
-        messageColor: whiteColor,
-      ));
-      _snackbarService.showSnackbar(message: 'Something went wrong!');
+      setBusy(false);
     }
   }
 
@@ -152,11 +158,15 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-  void toAddTaskView(String projectId) {
+  void toProjectDescription(ProjectListModel model) {
     if (userId == null || authenticationToken == null) return;
-    _prefService.savedProjectId(projectId);
     _navService.navigateTo(
-      Routes.selectedCatViews,
+      Routes.projectDescriptionView,
+      arguments: ProjectDescriptionViewArguments(
+        projectModel: model,
+        userId: userId.toString(),
+        token: authenticationToken.toString(),
+      ),
     );
   }
 

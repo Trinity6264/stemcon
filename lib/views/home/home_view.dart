@@ -185,7 +185,7 @@ class HomeView extends StatelessWidget with $HomeView {
                                   ) {
                                     return GestureDetector(
                                       onTap: () {
-                                        model.toAddTaskView(data.id.toString());
+                                        model.toProjectDescription(data);
                                       },
                                       child: Row(
                                         children: [
