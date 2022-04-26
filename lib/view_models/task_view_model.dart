@@ -119,7 +119,7 @@ class TaskViewModel extends BaseViewModel {
       Routes.addNewTaskView,
       arguments: AddNewTaskViewArguments(
         userId: userId!,
-        state: CheckingState.adding,
+        isEdtting: true,
         taskAssignedBy: taskAssignedBy,
         description: description,
         token: token!,

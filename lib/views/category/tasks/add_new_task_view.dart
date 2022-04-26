@@ -20,7 +20,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
   final String taskName;
   final String taskAssignedBy;
   final String projectId;
-  final CheckingState state;
+  final bool isEdtting;
   final String? description;
   final String? taskStatus;
   final int? taskId;
@@ -32,7 +32,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
     required this.taskName,
     required this.taskAssignedBy,
     required this.projectId,
-    required this.state,
+    required this.isEdtting,
     this.description,
     this.taskStatus,
     this.taskId,
@@ -54,7 +54,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
               backgroundColor: whiteColor,
               automaticallyImplyLeading: false,
               title: Text(
-                'Add New Task',
+                isEdtting ? 'Edit New Task' : 'Add New Task',
                 style: TextStyle(
                   color: blackColor,
                   fontSize: (_size.width * 0.1) / 1.8,
@@ -71,7 +71,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: state.index == 1
+                    child: isEdtting
                         ? const SizedBox.shrink()
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,7 +96,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                             ],
                           ),
                   ),
-                  state.index == 0
+                  isEdtting
                       ? Text(
                           taskName,
                           style: const TextStyle(
@@ -110,21 +110,21 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                   TextField(
                     controller: task1Controller,
                     decoration: textInputDecor.copyWith(
-                      hintText: state.index == 1 ? taskName : 'Task',
+                      hintText: isEdtting ? taskName : 'Task',
                     ),
                   ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: assignToController,
                     decoration: textInputDecor.copyWith(
-                      hintText: state.index == 1 ? taskAssignedBy : 'Assign To',
+                      hintText: isEdtting ? taskAssignedBy : 'Assign To',
                     ),
                   ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: descriptionController,
                     decoration: textInputDecor.copyWith(
-                      hintText: state.index == 1 ? description : 'Description',
+                      hintText: isEdtting ? description : 'Description',
                     ),
                   ),
                   const Spacer(),
@@ -138,9 +138,9 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                           ),
                           child: SharedButton(
                               title:
-                                  state.index == 1 ? 'Edit Task' : 'Add Task',
+                                  isEdtting ? 'Edit Task' : 'Add Task',
                               onPressed: () {
-                                state.index == 0
+                                isEdtting
                                     ? model.addTask(
                                         taskName: taskName,
                                         description:
@@ -152,7 +152,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                                     : model.editTask(
                                         taskName: task1Controller.text == ''
                                             ? taskName
-                                            : task1Controller.text ,
+                                            : task1Controller.text,
                                         description:
                                             descriptionController.text == ''
                                                 ? description

@@ -99,7 +99,7 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
               taskName: taskName,
               taskAssignedBy: userId.toString(),
               projectId: projectId,
-              state: CheckingState.adding,
+              isEdtting: false
             ),
           )
         : _navService.navigateTo(

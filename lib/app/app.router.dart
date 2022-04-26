@@ -182,11 +182,8 @@ class StackedRouter extends RouterBase {
       );
     },
     TaskView: (data) {
-      var args = data.getArgs<TaskViewArguments>(
-        orElse: () => TaskViewArguments(),
-      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => TaskView(key: args.key),
+        builder: (context) => const TaskView(),
         settings: data,
       );
     },
@@ -200,7 +197,7 @@ class StackedRouter extends RouterBase {
           taskName: args.taskName,
           taskAssignedBy: args.taskAssignedBy,
           projectId: args.projectId,
-          state: args.state,
+          isEdtting: args.isEdtting,
           description: args.description,
           taskStatus: args.taskStatus,
           taskId: args.taskId,
@@ -378,12 +375,6 @@ class AddProject2ViewArguments {
       this.projectTimeZone});
 }
 
-/// TaskView arguments holder class
-class TaskViewArguments {
-  final Key? key;
-  TaskViewArguments({this.key});
-}
-
 /// AddNewTaskView arguments holder class
 class AddNewTaskViewArguments {
   final Key? key;
@@ -392,7 +383,7 @@ class AddNewTaskViewArguments {
   final String taskName;
   final String taskAssignedBy;
   final String projectId;
-  final CheckingState state;
+  final bool isEdtting;
   final String? description;
   final String? taskStatus;
   final int? taskId;
@@ -403,7 +394,7 @@ class AddNewTaskViewArguments {
       required this.taskName,
       required this.taskAssignedBy,
       required this.projectId,
-      required this.state,
+      required this.isEdtting,
       this.description,
       this.taskStatus,
       this.taskId});
