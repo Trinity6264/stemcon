@@ -23,7 +23,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
   final CheckingState state;
   final String? description;
   final String? taskStatus;
-  final String? taskId;
+  final int? taskId;
 
   AddNewTaskView({
     Key? key,
@@ -63,93 +63,112 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
               ),
             ),
             backgroundColor: whiteColor,
-            body: WillPopScope(
-              onWillPop: () async {
-                model.backHome();
-                return false;
-              },
-              child: Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'SELECTED WORK CATEGORY',
-                            style: TextStyle(
-                              color: greyColor,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: model.back,
-                            child: const Text(
-                              'Change',
-                              style: TextStyle(
-                                color: primaryColor,
+            body: Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: state.index == 1
+                        ? const SizedBox.shrink()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'SELECTED WORK CATEGORY',
+                                style: TextStyle(
+                                  color: greyColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      taskName,
-                      style: const TextStyle(
-                        color: blackColor,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    TextField(
-                      controller: task1Controller,
-                      decoration: textInputDecor.copyWith(
-                        hintText: 'Task',
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: assignToController,
-                      decoration: textInputDecor.copyWith(
-                        hintText: 'Assign To',
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: descriptionController,
-                      decoration: textInputDecor.copyWith(
-                        hintText: 'Description',
-                      ),
-                    ),
-                    const Spacer(),
-                    model.isBusy
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : Container(
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 30,
-                            ),
-                            child: SharedButton(
-                              title: 'Add Task',
-                              onPressed: () => model.addTask(
-                                taskName: taskName,
-                                description: descriptionController.text.trim(),
-                                token: token,
-                                userId: userId,
-                                projectId: projectId,
+                              TextButton(
+                                onPressed: model.back,
+                                child: const Text(
+                                  'Change',
+                                  style: TextStyle(
+                                    color: primaryColor,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                  ],
-                ),
+                  ),
+                  state.index == 0
+                      ? Text(
+                          taskName,
+                          style: const TextStyle(
+                            color: blackColor,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  const SizedBox(height: 30),
+                  TextField(
+                    controller: task1Controller,
+                    decoration: textInputDecor.copyWith(
+                      hintText: state.index == 1 ? taskName : 'Task',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: assignToController,
+                    decoration: textInputDecor.copyWith(
+                      hintText: state.index == 1 ? taskAssignedBy : 'Assign To',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: descriptionController,
+                    decoration: textInputDecor.copyWith(
+                      hintText: state.index == 1 ? description : 'Description',
+                    ),
+                  ),
+                  const Spacer(),
+                  model.isBusy
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 30,
+                          ),
+                          child: SharedButton(
+                              title:
+                                  state.index == 1 ? 'Edit Task' : 'Add Task',
+                              onPressed: () {
+                                state.index == 0
+                                    ? model.addTask(
+                                        taskName: taskName,
+                                        description:
+                                            descriptionController.text.trim(),
+                                        token: token,
+                                        userId: userId,
+                                        projectId: projectId,
+                                      )
+                                    : model.editTask(
+                                        taskName: task1Controller.text == ''
+                                            ? taskName
+                                            : task1Controller.text ,
+                                        description:
+                                            descriptionController.text == ''
+                                                ? description
+                                                : descriptionController.text,
+                                        projectId: projectId,
+                                        taskAssignedBy:
+                                            assignToController.text == ''
+                                                ? taskAssignedBy
+                                                : assignToController.text,
+                                        token: token.toString(),
+                                        userId: userId.toString(),
+                                        id: taskId,
+                                      );
+                              }),
+                        ),
+                ],
               ),
             ),
           );

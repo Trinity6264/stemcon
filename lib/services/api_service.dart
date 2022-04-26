@@ -424,7 +424,7 @@ class ApiService {
   Future<http.Response> deleteTask({
     required int userId,
     required int token,
-    required String id,
+    required int id,
   }) async {
     final _data = {
       'user_id': userId,
@@ -537,7 +537,7 @@ class ApiService {
   Future<http.Response> deleteDpr({
     required int userId,
     required int token,
-    required String id,
+    required int id,
   }) async {
     final _data = {'user_id': userId, 'token': token, 'id': id};
     const String serverUrl = 'http://stemcon.likeview.in/api/dpr/delete';

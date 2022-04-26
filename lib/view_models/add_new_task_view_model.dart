@@ -12,12 +12,11 @@ class AddTaskViewModel extends BaseViewModel {
   final _navService = locator<NavigationService>();
   final _snackbarService = locator<SnackbarService>();
   final _apiService = locator<ApiService>();
+  final _dialogService = locator<DialogService>();
 
   void back() {
     _navService.back();
   }
-
- 
 
   Future<void> backHome() async {
     _navService.back();
@@ -77,6 +76,54 @@ class AddTaskViewModel extends BaseViewModel {
         _snackbarService.showSnackbar(message: e.toString());
         return;
       }
+    }
+  }
+
+  bool? isEdittingTask;
+
+  Future<void> editTask({
+    required String? taskName,
+    required String? description,
+    required String? projectId,
+    required String? taskAssignedBy,
+    required String token,
+    required String userId,
+    required int? id,
+  }) async {
+    try {
+      setBusy(true);
+      final response = await _apiService.editNewTask(
+        userId: userId,
+        token: token,
+        id: id.toString(),
+        taskName: taskName,
+        projectId: projectId,
+        description: description,
+        taskAssignedBy: taskAssignedBy,
+      );
+      setBusy(false);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['res_code'] == '1') {
+          _navService.back();
+          _snackbarService.registerSnackbarConfig(SnackbarConfig(
+            messageColor: whiteColor,
+          ));
+          _snackbarService.showSnackbar(message: 'Task Editted successfully');
+          _navService.replaceWith(Routes.taskView);
+        } else {
+          _dialogService.showDialog(
+            title: 'Error Message',
+            description: data['res_message'],
+          );
+        }
+      }
+    } catch (e) {
+      _dialogService.showDialog(
+        title: 'Error Message',
+        description: 'Connection Failed',
+      );
     }
   }
 }

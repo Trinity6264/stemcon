@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/app/app.locator.dart';
 import 'package:stemcon/app/app.router.dart';
+import 'package:stemcon/view_models/home_view_model.dart';
 
 class TaskViewModel extends BaseViewModel {
   final _navService = locator<NavigationService>();
@@ -59,7 +60,7 @@ class TaskViewModel extends BaseViewModel {
     required int token,
     required int userId,
     required int index,
-    required String id,
+    required int id,
   }) async {
     try {
       final _res = await _dialogService.showConfirmationDialog(
@@ -69,17 +70,17 @@ class TaskViewModel extends BaseViewModel {
         cancelTitle: 'No',
       );
       if (_res!.confirmed) {
+        datas.removeAt(index);
         notifyListeners();
         final res = await _apiService.deleteTask(
           userId: userId,
           token: token,
           id: id,
         );
-          print(res.statusCode);
+        print(res.statusCode);
         if (res.statusCode == 200) {
           final data = jsonDecode(res.body);
           if (data['res_code'] == '1') {
-            datas.removeAt(index);
             _snackbarService.registerSnackbarConfig(SnackbarConfig(
               messageColor: whiteColor,
             ));
@@ -97,7 +98,6 @@ class TaskViewModel extends BaseViewModel {
           );
         }
       } else {
-        notifyListeners();
         return;
       }
     } on HttpException catch (e) {
@@ -106,6 +106,29 @@ class TaskViewModel extends BaseViewModel {
         description: e.message,
       );
     }
+  }
+
+  void toEdit({
+    required String taskName,
+    required String taskAssignedBy,
+    required String description,
+    required String taskStatus,
+    required int taskId,
+  }) {
+    _navService.navigateTo(
+      Routes.addNewTaskView,
+      arguments: AddNewTaskViewArguments(
+        userId: userId!,
+        state: CheckingState.adding,
+        taskAssignedBy: taskAssignedBy,
+        description: description,
+        token: token!,
+        projectId: projectId!,
+        taskId: taskId,
+        taskStatus: taskStatus,
+        taskName: taskName,
+      ),
+    );
   }
 
   void toAddNewTaskView({
@@ -120,58 +143,8 @@ class TaskViewModel extends BaseViewModel {
         userId: userId,
         token: token,
         indes: 0,
-        projectId: projectId,
+        projectId: int.parse(projectId!),
       ),
     );
-  }
-
-  bool? isEdittingTask;
-
-  Future<void> editTask({
-    required String? taskName,
-    required String? description,
-    required String? projectId,
-    required String? taskAssignedBy,
-    required String token,
-    required String userId,
-    required int? id,
-  }) async {
-    try {
-      isEdittingTask = true;
-      notifyListeners();
-      final response = await _apiService.editNewTask(
-        userId: userId,
-        token: token,
-        id: id.toString(),
-        taskName: taskName,
-        projectId: projectId,
-        description: description,
-        taskAssignedBy: taskAssignedBy,
-      );
-      isEdittingTask = false;
-      notifyListeners();
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['res_code'] == '1') {
-          _navService.back();
-          _snackbarService.registerSnackbarConfig(SnackbarConfig(
-            messageColor: whiteColor,
-          ));
-          _snackbarService.showSnackbar(message: 'Task Editted successfully');
-          reload();
-          loadData();
-        } else {
-          _dialogService.showDialog(
-            title: 'Error Message',
-            description: data['res_message'],
-          );
-        }
-      }
-    } catch (e) {
-      _dialogService.showDialog(
-        title: 'Error Message',
-        description: 'Connection Failed',
-      );
-    }
   }
 }

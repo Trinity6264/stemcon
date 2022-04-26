@@ -90,7 +90,7 @@ class DprViewModel extends BaseViewModel {
         userId: userId,
         token: token,
         indes: 1,
-        projectId: projectId,
+        projectId: int.parse(projectId!),
       ),
     );
   }
@@ -99,7 +99,7 @@ class DprViewModel extends BaseViewModel {
     required int token,
     required int userId,
     required int index,
-    required String id,
+    required int id,
   }) async {
     try {
       final _res = await _dialogService.showConfirmationDialog(

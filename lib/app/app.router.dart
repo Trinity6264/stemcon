@@ -395,7 +395,7 @@ class AddNewTaskViewArguments {
   final CheckingState state;
   final String? description;
   final String? taskStatus;
-  final String? taskId;
+  final int? taskId;
   AddNewTaskViewArguments(
       {this.key,
       required this.userId,
@@ -430,7 +430,7 @@ class AddCategoryViewArguments {
   final int? userId;
   final int? token;
   final int? indes;
-  final String? projectId;
+  final int? projectId;
   AddCategoryViewArguments(
       {this.key,
       required this.userId,

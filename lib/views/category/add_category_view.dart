@@ -15,7 +15,7 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
   final int? userId;
   final int? token;
   final int? indes;
-  final String? projectId;
+  final int? projectId;
   AddCategoryView({
     Key? key,
     required this.userId,
@@ -113,7 +113,7 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
                                               taskName:
                                                   data.suggestionTaskName!,
                                               index: indes!,
-                                              projectId: projectId!,
+                                              projectId: projectId.toString(),
                                             );
                                           },
                                           child: SizedBox(
@@ -158,11 +158,12 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
                       title: 'Next',
                       onPressed: () {
                         model.toAddTaskView(
-                            userId: userId!,
-                            token: token!,
-                            taskName: searchController.text.trim(),
-                            index: indes!,
-                            projectId: projectId!);
+                          userId: userId!,
+                          token: token!,
+                          taskName: searchController.text.trim(),
+                          index: indes!,
+                          projectId: projectId.toString(),
+                        );
                       },
                     ),
                   ),

@@ -24,7 +24,7 @@ class ProjectDescriptionViewModel extends BaseViewModel {
         userId: int.parse(userId!),
         token: int.parse(token!),
         indes: indes,
-        projectId: projectId,
+        projectId: int.parse(projectId!),
       ),
     );
   }

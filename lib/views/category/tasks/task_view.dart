@@ -1,24 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked/stacked_annotations.dart';
-import 'package:stemcon/shared/text_input_decor.dart';
 
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/task_view_model.dart';
-import 'package:stemcon/views/category/tasks/task_view.form.dart';
 
-import '../../../models/add_task_model.dart';
-
-@FormView(fields: [
-  FormTextField(name: 'name'),
-  FormTextField(name: 'assignTo'),
-  FormTextField(name: 'description'),
-])
-class TaskView extends StatelessWidget with $TaskView {
-  TaskView({
-    Key? key,
-  }) : super(key: key);
+class TaskView extends StatelessWidget {
+  const TaskView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +14,6 @@ class TaskView extends StatelessWidget with $TaskView {
     return ViewModelBuilder<TaskViewModel>.reactive(
       onModelReady: (model) {
         model.loadData();
-        print(model.projectId);
       },
       viewModelBuilder: () => TaskViewModel(),
       builder: (context, model, child) {
@@ -69,7 +56,6 @@ class TaskView extends StatelessWidget with $TaskView {
                           ),
                           itemBuilder: (context, index) {
                             final data = model.datas[index];
-
                             return Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 0,
@@ -112,6 +98,18 @@ class TaskView extends StatelessWidget with $TaskView {
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             button(
+                                              onPressed: () {
+                                                model.toEdit(
+                                                  taskName: data.taskName ?? '',
+                                                  taskAssignedBy:
+                                                      data.taskAssignedBy ?? '',
+                                                  description:
+                                                      data.description ?? '',
+                                                  taskStatus:
+                                                      data.taskStatus ?? '',
+                                                  taskId: data.id!,
+                                                );
+                                              },
                                               size: _size,
                                               color: greenColor,
                                               text: 'Edit',
@@ -125,7 +123,7 @@ class TaskView extends StatelessWidget with $TaskView {
                                                   token: model.token!,
                                                   userId: model.userId!,
                                                   index: index,
-                                                  id: model.projectId!,
+                                                  id: data.id!,
                                                 );
                                               },
                                             ),
@@ -174,119 +172,6 @@ class TaskView extends StatelessWidget with $TaskView {
           ),
         ),
       ),
-    );
-  }
-
-  void showCustomDialog(
-    BuildContext context,
-    AddTaskModel model,
-    Size size,
-    TaskViewModel contoller,
-    TextEditingController? nameController,
-    TextEditingController? desController,
-    String userId,
-    String token,
-  ) {
-    showGeneralDialog(
-      context: context,
-      barrierLabel: "Barrier",
-      barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.2),
-      transitionDuration: const Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return Center(
-          child: Container(
-            height: size.height * 0.5,
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Edit Task',
-                    style: TextStyle(
-                      color: blackColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: nameController,
-                    decoration: textInputDecor.copyWith(
-                      hintText: model.taskName ?? 'Task name',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: desController,
-                    decoration: textInputDecor.copyWith(
-                      hintText: model.description ?? 'Task Description',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 400),
-                    curve: Curves.easeIn,
-                    width: double.infinity,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: contoller.isEdittingTask == true
-                        ? const CircularProgressIndicator()
-                        : ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: primaryColor,
-                            ),
-                            onPressed: () {
-                              contoller
-                                  .editTask(
-                                taskName: nameController?.text == ''
-                                    ? model.taskName
-                                    : nameController?.text,
-                                description: desController?.text == ''
-                                    ? model.description
-                                    : desController?.text,
-                                projectId: model.projectId ?? '',
-                                taskAssignedBy: model.taskAssignedBy,
-                                token: token,
-                                userId: userId,
-                                id: model.id,
-                              )
-                                  .then((value) {
-                                nameController?.clear();
-                                descriptionController.clear();
-                              });
-                            },
-                            child: const Text('Edit Task'),
-                          ),
-                  ),
-                ],
-              ),
-            ),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(40),
-            ),
-          ),
-        );
-      },
-      transitionBuilder: (_, anim, __, child) {
-        Tween<Offset> tween;
-        if (anim.status == AnimationStatus.reverse) {
-          tween = Tween(begin: const Offset(-1, 0), end: Offset.zero);
-        } else {
-          tween = Tween(begin: const Offset(1, 0), end: Offset.zero);
-        }
-
-        return SlideTransition(
-          position: tween.animate(anim),
-          child: FadeTransition(
-            opacity: anim,
-            child: child,
-          ),
-        );
-      },
     );
   }
 }

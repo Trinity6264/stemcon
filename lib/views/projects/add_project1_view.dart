@@ -242,9 +242,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                           child: CircularProgressIndicator(),
                         )
                       : SharedButton(
-                          title: state.index == 0
-                              ? 'Edit Project'
-                              : 'CREATE PROJECT',
+                          title: 'NEXT',
                           onPressed: () {
                             if (state.index == 0) {
                               model.editProject(

@@ -104,13 +104,20 @@ class DprView extends StatelessWidget {
                                               size: _size,
                                               color: greenColor,
                                               text: 'Edit',
-                                              onPressed: (){},
+                                              onPressed: () {},
                                             ),
                                             button(
                                               size: _size,
                                               color: redColor,
                                               text: 'Delete',
-                                              onPressed: (){},
+                                              onPressed: () {
+                                                model.deleteDpr(
+                                                  token: model.token!,
+                                                  userId: model.userId!,
+                                                  index: index,
+                                                  id: data.id!,
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
