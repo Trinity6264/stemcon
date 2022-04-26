@@ -69,16 +69,17 @@ class TaskViewModel extends BaseViewModel {
         cancelTitle: 'No',
       );
       if (_res!.confirmed) {
-        datas.removeAt(index);
         notifyListeners();
         final res = await _apiService.deleteTask(
           userId: userId,
           token: token,
           id: id,
         );
+          print(res.statusCode);
         if (res.statusCode == 200) {
           final data = jsonDecode(res.body);
           if (data['res_code'] == '1') {
+            datas.removeAt(index);
             _snackbarService.registerSnackbarConfig(SnackbarConfig(
               messageColor: whiteColor,
             ));
@@ -148,7 +149,7 @@ class TaskViewModel extends BaseViewModel {
         taskAssignedBy: taskAssignedBy,
       );
       isEdittingTask = false;
-        notifyListeners();
+      notifyListeners();
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['res_code'] == '1') {
@@ -166,7 +167,6 @@ class TaskViewModel extends BaseViewModel {
           );
         }
       }
-    
     } catch (e) {
       _dialogService.showDialog(
         title: 'Error Message',

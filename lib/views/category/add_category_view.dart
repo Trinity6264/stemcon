@@ -50,8 +50,7 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
             ),
             actions: [
               IconButton(
-                onPressed: (){},
-                // onPressed: indes == 0 ? model.goBackTask : model.goBackDpr,
+                onPressed: model.back,
                 icon: const Icon(Icons.close),
               ),
             ],

@@ -112,4 +112,8 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
             ),
           );
   }
+
+  void back() {
+    _navService.back();
+  }
 }

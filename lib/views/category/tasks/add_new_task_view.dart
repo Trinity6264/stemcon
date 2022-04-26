@@ -11,6 +11,7 @@ import 'package:stemcon/views/category/tasks/add_new_task_view.form.dart';
 
 @FormView(fields: [
   FormTextField(name: 'task1'),
+  FormTextField(name: 'assignTo'),
   FormTextField(name: 'description'),
 ])
 class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
@@ -110,7 +111,14 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                     TextField(
                       controller: task1Controller,
                       decoration: textInputDecor.copyWith(
-                        hintText: 'Task 1',
+                        hintText: 'Task',
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: assignToController,
+                      decoration: textInputDecor.copyWith(
+                        hintText: 'Assign To',
                       ),
                     ),
                     const SizedBox(height: 20),

@@ -104,11 +104,13 @@ class DprView extends StatelessWidget {
                                               size: _size,
                                               color: greenColor,
                                               text: 'Edit',
+                                              onPressed: (){},
                                             ),
                                             button(
                                               size: _size,
                                               color: redColor,
                                               text: 'Delete',
+                                              onPressed: (){},
                                             ),
                                           ],
                                         ),

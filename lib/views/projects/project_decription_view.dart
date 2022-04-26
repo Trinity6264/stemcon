@@ -28,10 +28,10 @@ class ProjectDescriptionView extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: whiteColor,
             elevation: 0.0,
-            title: const Text(
-              'Project Description',
+            title: Text(
+              projectModel.projectName ?? 'Project name',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontFamily: 'Roboto-Medium',
                 color: blackColor,
@@ -165,7 +165,7 @@ class ProjectDescriptionView extends StatelessWidget {
               "$key:",
               style: const TextStyle(
                 color: textColor,
-                fontSize: 18.0,
+                fontSize: 16.0,
               ),
             ),
           ),
@@ -175,7 +175,7 @@ class ProjectDescriptionView extends StatelessWidget {
               textAlign: TextAlign.start,
               style: const TextStyle(
                 color: blackColor,
-                fontSize: 20.0,
+                fontSize: 16.0,
               ),
             ),
           ),
@@ -269,7 +269,14 @@ class ProjectDescriptionView extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      model.toAddTaskDprView(
+                        userId: userId,
+                        token: token,
+                        indes: 1,
+                        projectId: projectModel.id?.toString(),
+                      );
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,

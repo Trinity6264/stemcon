@@ -12,6 +12,7 @@ import '../../../models/add_task_model.dart';
 
 @FormView(fields: [
   FormTextField(name: 'name'),
+  FormTextField(name: 'assignTo'),
   FormTextField(name: 'description'),
 ])
 class TaskView extends StatelessWidget with $TaskView {
@@ -119,6 +120,14 @@ class TaskView extends StatelessWidget with $TaskView {
                                               size: _size,
                                               color: redColor,
                                               text: 'Delete',
+                                              onPressed: () {
+                                                model.deleteTask(
+                                                  token: model.token!,
+                                                  userId: model.userId!,
+                                                  index: index,
+                                                  id: model.projectId!,
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
@@ -152,7 +161,7 @@ class TaskView extends StatelessWidget with $TaskView {
             text,
             style: TextStyle(
               color: color,
-              fontSize: 20.0,
+              fontSize: 15.0,
               fontWeight: FontWeight.w800,
             ),
           ),
