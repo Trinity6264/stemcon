@@ -73,7 +73,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
             elevation: 0,
             backgroundColor: whiteColor,
             title: Text(
-              'Add Project',
+             isEditting ?'Edit Project':  'Add Project',
               style: TextStyle(
                 color: blackColor,
                 fontSize: (_size.width * 0.1) / 1.8,
