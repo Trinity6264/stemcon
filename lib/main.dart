@@ -10,7 +10,7 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   setupLocator();
   runApp(const MyApp());
-} 
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Stemcon',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        bottomNavigationBarTheme:const BottomNavigationBarThemeData(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           elevation: 0.0,
         ),
         appBarTheme: const AppBarTheme(

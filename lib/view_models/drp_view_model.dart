@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:stemcon/app/app.locator.dart';
 import 'package:stemcon/models/dpr_list_model.dart';
 import 'package:stemcon/services/api_service.dart';
@@ -50,12 +51,10 @@ class DprViewModel extends BaseViewModel {
 
   int? userId;
   int? token;
-  String? projectId;
 
   Future<void> reload() async {
     userId = await _prefService.loadUserId();
     token = await _prefService.loadUserAuthenticationToken();
-    projectId = await _prefService.loadProjectId();
     await _prefService.reloadData();
   }
 
@@ -81,16 +80,15 @@ class DprViewModel extends BaseViewModel {
 
   // to cat
 
-  void toCategoryView() {
+  void toCategoryView(String projectId) {
     if (userId == null || token == null) return;
     _navService.navigateTo(
       Routes.addCategoryView,
-      id: 2,
       arguments: AddCategoryViewArguments(
         userId: userId,
         token: token,
         indes: 1,
-        projectId: int.parse(projectId!),
+        projectId: int.parse(projectId),
       ),
     );
   }
@@ -145,7 +143,45 @@ class DprViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> editTask({
+  Future<bool> editDprImage({
+    required int? userId,
+    required int? token,
+    required int? id,
+    required File dprPdf,
+  }) async {
+    try {
+      final response = await _apiService.editDprImage(
+        userId: userId!,
+        token: token!,
+        id: id.toString(),
+        dprPdf: dprPdf,
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['res_code'] == '1') {
+          return true;
+        } else {
+          _dialogService.showDialog(
+            title: 'Error Message',
+            description: data['res_message'],
+          );
+          return false;
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      _dialogService.showDialog(
+        title: 'Error Message',
+        description: 'Connection Failed',
+      );
+      return false;
+    }
+    return false;
+  }
+
+  Future<bool> editTask({
     required String? description,
     required String? projectId,
     required String? dprTime,
@@ -155,45 +191,101 @@ class DprViewModel extends BaseViewModel {
     required int? id,
   }) async {
     try {
-      printInfo(info: 'Data Sent');
-      isEdittingTask = true;
-      notifyListeners();
       final response = await _apiService.editDpr(
         userId: userId!,
         token: token!,
         id: id.toString(),
         dprDescription: description,
-        dprPdf: dprPdf!,
         dprTime: dprTime,
         projectId: projectId,
       );
-
-      isEdittingTask = false;
-      notifyListeners();
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['res_code'] == '1') {
-          _navService.back();
-          _snackbarService.registerSnackbarConfig(SnackbarConfig(
-            messageColor: whiteColor,
-          ));
-          _snackbarService.showSnackbar(message: 'Task Editted successfully');
-          loadData();
+          return true;
         } else {
           _dialogService.showDialog(
             title: 'Error Message',
             description: data['res_message'],
           );
+          return false;
         }
       }
     } catch (e) {
-      print(e);
-      isEdittingTask = false;
-      notifyListeners();
       _dialogService.showDialog(
         title: 'Error Message',
         description: 'Connection Failed',
       );
+      return false;
+    }
+    return false;
+  }
+
+  // edit request
+
+  Future<void> editRequest({
+    required String? description,
+    required String? projectId,
+    required String? dprTime,
+    required int? userId,
+    required int? token,
+    File? dprPdf,
+    required int? id,
+  }) async {
+    if (dprPdf != null) {
+      setBusy(true);
+      try {
+        final data = await editDprImage(
+          userId: userId,
+          token: token,
+          id: id,
+          dprPdf: dprPdf,
+        );
+
+        if (data) {
+          final data2 = await editTask(
+            description: description,
+            projectId: projectId,
+            dprTime: dprTime,
+            userId: userId,
+            token: token,
+            id: id,
+          );
+          if (data2) {
+            setBusy(false);
+            _navService.back();
+            _snackbarService.registerSnackbarConfig(SnackbarConfig(
+              messageColor: whiteColor,
+            ));
+            _snackbarService.showSnackbar(message: 'Task Editted successfully');
+            loadData();
+            return;
+          } else {
+            setBusy(false);
+            return;
+          }
+        } else {
+          setBusy(false);
+          return;
+        }
+      } catch (e) {
+        _dialogService.showDialog(
+          title: 'Error Message',
+          description: e.toString(),
+        );
+        setBusy(false);
+        return;
+      }
+    } else {
+      await editTask(
+        description: description,
+        projectId: projectId,
+        dprTime: dprTime,
+        userId: userId,
+        token: token,
+        id: id,
+      );
+      return;
     }
   }
 }

@@ -7,8 +7,13 @@ class ProjectDescriptionViewModel extends BaseViewModel {
   final _dialogService = locator<DialogService>();
   final _navService = locator<NavigationService>();
 
-  void toDprTaskView(int index) {
-    _navService.navigateTo(index == 0 ? Routes.taskView : Routes.dprView);
+  void toDprTaskView(int index, String projectId) {
+    index == 0
+        ? _navService.navigateTo(
+            Routes.taskView,
+          )
+        : _navService.navigateTo(Routes.dprView,
+            arguments: DprViewArguments(projectId: projectId));
   }
 
   void toAddTaskDprView({

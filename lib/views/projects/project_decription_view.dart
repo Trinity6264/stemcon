@@ -109,7 +109,7 @@ class ProjectDescriptionView extends StatelessWidget {
                       children: [
                         button(
                           onPressed: () {
-                            model.toDprTaskView(0);
+                            model.toDprTaskView(0, projectModel.id.toString());
                           },
                           size: _size,
                           color: blackColor,
@@ -136,7 +136,7 @@ class ProjectDescriptionView extends StatelessWidget {
                         ),
                         button(
                           onPressed: () {
-                            model.toDprTaskView(1);
+                            model.toDprTaskView(1, projectModel.id.toString());
                           },
                           size: _size,
                           color: primaryColor,

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/services/api_service.dart';
@@ -34,12 +33,13 @@ class AddProfileViewModel extends BaseViewModel {
     }
   }
 
+  bool userDataLoad = false;
+
   Future<void> downloadUserInfo({
     required String id,
     required int userId,
     required int token,
   }) async {
-    print('object');
     setBusy(true);
     final reponse = await _service.selectProfileDetails(
       userId: userId,
@@ -48,6 +48,7 @@ class AddProfileViewModel extends BaseViewModel {
     );
     setBusy(false);
     if (reponse.statusCode == 200) {
+      userDataLoad = true;
       final data = jsonDecode(reponse.body);
       profileName = data['res_data']['name'];
       profileImageUrl = data['res_data']['image_url'];
@@ -136,6 +137,156 @@ class AddProfileViewModel extends BaseViewModel {
         );
         return;
       }
+    }
+  }
+
+  // all profile edit
+  Future<void> editAllProfile({
+    required String? name,
+    required String? post,
+    required String? number,
+    required int? userId,
+    required int? token,
+  }) async {
+    try {
+      setBusy(true);
+      final id = await _prefService.loadUserPhotoId();
+      final response = await _service.editAllProfileDetails(
+        name: name ?? '',
+        number: number ?? '',
+        post: post ?? '',
+        id: id!,
+        profileImage: _imageSelected!,
+        token: token!,
+        userId: userId!,
+      );
+      if (response.statusCode == 200) {
+        setBusy(false);
+        final data = jsonDecode(response.body);
+        if (data['res_code'] == '1') {
+          await _prefService.savedUserPhotoId(data['res_data']['id']);
+          downloadUserInfo(
+            id: data['res_data']['id'].toString(),
+            userId: userId,
+            token: token,
+          );
+          toDashBoard();
+          _snackService.registerSnackbarConfig(
+            SnackbarConfig(
+              messageColor: whiteColor,
+            ),
+          );
+          _snackService.showSnackbar(
+            message: 'Profile Editted!',
+          );
+        }
+      } else {
+        setBusy(false);
+        final data = jsonDecode(response.body);
+        _dialogService.showDialog(
+          title: 'Error Occured',
+          buttonTitle: 'Ok',
+          description: data['res_mes'],
+        );
+        return;
+      }
+    } on SocketException catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Error Occured',
+        buttonTitle: 'Ok',
+        description: 'Check your internet connection',
+      );
+      return;
+    }
+  }
+
+  // profile edit without image
+  Future<void> editProfile({
+    required String? name,
+    required String? post,
+    required String? number,
+    required int? userId,
+    required int? token,
+  }) async {
+    try {
+      setBusy(true);
+        final id = await _prefService.loadUserPhotoId();
+      final response = await _service.editProfileDetails(
+        name: name ?? '',
+        number: number ?? '',
+        post: post ?? "",
+        token: token!,
+        id: id!,
+        userId: userId!,
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        setBusy(false);
+        final data = jsonDecode(response.body);
+        if (data['res_code'] == '1') {
+          _prefService.savedUserPhotoId(data['res_data']['id']);
+          downloadUserInfo(
+            id: data['res_data']['id'].toString(),
+            userId: userId,
+            token: token,
+          );
+          toDashBoard();
+          _snackService.registerSnackbarConfig(
+            SnackbarConfig(
+              messageColor: whiteColor,
+            ),
+          );
+          _snackService.showSnackbar(
+            message: 'Profile Added!',
+          );
+        }
+      } else {
+        setBusy(false);
+        final data = jsonDecode(response.body);
+        _dialogService.showDialog(
+          title: 'Error Occured',
+          buttonTitle: 'Ok',
+          description: data['res_mes'],
+        );
+        return;
+      }
+    } on SocketException catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Error Occured',
+        buttonTitle: 'Ok',
+        description: 'Check your internet connection',
+      );
+      return;
+    }
+  }
+
+  void edit({
+    required String? name,
+    required String? post,
+    required String? number,
+    required int? userId,
+    required int? token,
+  }) async {
+    if (_imageSelected == null) {
+      await editProfile(
+        name: name,
+        post: post,
+        number: number,
+        userId: userId,
+        token: token,
+      );
+      return;
+    } else {
+      await editAllProfile(
+        name: name,
+        post: post,
+        number: number,
+        userId: userId,
+        token: token,
+      );
+      return;
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+
 import 'package:stemcon/models/dpr_list_model.dart';
 import 'package:stemcon/views/category/dpr/editting_dpr_view.dart';
 
@@ -8,8 +9,10 @@ import '../../../utils/color/color_pallets.dart';
 import '../../../view_models/drp_view_model.dart';
 
 class DprView extends StatelessWidget {
+  final String projectId;
   const DprView({
     Key? key,
+    required this.projectId,
   }) : super(key: key);
 
   @override
@@ -104,7 +107,8 @@ class DprView extends StatelessWidget {
                                               size: _size,
                                               color: greenColor,
                                               text: 'Edit',
-                                              onPressed: () {},
+                                              onPressed: () => model
+                                                  .toCategoryView(projectId),
                                             ),
                                             button(
                                               size: _size,

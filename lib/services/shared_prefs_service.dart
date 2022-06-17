@@ -23,6 +23,10 @@ class SharedPrefsservice {
     final _prefs = await SharedPreferences.getInstance();
     _prefs.setInt('photoId', state);
   }
+  Future savedId(int state) async {
+    final _prefs = await SharedPreferences.getInstance();
+    _prefs.setInt('ids', state);
+  }
 
   Future<int?> loadUserPhotoId() async {
     final _prefs = await SharedPreferences.getInstance();
@@ -94,6 +98,12 @@ class SharedPrefsservice {
   Future<String?> loadUserUpdatedAt() async {
     final _prefs = await SharedPreferences.getInstance();
     return _prefs.getString('updated_at');
+  }
+
+  // this id for the edit profile
+  Future<int?> loadId() async {
+    final _prefs = await SharedPreferences.getInstance();
+    return _prefs.getInt('ids');
   }
 
   // clear values

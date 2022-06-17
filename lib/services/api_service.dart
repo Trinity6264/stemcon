@@ -36,7 +36,7 @@ class ApiService {
     required File profileImage,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/profile/add';
-    // String fileName = profileImage!.path.split('/').last;
+
     final imageUploadRequest = http.MultipartRequest(
       'POST',
       Uri.parse(serverUrl),
@@ -59,17 +59,64 @@ class ApiService {
     return response;
   }
 
+  Future<http.Response> editAllProfileDetails({
+    required int userId,
+    required int token,
+    required String name,
+    required String number,
+    required String post,
+    required int id,
+    required File profileImage,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/profile/edit';
+    final imageUploadRequest = http.MultipartRequest(
+      'POST',
+      Uri.parse(serverUrl),
+    );
+    final mimeTypeData =
+        lookupMimeType(profileImage.path, headerBytes: [0xFF, 0xD8])!
+            .split('/');
+    final file = await http.MultipartFile.fromPath(
+        'profile_image', profileImage.path,
+        contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    imageUploadRequest.files.add(file);
+    imageUploadRequest.fields['user_id'] = userId.toString();
+    imageUploadRequest.fields['token'] = token.toString();
+    imageUploadRequest.fields['id'] = id.toString();
+    imageUploadRequest.fields['name'] = name;
+    imageUploadRequest.fields['post'] = post;
+    imageUploadRequest.fields['number'] = number;
+    final streamedResponse = await imageUploadRequest.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    return response;
+  }
+
   // edit profile deatails
-  // Future<http.Response> editProfileDetails(
-  //     {required AddProfileModel addProfile}) async {
-  //   const String serverUrl = 'http://stemcon.likeview.in/api/profile/edit';
-  //   final response = await http.post(
-  //     Uri.parse(serverUrl),
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: addProfile.toJson(),
-  //   );
-  //   return response;
-  // }
+  Future<http.Response> editProfileDetails({
+    required int userId,
+    required int token,
+    required int id,
+    required String name,
+    required String number,
+    required String post,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/profile/edit';
+    final editBody = {
+      'user_id': userId,
+      'token': token,
+      'id': id,
+      'name': name,
+      'number': number,
+      'post': post,
+    };
+    final response = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(editBody),
+    );
+    return response;
+  }
 
   // delete profile details
   Future<http.Response> deleteProfileDetails({
@@ -138,10 +185,10 @@ class ApiService {
     const String serverUrl =
         'http://stemcon.likeview.in/api/project/addProjectStep3';
     final content = {
-      'project_id':projectId,
+      'project_id': projectId,
       'member_name': memberName,
       'member_mobile_number': memberMobileNumber,
-      'token':token,
+      'token': token,
       'user_id': userId,
     };
     final response = await http.post(
@@ -198,7 +245,7 @@ class ApiService {
     return response;
   }
 
-  // todo: edit project
+  // todo:: edit project
   // Edit project 1
   Future<http.Response> editProject1({
     required int userId,
@@ -234,6 +281,34 @@ class ApiService {
     final streamedResponse = await imageUploadRequest.send();
     final response = await http.Response.fromStream(streamedResponse);
     return response;
+  }
+
+  Future<http.Response> editProject1Only({
+    required int userId,
+    required int token,
+    required String id,
+    required String? projectName,
+    required String? projectCode,
+    required File? projectPhotoPath,
+    required String? projectStartDate,
+    required String? projectEndDate,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/project/editStep1';
+    final body = {
+      'user_id': userId,
+      'token': token,
+      'id': id,
+      'project_name': projectName,
+      'project_code': projectCode,
+      'project_start_date': projectStartDate,
+      'project_end_date': projectEndDate,
+    };
+    final res = await http.post(
+      Uri.parse(serverUrl),
+      headers: {'Content-Type': 'Application/json'},
+      body: jsonEncode(body),
+    );
+    return res;
   }
 
   // Edit project 2
@@ -500,14 +575,13 @@ class ApiService {
   }
 
   //  edit dpr
-  Future<http.Response> editDpr({
+  // ! Image only
+
+  Future<http.Response> editDprImage({
     required int userId,
     required int token,
     required String id,
-    required String? dprTime,
     required File dprPdf,
-    required String? dprDescription,
-    required String? projectId,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/dpr/edit';
     final imageUploadRequest = http.MultipartRequest(
@@ -524,13 +598,36 @@ class ApiService {
     imageUploadRequest.files.add(file);
     imageUploadRequest.fields['user_id'] = userId.toString();
     imageUploadRequest.fields['token'] = token.toString();
-    imageUploadRequest.fields['dpr_time'] = dprTime!;
     imageUploadRequest.fields['id'] = id;
-    imageUploadRequest.fields['dpr_description'] = dprDescription ?? '';
-    imageUploadRequest.fields['project_id'] = projectId!;
     final streamedResponse = await imageUploadRequest.send();
     final response = await http.Response.fromStream(streamedResponse);
     return response;
+  }
+
+  Future<http.Response> editDpr({
+    required int userId,
+    required int token,
+    required String id,
+    required String? dprTime,
+    required String? dprDescription,
+    required String? projectId,
+  }) async {
+    const String serverUrl = 'http://stemcon.likeview.in/api/dpr/edit';
+    final _body = {
+      'user_id': userId.toString(),
+      'token': token.toString(),
+      'dpr_time': dprTime.toString(),
+      'id': id,
+      'dpr_description': dprDescription,
+      'project_id': projectId,
+    };
+
+    final res = await http.post(
+      Uri.parse(serverUrl),
+      body: _body,
+      headers: {'Content-Type': 'application/json'},
+    );
+    return res;
   }
 
   // delete suggestions

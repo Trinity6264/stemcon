@@ -109,6 +109,7 @@ class AddCategoryViewModel extends IndexTrackingViewModel {
               token: token,
               taskName: taskName,
               projectId: projectId,
+              isEditting: true,
             ),
           );
   }

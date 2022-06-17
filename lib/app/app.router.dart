@@ -206,8 +206,12 @@ class StackedRouter extends RouterBase {
       );
     },
     DprView: (data) {
+      var args = data.getArgs<DprViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const DprView(),
+        builder: (context) => DprView(
+          key: args.key,
+          projectId: args.projectId,
+        ),
         settings: data,
       );
     },
@@ -218,6 +222,7 @@ class StackedRouter extends RouterBase {
           key: args.key,
           userId: args.userId,
           token: args.token,
+          isEditting: args.isEditting,
           projectId: args.projectId,
           taskName: args.taskName,
         ),
@@ -400,17 +405,26 @@ class AddNewTaskViewArguments {
       this.taskId});
 }
 
+/// DprView arguments holder class
+class DprViewArguments {
+  final Key? key;
+  final String projectId;
+  DprViewArguments({this.key, required this.projectId});
+}
+
 /// AddNewDprView arguments holder class
 class AddNewDprViewArguments {
   final Key? key;
   final int userId;
   final int token;
+  final bool isEditting;
   final String projectId;
   final String taskName;
   AddNewDprViewArguments(
       {this.key,
       required this.userId,
       required this.token,
+      required this.isEditting,
       required this.projectId,
       required this.taskName});
 }

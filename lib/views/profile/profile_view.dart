@@ -166,11 +166,21 @@ class ProfileView extends StatelessWidget with $ProfileView {
                         : SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                               style: ElevatedButton.styleFrom(
-                                 primary: primaryColor,
-                               ),
+                              style: ElevatedButton.styleFrom(
+                                primary: primaryColor,
+                              ),
                               onPressed: () {
                                 numberFocusNode.unfocus();
+                                if (model.userDataLoad) {
+                                  model.edit(
+                                    name: nameController.text,
+                                    post: postController.text,
+                                    number: numberController.text,
+                                    userId: userId,
+                                    token: token,
+                                  );
+                                  return;
+                                }
                                 model.addProfile(
                                   token: token,
                                   userId: userId,
@@ -179,7 +189,9 @@ class ProfileView extends StatelessWidget with $ProfileView {
                                   number: numberController.text,
                                 );
                               },
-                              child: const Text('SUBMIT'),
+                              child: Text(
+                                model.userDataLoad ? 'Edit Profile' : 'SUBMIT',
+                              ),
                             ),
                           ),
                   ],

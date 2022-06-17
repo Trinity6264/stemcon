@@ -16,6 +16,7 @@ import 'add_new_dpr_view.form.dart';
 ])
 class AddNewDprView extends StatelessWidget with $AddNewDprView {
   final int userId;
+  final bool isEditting;
   final int token;
   final String projectId;
   final String taskName;
@@ -23,6 +24,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
     Key? key,
     required this.userId,
     required this.token,
+    required this.isEditting,
     required this.projectId,
     required this.taskName,
   }) : super(key: key);
@@ -43,7 +45,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
             //   icon: const Icon(Icons.arrow_back),
             // ),
             title: Text(
-              'Add New DPR',
+              isEditting ? 'Edit New DPR' : 'Add New DPR',
               style: TextStyle(
                 color: blackColor,
                 fontSize: (_size.width * 0.1) / 1.8,
@@ -69,15 +71,17 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      TextButton(
-                        onPressed: model.back,
-                        child: const Text(
-                          'Change',
-                          style: TextStyle(
-                            color: primaryColor,
-                          ),
-                        ),
-                      ),
+                      isEditting
+                          ? const SizedBox.shrink()
+                          : TextButton(
+                              onPressed: model.back,
+                              child: const Text(
+                                'Change',
+                                style: TextStyle(
+                                  color: primaryColor,
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                   const SizedBox(height: 10),

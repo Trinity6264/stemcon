@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
@@ -29,11 +27,8 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return ViewModelBuilder<DprViewModel>.reactive(
-      onModelReady: (model) {
-        print(token);
-        print(userId);
-      },
       viewModelBuilder: () => DprViewModel(),
+      onDispose: (model) => disposeForm(),
       builder: (_, model, ___) {
         return Center(
           child: Container(
@@ -94,32 +89,25 @@ class EdittingDprView extends StatelessWidget with $EdittingDprView {
                       curve: Curves.easeIn,
                       width: double.infinity,
                       margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: model.isEdittingTask == true
+                      child: model.isBusy == true
                           ? const LinearProgressIndicator()
                           : ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 primary: primaryColor,
                               ),
                               onPressed: () {
-                                if (model.imageSelected == null &&
-                                    descriptionController.text.isEmpty &&
-                                    model.dateTime == null) {
-                                  return;
-                                } else {
-                                  model.editTask(
-                                    token: token,
-                                    userId: userId,
-                                    description:
-                                        descriptionController.text.isEmpty
-                                            ? data.dprDescription
-                                            : descriptionController.text.trim(),
-                                    projectId: data.projectId,
-                                    dprPdf: model.imageSelected,
-                                    dprTime:
-                                        model.dateTime ?? data.dprTime ?? '',
-                                    id: data.id,
-                                  );
-                                }
+                                model.editRequest(
+                                  token: token,
+                                  userId: userId,
+                                  description:
+                                      descriptionController.text.isEmpty
+                                          ? data.dprDescription
+                                          : descriptionController.text.trim(),
+                                  projectId: data.projectId,
+                                  dprPdf: model.imageSelected,
+                                  dprTime: model.dateTime ?? data.dprTime ?? '',
+                                  id: data.id,
+                                );
                               },
                               child: const Text('Edit DPR'),
                             ),
