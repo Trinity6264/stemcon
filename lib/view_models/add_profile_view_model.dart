@@ -211,7 +211,7 @@ class AddProfileViewModel extends BaseViewModel {
   }) async {
     try {
       setBusy(true);
-        final id = await _prefService.loadUserPhotoId();
+      final id = await _prefService.loadUserPhotoId();
       final response = await _service.editProfileDetails(
         name: name ?? '',
         number: number ?? '',
@@ -220,7 +220,6 @@ class AddProfileViewModel extends BaseViewModel {
         id: id!,
         userId: userId!,
       );
-      print(response.statusCode);
       if (response.statusCode == 200) {
         setBusy(false);
         final data = jsonDecode(response.body);
@@ -238,7 +237,7 @@ class AddProfileViewModel extends BaseViewModel {
             ),
           );
           _snackService.showSnackbar(
-            message: 'Profile Added!',
+            message: 'Profile Editted!',
           );
         }
       } else {

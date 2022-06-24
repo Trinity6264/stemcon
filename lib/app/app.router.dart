@@ -182,8 +182,12 @@ class StackedRouter extends RouterBase {
       );
     },
     TaskView: (data) {
+      var args = data.getArgs<TaskViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const TaskView(),
+        builder: (context) => TaskView(
+          key: args.key,
+          projectId: args.projectId,
+        ),
         settings: data,
       );
     },
@@ -225,6 +229,11 @@ class StackedRouter extends RouterBase {
           isEditting: args.isEditting,
           projectId: args.projectId,
           taskName: args.taskName,
+          dprImage: args.dprImage,
+          id: args.id,
+          dprtime: args.dprtime,
+          todayTask: args.todayTask,
+          tommorowTask: args.tommorowTask,
         ),
         settings: data,
       );
@@ -380,6 +389,13 @@ class AddProject2ViewArguments {
       this.projectTimeZone});
 }
 
+/// TaskView arguments holder class
+class TaskViewArguments {
+  final Key? key;
+  final String projectId;
+  TaskViewArguments({this.key, required this.projectId});
+}
+
 /// AddNewTaskView arguments holder class
 class AddNewTaskViewArguments {
   final Key? key;
@@ -419,14 +435,24 @@ class AddNewDprViewArguments {
   final int token;
   final bool isEditting;
   final String projectId;
-  final String taskName;
+  final String? taskName;
+  final String? dprImage;
+  final int? id;
+  final String? dprtime;
+  final String? todayTask;
+  final String? tommorowTask;
   AddNewDprViewArguments(
       {this.key,
       required this.userId,
       required this.token,
       required this.isEditting,
       required this.projectId,
-      required this.taskName});
+      required this.taskName,
+      this.dprImage,
+      this.id,
+      this.dprtime,
+      this.todayTask,
+      this.tommorowTask});
 }
 
 /// AddCategoryView arguments holder class

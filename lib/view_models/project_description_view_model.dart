@@ -9,9 +9,8 @@ class ProjectDescriptionViewModel extends BaseViewModel {
 
   void toDprTaskView(int index, String projectId) {
     index == 0
-        ? _navService.navigateTo(
-            Routes.taskView,
-          )
+        ? _navService.navigateTo(Routes.taskView,
+            arguments: TaskViewArguments(projectId: projectId))
         : _navService.navigateTo(Routes.dprView,
             arguments: DprViewArguments(projectId: projectId));
   }

@@ -30,6 +30,7 @@ class AddCategoryView extends StatelessWidget with $AddCategoryView {
       onDispose: (model) => disposeForm(),
       onModelReady: (model) {
         model.loadData(userId: userId!, token: token!);
+        print(projectId);
       },
       viewModelBuilder: () => AddCategoryViewModel(),
       builder: (context, model, child) {

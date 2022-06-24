@@ -19,7 +19,12 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
   final bool isEditting;
   final int token;
   final String projectId;
-  final String taskName;
+  final String? taskName;
+  final String? tommorowTask;
+  final String? todayTask;
+  final String? dprImage;
+  final String? dprtime;
+  final int? id;
   AddNewDprView({
     Key? key,
     required this.userId,
@@ -27,6 +32,11 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
     required this.isEditting,
     required this.projectId,
     required this.taskName,
+    this.dprImage,
+    this.id,
+    this.dprtime,
+    this.todayTask,
+    this.tommorowTask,
   }) : super(key: key);
 
   @override
@@ -86,7 +96,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    taskName.toUpperCase(),
+                    taskName?.toUpperCase() ?? 'Editting',
                     style: const TextStyle(
                       color: blackColor,
                       fontSize: 20.0,
@@ -106,7 +116,9 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                         ),
                       ),
                       child: Text(
-                        model.dateTime ?? "2022-4-6",
+                        isEditting
+                            ? dprtime.toString()
+                            : model.dateTime ?? "2022-4-6",
                         style: const TextStyle(
                           color: blackColor,
                         ),
@@ -121,7 +133,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                   TextField(
                     controller: taskController,
                     decoration: textInputDecor.copyWith(
-                      hintText: 'Todays\'s Task',
+                      hintText: isEditting ? todayTask : 'Todays\'s Task',
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -142,25 +154,38 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                                 ),
                               ),
                             )
-                          : Center(
-                              child: Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/logo/undraw.svg',
-                                    height: _size.height * 0.2,
-                                  ),
-                                  const SizedBox(height: 5.0),
-                                  const Text(
-                                    'Tap to upload product image Here',
-                                    style: TextStyle(
-                                      color: greyColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18.0,
+                          : isEditting && dprImage != null
+                              ? Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        'http://stemcon.likeview.in${dprImage!}',
+                                      ),
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
+                                )
+                              : Center(
+                                  child: Column(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/logo/undraw.svg',
+                                        height: _size.height * 0.2,
+                                      ),
+                                      const SizedBox(height: 5.0),
+                                      const Text(
+                                        'Tap to upload product image Here',
+                                        style: TextStyle(
+                                          color: greyColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                       decoration: BoxDecoration(
                         border: Border.all(
                           style: BorderStyle.solid,
@@ -175,7 +200,7 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                   TextField(
                     controller: tomorrowTaskController,
                     decoration: textInputDecor.copyWith(
-                      hintText: 'Tomorrow Task',
+                      hintText: isEditting ? tommorowTask : 'Tomorrow Task',
                     ),
                   ),
                   SizedBox(height: _size.height * 0.1),
@@ -186,13 +211,30 @@ class AddNewDprView extends StatelessWidget with $AddNewDprView {
                       : Container(
                           margin: const EdgeInsets.only(bottom: 30),
                           child: SharedButton(
-                            title: 'Add DPR',
-                            onPressed: () => model.addDpr(
-                              projectId: projectId,
-                              dprDescription: taskController.text.trim(),
-                              token: token,
-                              userId: userId,
-                            ),
+                            title: isEditting ? 'Edit DPR' : 'Add DPR',
+                            onPressed: () => isEditting
+                                ? model.editRequest(
+                                    token: token,
+                                    userId: userId,
+                                    todayTask: taskController.text.isEmpty
+                                        ? todayTask
+                                        : taskController.text,
+                                    tomrrowTask: tomorrowTaskController
+                                            .text.isEmpty
+                                        ? tommorowTask
+                                        : tomorrowTaskController.text.trim(),
+                                    projectId: projectId,
+                                    dprPdf: model.imageSelected,
+                                    dprTime: model.dateTime ?? dprtime ?? '',
+                                    id: id,
+                                  )
+                                : model.addDpr(
+                                    projectId: projectId,
+                                    tomorrowTask: tomorrowTaskController.text,
+                                    todayTask: taskController.text,
+                                    token: token,
+                                    userId: userId,
+                                  ),
                           ),
                         ),
                 ],

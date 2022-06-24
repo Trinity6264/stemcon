@@ -6,7 +6,6 @@ import 'package:stemcon/shared/shared_button.dart';
 import 'package:stemcon/shared/text_input_decor.dart';
 import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/add_new_task_view_model.dart';
-import 'package:stemcon/view_models/home_view_model.dart';
 import 'package:stemcon/views/category/tasks/add_new_task_view.form.dart';
 
 @FormView(fields: [
@@ -42,9 +41,11 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AddTaskViewModel>.reactive(
+        onDispose: (model) => disposeForm(),
         viewModelBuilder: () => AddTaskViewModel(),
         builder: (context, model, child) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             appBar: AppBar(
               leading: IconButton(
                 onPressed: model.back,
@@ -137,10 +138,9 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                             vertical: 30,
                           ),
                           child: SharedButton(
-                              title:
-                                  isEdtting ? 'Edit Task' : 'Add Task',
+                              title: isEdtting ? 'Edit Task' : 'Add Task',
                               onPressed: () {
-                                isEdtting
+                                !isEdtting
                                     ? model.addTask(
                                         taskName: taskName,
                                         description:

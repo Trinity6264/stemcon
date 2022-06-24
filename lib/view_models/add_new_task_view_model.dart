@@ -111,19 +111,26 @@ class AddTaskViewModel extends BaseViewModel {
             messageColor: whiteColor,
           ));
           _snackbarService.showSnackbar(message: 'Task Editted successfully');
-          _navService.replaceWith(Routes.taskView);
+          _navService.replaceWith(
+            Routes.taskView,
+            arguments: TaskViewArguments(projectId: projectId!),
+          );
+          return;
         } else {
           _dialogService.showDialog(
             title: 'Error Message',
             description: data['res_message'],
           );
+          return;
         }
       }
     } catch (e) {
+      printInfo(info: e.toString());
       _dialogService.showDialog(
         title: 'Error Message',
         description: 'Connection Failed',
       );
+      return;
     }
   }
 }

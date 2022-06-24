@@ -549,8 +549,9 @@ class ApiService {
     required int userId,
     required int token,
     required String dprTime,
-    required File dprPdf,
-    required String dprDescription,
+    required File dprImage,
+    required String tomorrowTask,
+    required String todayTask,
     required String projectId,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/dpr/add';
@@ -559,15 +560,16 @@ class ApiService {
       Uri.parse(serverUrl),
     );
     final mimeTypeData =
-        lookupMimeType(dprPdf.path, headerBytes: [0xFF, 0xD8])!.split('/');
-    final file = await http.MultipartFile.fromPath('dpr_pdf', dprPdf.path,
+        lookupMimeType(dprImage.path, headerBytes: [0xFF, 0xD8])!.split('/');
+    final file = await http.MultipartFile.fromPath('dpr_image', dprImage.path,
         contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
 
     imageUploadRequest.files.add(file);
     imageUploadRequest.fields['user_id'] = userId.toString();
     imageUploadRequest.fields['token'] = token.toString();
     imageUploadRequest.fields['dpr_time'] = dprTime;
-    imageUploadRequest.fields['dpr_description'] = dprDescription;
+    imageUploadRequest.fields['dpr_tomorrow_task'] = tomorrowTask;
+    imageUploadRequest.fields['dpr_today_task'] = todayTask;
     imageUploadRequest.fields['project_id'] = projectId;
     final streamedResponse = await imageUploadRequest.send();
     final response = await http.Response.fromStream(streamedResponse);
@@ -591,7 +593,7 @@ class ApiService {
     final mimeTypeData =
         lookupMimeType(dprPdf.path, headerBytes: [0xFF, 0xD8])!.split('/');
     final file = await http.MultipartFile.fromPath(
-      'dpr_pdf',
+      'dpr_image',
       dprPdf.path,
       contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
     );
@@ -609,7 +611,8 @@ class ApiService {
     required int token,
     required String id,
     required String? dprTime,
-    required String? dprDescription,
+    required String? tomorrowTask,
+    required String? todayTask,
     required String? projectId,
   }) async {
     const String serverUrl = 'http://stemcon.likeview.in/api/dpr/edit';
@@ -618,14 +621,15 @@ class ApiService {
       'token': token.toString(),
       'dpr_time': dprTime.toString(),
       'id': id,
-      'dpr_description': dprDescription,
+      'dpr_tomorrow_task': tomorrowTask,
+      'dpr_today_task': todayTask,
       'project_id': projectId,
     };
 
     final res = await http.post(
       Uri.parse(serverUrl),
       body: _body,
-      headers: {'Content-Type': 'application/json'},
+      // headers: {'Content-Type': 'application/json'},
     );
     return res;
   }

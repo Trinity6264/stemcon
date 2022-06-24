@@ -9,7 +9,6 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/app/app.locator.dart';
 import 'package:stemcon/app/app.router.dart';
-import 'package:stemcon/view_models/home_view_model.dart';
 
 class TaskViewModel extends BaseViewModel {
   final _navService = locator<NavigationService>();
@@ -20,12 +19,11 @@ class TaskViewModel extends BaseViewModel {
 
   int? userId;
   int? token;
-  String? projectId;
 
   Future<void> reload() async {
     userId = await _prefService.loadUserId();
     token = await _prefService.loadUserAuthenticationToken();
-    projectId = await _prefService.loadProjectId();
+
     await _prefService.reloadData();
   }
 
@@ -77,7 +75,6 @@ class TaskViewModel extends BaseViewModel {
           token: token,
           id: id,
         );
-        print(res.statusCode);
         if (res.statusCode == 200) {
           final data = jsonDecode(res.body);
           if (data['res_code'] == '1') {
@@ -113,6 +110,7 @@ class TaskViewModel extends BaseViewModel {
     required String taskAssignedBy,
     required String description,
     required String taskStatus,
+    required String projectId,
     required int taskId,
   }) {
     _navService.navigateTo(
@@ -123,7 +121,7 @@ class TaskViewModel extends BaseViewModel {
         taskAssignedBy: taskAssignedBy,
         description: description,
         token: token!,
-        projectId: projectId!,
+        projectId: projectId,
         taskId: taskId,
         taskStatus: taskStatus,
         taskName: taskName,
@@ -134,6 +132,7 @@ class TaskViewModel extends BaseViewModel {
   void toAddNewTaskView({
     required int? userId,
     required int? token,
+    required String projectId,
   }) {
     if (userId == null || token == null) return;
     _navService.navigateTo(
@@ -143,7 +142,7 @@ class TaskViewModel extends BaseViewModel {
         userId: userId,
         token: token,
         indes: 0,
-        projectId: int.parse(projectId!),
+        projectId: int.parse(projectId),
       ),
     );
   }

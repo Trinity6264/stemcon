@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 
-import 'package:stemcon/models/dpr_list_model.dart';
-import 'package:stemcon/views/category/dpr/editting_dpr_view.dart';
-
 import '../../../utils/color/color_pallets.dart';
 import '../../../view_models/drp_view_model.dart';
 
@@ -46,93 +43,105 @@ class DprView extends StatelessWidget {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: model.datas.isEmpty
-                      ? Center(
-                          child: SvgPicture.asset(
-                            'assets/logo/undraw.svg',
-                          ),
-                        )
-                      : ListView.builder(
-                          itemCount: model.datas.length,
-                          physics: const AlwaysScrollableScrollPhysics(
-                            parent: BouncingScrollPhysics(),
-                          ),
-                          itemBuilder: (context, index) {
-                            final data = model.datas[index];
+              : RefreshIndicator(
+                  onRefresh: () async => await model.loadData(),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: model.datas.isEmpty
+                        ? Center(
+                            child: SvgPicture.asset(
+                              'assets/logo/undraw.svg',
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: model.datas.length,
+                            physics: const AlwaysScrollableScrollPhysics(
+                              parent: BouncingScrollPhysics(),
+                            ),
+                            itemBuilder: (context, index) {
+                              final data = model.datas[index];
 
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 0,
-                                vertical: 15,
-                              ),
-                              width: double.infinity,
-                              height: (_size.height * 0.2) + 15,
-                              child: Card(
-                                shadowColor: greyColor,
-                                elevation: 3.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        data.dprTime ?? 'Empty',
-                                        style: const TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 0,
+                                  vertical: 15,
+                                ),
+                                width: double.infinity,
+                                height: (_size.height * 0.2) + 15,
+                                child: Card(
+                                  shadowColor: greyColor,
+                                  elevation: 3.0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          data.dprTime ?? 'Empty',
+                                          style: const TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        data.dprDescription ?? 'Empty',
-                                        style: const TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.w500,
+                                        Text(
+                                          data.dprTodayTask ?? 'Empty',
+                                          style: const TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.only(
-                                          top: 20,
-                                          left: 20,
-                                          right: 20,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            button(
-                                              size: _size,
-                                              color: greenColor,
-                                              text: 'Edit',
-                                              onPressed: () => model
-                                                  .toCategoryView(projectId),
-                                            ),
-                                            button(
-                                              size: _size,
-                                              color: redColor,
-                                              text: 'Delete',
-                                              onPressed: () {
-                                                model.deleteDpr(
-                                                  token: model.token!,
-                                                  userId: model.userId!,
-                                                  index: index,
+                                        Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.only(
+                                            top: 20,
+                                            left: 20,
+                                            right: 20,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              button(
+                                                size: _size,
+                                                color: greenColor,
+                                                text: 'Edit',
+                                                onPressed: () =>
+                                                    model.toEditDpr(
+                                                  projectId: projectId,
+                                                  taskname: '',
+                                                  dprImage: data.dprImage!,
+                                                  todayTask: data.dprTodayTask,
+                                                  tomorrowTask:
+                                                      data.dprTomorrowTask,
+                                                  dprTime: data.dprTime,
                                                   id: data.id!,
-                                                );
-                                              },
-                                            ),
-                                          ],
+                                                ),
+                                              ),
+                                              button(
+                                                size: _size,
+                                                color: redColor,
+                                                text: 'Delete',
+                                                onPressed: () {
+                                                  model.deleteDpr(
+                                                    token: model.token!,
+                                                    userId: model.userId!,
+                                                    index: index,
+                                                    id: data.id!,
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
+                              );
+                            },
+                          ),
+                  ),
                 ),
         );
       },

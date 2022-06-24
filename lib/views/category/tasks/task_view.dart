@@ -6,7 +6,11 @@ import 'package:stemcon/utils/color/color_pallets.dart';
 import 'package:stemcon/view_models/task_view_model.dart';
 
 class TaskView extends StatelessWidget {
-  const TaskView({Key? key}) : super(key: key);
+  final String projectId;
+  const TaskView({
+    Key? key,
+    required this.projectId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +104,7 @@ class TaskView extends StatelessWidget {
                                             button(
                                               onPressed: () {
                                                 model.toEdit(
+                                                  projectId: projectId,
                                                   taskName: data.taskName ?? '',
                                                   taskAssignedBy:
                                                       data.taskAssignedBy ?? '',

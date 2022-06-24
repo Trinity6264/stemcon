@@ -80,15 +80,29 @@ class DprViewModel extends BaseViewModel {
 
   // to cat
 
-  void toCategoryView(String projectId) {
+  void toEditDpr({
+    required String projectId,
+    required String? taskname,
+    required String? dprImage,
+    required String? todayTask,
+    required String? tomorrowTask,
+    required String? dprTime,
+    required int id,
+  }) {
     if (userId == null || token == null) return;
     _navService.navigateTo(
-      Routes.addCategoryView,
-      arguments: AddCategoryViewArguments(
-        userId: userId,
-        token: token,
-        indes: 1,
-        projectId: int.parse(projectId),
+      Routes.addNewDprView,
+      arguments: AddNewDprViewArguments(
+        isEditting: true,
+        projectId: projectId,
+        taskName: '',
+        token: token!,
+        userId: userId!,
+        dprImage: dprImage,
+        dprtime: dprTime,
+        id: id,
+        todayTask: todayTask,
+        tommorowTask: tomorrowTask,
       ),
     );
   }
@@ -140,152 +154,6 @@ class DprViewModel extends BaseViewModel {
         title: 'Error Message',
         description: e.message,
       );
-    }
-  }
-
-  Future<bool> editDprImage({
-    required int? userId,
-    required int? token,
-    required int? id,
-    required File dprPdf,
-  }) async {
-    try {
-      final response = await _apiService.editDprImage(
-        userId: userId!,
-        token: token!,
-        id: id.toString(),
-        dprPdf: dprPdf,
-      );
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['res_code'] == '1') {
-          return true;
-        } else {
-          _dialogService.showDialog(
-            title: 'Error Message',
-            description: data['res_message'],
-          );
-          return false;
-        }
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      _dialogService.showDialog(
-        title: 'Error Message',
-        description: 'Connection Failed',
-      );
-      return false;
-    }
-    return false;
-  }
-
-  Future<bool> editTask({
-    required String? description,
-    required String? projectId,
-    required String? dprTime,
-    required int? userId,
-    required int? token,
-    File? dprPdf,
-    required int? id,
-  }) async {
-    try {
-      final response = await _apiService.editDpr(
-        userId: userId!,
-        token: token!,
-        id: id.toString(),
-        dprDescription: description,
-        dprTime: dprTime,
-        projectId: projectId,
-      );
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['res_code'] == '1') {
-          return true;
-        } else {
-          _dialogService.showDialog(
-            title: 'Error Message',
-            description: data['res_message'],
-          );
-          return false;
-        }
-      }
-    } catch (e) {
-      _dialogService.showDialog(
-        title: 'Error Message',
-        description: 'Connection Failed',
-      );
-      return false;
-    }
-    return false;
-  }
-
-  // edit request
-
-  Future<void> editRequest({
-    required String? description,
-    required String? projectId,
-    required String? dprTime,
-    required int? userId,
-    required int? token,
-    File? dprPdf,
-    required int? id,
-  }) async {
-    if (dprPdf != null) {
-      setBusy(true);
-      try {
-        final data = await editDprImage(
-          userId: userId,
-          token: token,
-          id: id,
-          dprPdf: dprPdf,
-        );
-
-        if (data) {
-          final data2 = await editTask(
-            description: description,
-            projectId: projectId,
-            dprTime: dprTime,
-            userId: userId,
-            token: token,
-            id: id,
-          );
-          if (data2) {
-            setBusy(false);
-            _navService.back();
-            _snackbarService.registerSnackbarConfig(SnackbarConfig(
-              messageColor: whiteColor,
-            ));
-            _snackbarService.showSnackbar(message: 'Task Editted successfully');
-            loadData();
-            return;
-          } else {
-            setBusy(false);
-            return;
-          }
-        } else {
-          setBusy(false);
-          return;
-        }
-      } catch (e) {
-        _dialogService.showDialog(
-          title: 'Error Message',
-          description: e.toString(),
-        );
-        setBusy(false);
-        return;
-      }
-    } else {
-      await editTask(
-        description: description,
-        projectId: projectId,
-        dprTime: dprTime,
-        userId: userId,
-        token: token,
-        id: id,
-      );
-      return;
     }
   }
 }
