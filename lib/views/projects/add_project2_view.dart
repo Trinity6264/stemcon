@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -76,9 +74,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<NewProjectViewModel>.reactive(
-      onDispose: (model) {
-        disposeForm();
-      },
+      onDispose: (model) => disposeForm(),
       onModelReady: (model) {
         model.requestTime();
         model.generatingManWorkingHour();
