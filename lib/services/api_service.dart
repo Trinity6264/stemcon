@@ -289,7 +289,6 @@ class ApiService {
     required String id,
     required String? projectName,
     required String? projectCode,
-    required File? projectPhotoPath,
     required String? projectStartDate,
     required String? projectEndDate,
   }) async {

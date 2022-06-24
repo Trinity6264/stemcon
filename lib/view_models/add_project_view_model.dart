@@ -50,8 +50,8 @@ class AddProjectViewModel extends BaseViewModel {
     }
   }
 
-  // Edit project
-  Future<void> editProject(
+  //todo Edit project
+  Future<bool> editProject(
     CheckingState state, {
     String? projectName,
     String? projectEndTime,
@@ -107,87 +107,221 @@ class AddProjectViewModel extends BaseViewModel {
             projectTimeZone: projectTimezone ?? '',
             projectUnit: projectUnit ?? '',
           );
-          return;
+          return true;
         } else {
           _dialogService.showDialog(
             title: 'Error',
             description: response['res_message'],
           );
+          return false;
         }
       } else {
         _dialogService.showDialog(
           title: 'Error',
           description: 'Please try again',
         );
+        return false;
       }
     } on HttpException catch (e) {
       _dialogService.showDialog(
         title: 'Error',
         description: e.message,
       );
+      return false;
     }
   }
 
-  // add project
-  // Future<void> addProject({
-  //   required String projectCode,
-  //   required String adminStatus,
-  //   required String projectName,
-  //   required int? token,
-  //   required int? userId,
-  //   required File? image,
-  // }) async {
-  //   if (projectCode.isEmpty ||
-  //       projectName.isEmpty ||
-  //       image == null ||
-  //       token == null ||
-  //       userId == null ||
-  //       startDate!.isEmpty ||
-  //       endDate!.isEmpty) {
-  //     _snackbarService.registerSnackbarConfig(SnackbarConfig(
-  //       messageColor: whiteColor,
-  //     ));
-  //     _snackbarService.showSnackbar(message: 'Entry can\'t be empty');
-  //   } else {
-  //     setBusy(true);
-  //     try {
-  //       final response = await _apiService.addProject1(
-  //         userId: userId,
-  //         token: token,
-  //         projectCode: projectCode,
-  //         projectName: projectName,
-  //         projectPhotoPath: image,
-  //         projectStartDate: startDate!,
-  //         projectEndDate: endDate!,
-  //       );
-  //       if (response.statusCode == 200) {
-  //         final data = response.data;
-  //         if (data['res_code'] == "1") {
-  //           setBusy(false);
-  //           toAddProject2View(
-  //             id: data['res_data']['id'],
-  //             token: token,
-  //             adminStatus: adminStatus,
-  //             userId: userId,
-  //             state: CheckingState.adding,
-  //           );
-  //         } else {
-  //           setBusy(false);
-  //           _snackbarService.registerSnackbarConfig(SnackbarConfig(
-  //             messageColor: whiteColor,
-  //           ));
-  //           _snackbarService.showSnackbar(message: 'Error occurred!');
-  //         }
-  //       } else {
-  //         setBusy(false);
-  //       }
-  //     } on DioError catch (e) {
-  //       setBusy(false);
-  //       debugPrint(e.message);
-  //       return;
-  //     }
-  //   }
-  // }
+  Future<bool> editProjectOnly(
+    CheckingState state, {
+    String? projectName,
+    String? projectEndTime,
+    int? id,
+    String? projectStartTime,
+    String? projectAddress,
+    String? projectAdmin,
+    String? projectCode,
+    String? projectKeyPoint,
+    String? projectManHour,
+    String? projectPurpose,
+    String? projectStatus,
+    String? projectUnit,
+    String? projectTimezone,
+    required int token,
+    required int userId,
+  }) async {
+    try {
+      setBusy(true);
+      final _data = await _apiService.editProject1Only(
+        userId: userId,
+        token: token,
+        projectCode: projectCode,
+        projectName: projectName,
+        projectStartDate: projectStartTime,
+        projectEndDate: projectEndTime,
+        id: id.toString(),
+      );
+      setBusy(false);
+
+      if (_data.statusCode == 200) {
+        final response = jsonDecode(_data.body);
+        if (response['res_code'] == '1') {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } on HttpException catch (e) {
+      _dialogService.showDialog(
+        title: 'Error',
+        description: e.message,
+      );
+      return false;
+    }
+  }
+
+  Future<void> requestProjectEdit(
+    CheckingState state, {
+    String? projectName,
+    String? projectEndTime,
+    int? id,
+    String? projectStartTime,
+    String? projectAddress,
+    String? projectAdmin,
+    String? projectCode,
+    String? projectKeyPoint,
+    String? projectManHour,
+    String? projectPurpose,
+    String? projectStatus,
+    String? projectUnit,
+    String? projectTimezone,
+    File? image,
+    required int token,
+    required int userId,
+  }) async {
+    setBusy(true);
+    if (image != null) {
+      final data = await editProject(
+        state,
+        token: token,
+        userId: userId,
+        id: id,
+        projectAddress: projectAddress,
+        projectAdmin: projectAdmin,
+        projectCode: projectCode,
+        projectEndTime: projectEndTime,
+        projectKeyPoint: projectKeyPoint,
+        projectManHour: projectManHour,
+        projectName: projectName,
+        projectPurpose: projectPurpose,
+        projectStartTime: projectStartTime,
+        projectStatus: projectStatus,
+        projectTimezone: projectTimezone,
+        projectUnit: projectUnit,
+        image: image,
+      );
+      if (data) {
+        final data2 = await editProjectOnly(
+          state,
+          token: token,
+          userId: userId,
+          id: id,
+          projectAddress: projectAddress,
+          projectAdmin: projectAdmin,
+          projectCode: projectCode,
+          projectEndTime: projectEndTime,
+          projectKeyPoint: projectKeyPoint,
+          projectManHour: projectManHour,
+          projectName: projectName,
+          projectPurpose: projectPurpose,
+          projectStartTime: projectStartTime,
+          projectStatus: projectStatus,
+          projectTimezone: projectTimezone,
+          projectUnit: projectUnit,
+        );
+        setBusy(false);
+        if (data2) {
+          _snackbarService.registerSnackbarConfig(SnackbarConfig(
+            messageColor: whiteColor,
+          ));
+          _snackbarService.showSnackbar(message: 'Project updated succesfully');
+          toAddProject2View(
+            id: id!,
+            state: CheckingState.editting,
+            token: token,
+            userId: userId,
+            adminStatus: projectAdmin ?? '',
+            projectAddress: projectAddress ?? '',
+            projectAdmin: projectAdmin ?? '',
+            projectCode: projectCode ?? '',
+            projectKeyPoint: projectKeyPoint ?? '',
+            projectManHour: projectManHour ?? '',
+            projectPurpose: projectPurpose ?? '',
+            projectStatus: projectStatus ?? '',
+            projectTimeZone: projectTimezone ?? '',
+            projectUnit: projectUnit ?? '',
+          );
+          return;
+        } else {
+          _dialogService.showDialog(
+            title: 'Error',
+            description: 'Please try again',
+          );
+          return;
+        }
+      }
+    } else {
+      final data2 = await editProjectOnly(
+        state,
+        token: token,
+        userId: userId,
+        id: id,
+        projectAddress: projectAddress,
+        projectAdmin: projectAdmin,
+        projectCode: projectCode,
+        projectEndTime: projectEndTime,
+        projectKeyPoint: projectKeyPoint,
+        projectManHour: projectManHour,
+        projectName: projectName,
+        projectPurpose: projectPurpose,
+        projectStartTime: projectStartTime,
+        projectStatus: projectStatus,
+        projectTimezone: projectTimezone,
+        projectUnit: projectUnit,
+      );
+      setBusy(false);
+      if (data2) {
+        _snackbarService.registerSnackbarConfig(SnackbarConfig(
+          messageColor: whiteColor,
+        ));
+        _snackbarService.showSnackbar(message: 'Project updated succesfully');
+        toAddProject2View(
+          id: id!,
+          state: CheckingState.editting,
+          token: token,
+          userId: userId,
+          adminStatus: projectAdmin ?? '',
+          projectAddress: projectAddress ?? '',
+          projectAdmin: projectAdmin ?? '',
+          projectCode: projectCode ?? '',
+          projectKeyPoint: projectKeyPoint ?? '',
+          projectManHour: projectManHour ?? '',
+          projectPurpose: projectPurpose ?? '',
+          projectStatus: projectStatus ?? '',
+          projectTimeZone: projectTimezone ?? '',
+          projectUnit: projectUnit ?? '',
+        );
+        return;
+      } else {
+        _dialogService.showDialog(
+          title: 'Error',
+          description: 'Please try again',
+        );
+        return;
+      }
+    }
+  }
 
   void toAddProject2View({
     required int? userId,

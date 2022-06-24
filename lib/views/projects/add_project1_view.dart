@@ -73,7 +73,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
             elevation: 0,
             backgroundColor: whiteColor,
             title: Text(
-             isEditting ?'Edit Project':  'Add Project',
+              isEditting ? 'Edit Project' : 'Add Project',
               style: TextStyle(
                 color: blackColor,
                 fontSize: (_size.width * 0.1) / 1.8,
@@ -245,7 +245,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                           title: 'NEXT',
                           onPressed: () {
                             if (state.index == 0) {
-                              model.editProject(
+                              model.requestProjectEdit(
                                 state,
                                 image: model.imageSelected,
                                 token: token,
@@ -267,6 +267,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                                 projectPurpose: projectPurpose,
                                 projectStatus: projectStatus,
                                 projectUnit: projectUnit,
+                                projectTimezone: projectTimezone
                               );
                             } else {
                               model.toAddProject2View(
