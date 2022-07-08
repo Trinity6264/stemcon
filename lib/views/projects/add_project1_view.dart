@@ -64,8 +64,8 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
     return ViewModelBuilder<AddProjectViewModel>.reactive(
       onModelReady: (model) => model.initDate(
         isEditting: state == CheckingState.editting,
-        end: projectEndTime!,
-        start: projectStartTime!,
+        end: projectEndTime ?? '',
+        start: projectStartTime ?? '',
       ),
       viewModelBuilder: () => AddProjectViewModel(),
       onDispose: (model) => disposeForm(),

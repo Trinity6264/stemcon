@@ -116,7 +116,6 @@ class HomeView extends StatelessWidget with $HomeView {
                       icon: const Icon(Icons.search, color: blackColor),
                       onPressed: () {
                         model.changedToSerach();
-
                         searchFocusNode.requestFocus();
                       },
                     ),

@@ -58,9 +58,9 @@ class AuthenticationViewModel extends BaseViewModel {
           appSignature: appSignature,
         );
         final response = await _apiService.createAccount(userModel: userModel);
+        final data = jsonDecode(response.body);
         if (response.statusCode == 200) {
           setBusy(false);
-          final data = jsonDecode(response.body);
           if (data['res_code'] == "1") {
             _navService.navigateToView(
               OtpVerify(

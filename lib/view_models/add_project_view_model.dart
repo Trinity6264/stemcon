@@ -24,7 +24,7 @@ class AddProjectViewModel extends BaseViewModel {
 
   void initDate({required bool isEditting,required String start,required String end,}) {
     final data = DateTime.now();
-    print(data);
+    
     startDate =isEditting ? start:'${data.year}-${data.month}-${data.day}';
     endDate =isEditting ? end: '${data.year}-${data.month}-${data.day}';
   }

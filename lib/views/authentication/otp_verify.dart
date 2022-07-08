@@ -138,7 +138,8 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
             value: data['res_data']['updated_at'],
             index: 1,
           );
-          _navService.replaceWith(Routes.homeView);
+          
+          _navService.pushNamedAndRemoveUntil(Routes.homeView);
           setBusy(false);
           return;
         } else {
