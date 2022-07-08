@@ -78,6 +78,9 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
       onModelReady: (model) {
         model.requestTime();
         model.generatingManWorkingHour();
+        state == CheckingState.editting
+            ? model.onChangedUnit(projectUnit)
+            : null;
       },
       viewModelBuilder: () => NewProjectViewModel(),
       builder: (context, model, child) {
@@ -118,7 +121,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                             child: RadioListTile(
                               groupValue: isEditting &&
                                       projectUnit != null &&
-                                      model.unit == ''
+                                      model.unit == projectUnit
                                   ? projectUnit
                                   : model.unit,
                               value: 'MM',
@@ -131,7 +134,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                             child: RadioListTile(
                               groupValue: isEditting &&
                                       projectUnit != null &&
-                                      model.unit == ''
+                                      model.unit == projectUnit
                                   ? projectUnit
                                   : model.unit,
                               value: 'Ft',
@@ -144,7 +147,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                             child: RadioListTile(
                               groupValue: isEditting &&
                                       projectUnit != null &&
-                                      model.unit == ''
+                                      model.unit == projectUnit
                                   ? projectUnit
                                   : model.unit,
                               value: 'CM',
@@ -166,6 +169,7 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                         ),
                         child: DropdownButtonFormField(
                           elevation: 0,
+                          value: projectManHour,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                           ),
@@ -173,7 +177,9 @@ class AddProject2View extends StatelessWidget with $AddProject2View {
                               .map(
                                 (e) => DropdownMenuItem(
                                   value: e.toString(),
-                                  child: Text(e.toString()),
+                                  child: Text(
+                                    e.toString(),
+                                  ),
                                 ),
                               )
                               .toList(),

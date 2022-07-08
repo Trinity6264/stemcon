@@ -61,7 +61,6 @@ class NewProjectViewModel extends BaseViewModel {
 
   void onChangedUnit(String? value) {
     unit = value!;
-    debugPrint(listOfContact.toString());
     notifyListeners();
   }
   //
