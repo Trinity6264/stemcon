@@ -61,6 +61,10 @@ class AddTaskViewModel extends BaseViewModel {
             ));
             _snackbarService.showSnackbar(message: 'Task Added');
             _navService.popRepeated(2);
+            _navService.navigateTo(
+              Routes.taskView,
+              arguments: TaskViewArguments(projectId: projectId),
+            );
             return;
           } else {
             setBusy(false);
