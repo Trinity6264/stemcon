@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -246,9 +247,26 @@ class NewProjectViewModel extends BaseViewModel {
         } else {
           setBusy(false);
         }
+      } on SocketException catch (e) {
+        setBusy(false);
+        _dialogService.showDialog(
+          title: 'Connection Failed',
+          description: 'Check your internet connection',
+        );
+        return;
+      } on PlatformException catch (e) {
+        setBusy(false);
+        _dialogService.showDialog(
+          title: 'Connection Failed',
+          description: e.message,
+        );
+        return;
       } on DioError catch (e) {
         setBusy(false);
-        debugPrint(e.message);
+        _dialogService.showDialog(
+          title: 'Failed',
+          description: e.message,
+        );
         return;
       }
     }
@@ -390,7 +408,15 @@ class NewProjectViewModel extends BaseViewModel {
         ));
         _snackbarService.showSnackbar(message: 'Error occurred!');
       }
+    } on SocketException catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Connection failed ',
+        description: 'Check your internet connection',
+      );
+      return;
     } on HttpException catch (e) {
+      setBusy(false);
       _dialogService.showDialog(
         title: 'Error',
         description: e.message,

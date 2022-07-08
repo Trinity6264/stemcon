@@ -49,8 +49,23 @@ class TaskView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: model.datas.isEmpty
                       ? Center(
-                          child: SvgPicture.asset(
-                            'assets/logo/undraw.svg',
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/logo/undraw.svg',
+                              ),
+                              const SizedBox(height: 20),
+                              const Text(
+                                'No TASK found',
+                                style: TextStyle(
+                                  color: blackColor,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )
+                            ],
                           ),
                         )
                       : ListView.builder(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
@@ -155,12 +156,20 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
           description: data['res_message'],
         );
       }
+    } on SocketException catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Failed',
+        description: e.message,
+      );
+      return;
     } on Exception catch (e) {
       setBusy(false);
       _dialogService.showDialog(
         title: 'Failed',
         description: e.toString(),
       );
+      return;
     }
   }
 
@@ -187,7 +196,7 @@ class _OtpVerifyState extends State<OtpVerify> with CodeAutoFill {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: _size.height * 0.2 ),
+            SizedBox(height: _size.height * 0.2),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

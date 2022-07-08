@@ -62,7 +62,11 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<AddProjectViewModel>.reactive(
-      onModelReady: (model) => model.initDate(),
+      onModelReady: (model) => model.initDate(
+        isEditting: state == CheckingState.editting,
+        end: projectEndTime!,
+        start: projectStartTime!,
+      ),
       viewModelBuilder: () => AddProjectViewModel(),
       onDispose: (model) => disposeForm(),
       builder: (context, model, child) {
@@ -186,9 +190,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                         ),
                       ),
                       child: Text(
-                        isEditting &&
-                                projectStartTime != null &&
-                                model.startDate == null
+                        isEditting && projectStartTime != null
                             ? projectStartTime!
                             : model.startDate ?? "2022-05-01",
                         style: const TextStyle(
@@ -221,9 +223,7 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                         ),
                       ),
                       child: Text(
-                        isEditting &&
-                                projectEndTime != null &&
-                                model.endDate == null
+                        isEditting && projectEndTime != null
                             ? projectEndTime!
                             : model.endDate ?? "01/06/2024",
                         style: const TextStyle(
@@ -245,30 +245,29 @@ class AddProjectView extends StatelessWidget with $AddProjectView {
                           title: 'NEXT',
                           onPressed: () {
                             if (state.index == 0) {
-                              model.requestProjectEdit(
-                                state,
-                                image: model.imageSelected,
-                                token: token,
-                                userId: userId,
-                                id: id,
-                                projectEndTime: model.endDate ?? projectEndTime,
-                                projectStartTime:
-                                    model.startDate ?? projectStartTime,
-                                projectCode: projectCodeController.text == ''
-                                    ? projectCode
-                                    : projectCodeController.text,
-                                projectAddress: projectAddress,
-                                projectName: projectNameController.text == ''
-                                    ? projectname
-                                    : projectNameController.text,
-                                projectAdmin: projectAdmin,
-                                projectKeyPoint: projectKeyPoint,
-                                projectManHour: projectManHour,
-                                projectPurpose: projectPurpose,
-                                projectStatus: projectStatus,
-                                projectUnit: projectUnit,
-                                projectTimezone: projectTimezone
-                              );
+                              model.requestProjectEdit(state,
+                                  image: model.imageSelected,
+                                  token: token,
+                                  userId: userId,
+                                  id: id,
+                                  projectEndTime:
+                                      model.endDate ?? projectEndTime,
+                                  projectStartTime:
+                                      model.startDate ?? projectStartTime,
+                                  projectCode: projectCodeController.text == ''
+                                      ? projectCode
+                                      : projectCodeController.text,
+                                  projectAddress: projectAddress,
+                                  projectName: projectNameController.text == ''
+                                      ? projectname
+                                      : projectNameController.text,
+                                  projectAdmin: projectAdmin,
+                                  projectKeyPoint: projectKeyPoint,
+                                  projectManHour: projectManHour,
+                                  projectPurpose: projectPurpose,
+                                  projectStatus: projectStatus,
+                                  projectUnit: projectUnit,
+                                  projectTimezone: projectTimezone);
                             } else {
                               model.toAddProject2View(
                                 projectCode: projectCodeController.text.trim(),

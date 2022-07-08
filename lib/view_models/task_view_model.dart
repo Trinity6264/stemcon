@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:stemcon/models/add_task_model.dart';
 import 'package:stemcon/services/api_service.dart';
 import 'package:stemcon/services/shared_prefs_service.dart';
@@ -37,19 +38,43 @@ class TaskViewModel extends BaseViewModel {
   String errorMessage = '';
   Future<void> loadData() async {
     setBusy(true);
-    await reload();
-    final data = await _apiService.fetchTask(userId: userId!, token: token!);
-    if (data.isNotEmpty) {
+    try {
+      await reload();
+      final data = await _apiService.fetchTask(userId: userId!, token: token!);
+      if (data.isNotEmpty) {
+        setBusy(false);
+        data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+        datas = data.reversed.toList();
+      } else {
+        setBusy(false);
+        errorMessage =
+            'No Data Found\n Please check your internet connectivity';
+        _snackbarService.registerSnackbarConfig(SnackbarConfig(
+          messageColor: whiteColor,
+        ));
+        _snackbarService.showSnackbar(message: 'No Data Found!');
+      }
+    } on SocketException catch (e) {
       setBusy(false);
-      data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-      datas = data.reversed.toList();
-    } else {
+      _dialogService.showDialog(
+        title: 'Connection Failed',
+        description: 'Check your internet connection',
+      );
+      return;
+    } on PlatformException catch (e) {
       setBusy(false);
-      errorMessage = 'No Data Found\n Please check your internet connectivity';
-      _snackbarService.registerSnackbarConfig(SnackbarConfig(
-        messageColor: whiteColor,
-      ));
-      _snackbarService.showSnackbar(message: 'Something went wrong!');
+      _dialogService.showDialog(
+        title: 'Connection Failed',
+        description: e.message,
+      );
+      return;
+    } on Exception catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Connection Failed',
+        description: e.toString(),
+      );
+      return;
     }
   }
 
@@ -98,10 +123,26 @@ class TaskViewModel extends BaseViewModel {
         return;
       }
     } on HttpException catch (e) {
+      setBusy(false);
       _dialogService.showDialog(
         title: 'Error Message',
         description: e.message,
       );
+      return;
+    } on SocketException catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Failed Connection',
+        description: 'Check your internet connnection',
+      );
+      return;
+    } on Exception catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Failed',
+        description: e.toString(),
+      );
+      return;
     }
   }
 

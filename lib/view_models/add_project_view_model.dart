@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stemcon/app/app.locator.dart';
@@ -24,10 +22,11 @@ class AddProjectViewModel extends BaseViewModel {
   String? startDate;
   String? endDate;
 
-  void initDate() {
+  void initDate({required bool isEditting,required String start,required String end,}) {
     final data = DateTime.now();
-    startDate = '${data.year}-${data.month}-${data.day}';
-    endDate = '${data.year}-${data.month}-${data.day}';
+    print(data);
+    startDate =isEditting ? start:'${data.year}-${data.month}-${data.day}';
+    endDate =isEditting ? end: '${data.year}-${data.month}-${data.day}';
   }
 
   void onChanged({int? index, String? text}) {
@@ -122,7 +121,15 @@ class AddProjectViewModel extends BaseViewModel {
         );
         return false;
       }
+    } on SocketException catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Connection failed',
+        description: 'Check your internet connection',
+      );
+      return false;
     } on HttpException catch (e) {
+      setBusy(false);
       _dialogService.showDialog(
         title: 'Error',
         description: e.message,

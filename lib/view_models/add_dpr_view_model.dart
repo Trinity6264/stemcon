@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:stemcon/app/app.locator.dart';
 import 'package:stemcon/app/app.router.dart';
 import 'package:stacked/stacked.dart';
@@ -107,9 +108,26 @@ class AddNewDprViewModel extends BaseViewModel {
           setBusy(false);
           return;
         }
+      } on SocketException catch (e) {
+        setBusy(false);
+        _dialogService.showDialog(
+          title: 'Connection Failed',
+          description: 'Check your internet connection',
+        );
+        return;
+      } on PlatformException catch (e) {
+        setBusy(false);
+        _dialogService.showDialog(
+          title: 'Connection Failed',
+          description: e.message,
+        );
+        return;
       } on Exception catch (e) {
         setBusy(false);
-        debugPrint(e.toString());
+        _dialogService.showDialog(
+          title: 'Connection Failed',
+          description: e.toString(),
+        );
         return;
       }
     }

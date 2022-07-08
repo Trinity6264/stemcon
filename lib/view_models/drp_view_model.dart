@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:stemcon/app/app.locator.dart';
 import 'package:stemcon/models/dpr_list_model.dart';
 import 'package:stemcon/services/api_service.dart';
@@ -60,21 +61,45 @@ class DprViewModel extends BaseViewModel {
 
   Future<void> loadData() async {
     setBusy(true);
-    await reload();
-    id = userId;
-    tok = token;
-    final data = await _apiService.fetchDprList(userId: id!, token: tok!);
-    setBusy(false);
-    if (data.isNotEmpty) {
-      data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-      datas = data.reversed.toList();
-    } else {
-      datas = [];
-      errorMessage = 'No Data Found\n Please check your internet connectivity';
-      _snackbarService.registerSnackbarConfig(SnackbarConfig(
-        messageColor: whiteColor,
-      ));
-      _snackbarService.showSnackbar(message: 'Something went wrong!');
+    try {
+      await reload();
+      id = userId;
+      tok = token;
+      final data = await _apiService.fetchDprList(userId: id!, token: tok!);
+      setBusy(false);
+      if (data.isNotEmpty) {
+        data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+        datas = data.reversed.toList();
+      } else {
+        datas = [];
+        errorMessage =
+            'No Data Found\n Please check your internet connectivity';
+        _snackbarService.registerSnackbarConfig(SnackbarConfig(
+          messageColor: whiteColor,
+        ));
+        _snackbarService.showSnackbar(message: 'Something went wrong!');
+      }
+    } on SocketException catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Connection Failed',
+        description: 'Check your internet connection',
+      );
+      return;
+    } on PlatformException catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Connection Failed',
+        description: e.message,
+      );
+      return;
+    } on Exception catch (e) {
+      setBusy(false);
+      _dialogService.showDialog(
+        title: 'Connection Failed',
+        description: e.toString(),
+      );
+      return;
     }
   }
 

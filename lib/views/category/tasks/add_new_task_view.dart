@@ -148,6 +148,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                                         token: token,
                                         userId: userId,
                                         projectId: projectId,
+                                        assignedBy: assignToController.text.trim(),
                                       )
                                     : model.editTask(
                                         taskName: task1Controller.text == ''
@@ -161,7 +162,7 @@ class AddNewTaskView extends StatelessWidget with $AddNewTaskView {
                                         taskAssignedBy:
                                             assignToController.text == ''
                                                 ? taskAssignedBy
-                                                : assignToController.text,
+                                                : assignToController.text.trim(),
                                         token: token.toString(),
                                         userId: userId.toString(),
                                         id: taskId,

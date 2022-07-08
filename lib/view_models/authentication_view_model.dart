@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:stemcon/models/country_codes_model.dart';
 import 'package:stacked/stacked.dart';
@@ -48,38 +50,61 @@ class AuthenticationViewModel extends BaseViewModel {
           message: 'Number is less than 9 characters');
     } else {
       setBusy(true);
-      final userModel = NewUser(
-        companyCode: companyCode,
-        number: number,
-        countryCode: countryCode!.callingCode!,
-        appSignature: appSignature,
-      );
-      final response = await _apiService.createAccount(userModel: userModel);
-      if (response.statusCode == 200) {
-        setBusy(false);
-        final data = jsonDecode(response.body);
-        if (data['res_code'] == "1") {
-          _navService.navigateToView(
-            OtpVerify(
-              companyCode: companyCode,
-              countryCode: countryCode!.callingCode!,
-              countryNumber: number,
-            ),
-          );
-          return;
+      try {
+        final userModel = NewUser(
+          companyCode: companyCode,
+          number: number,
+          countryCode: countryCode!.callingCode!,
+          appSignature: appSignature,
+        );
+        final response = await _apiService.createAccount(userModel: userModel);
+        if (response.statusCode == 200) {
+          setBusy(false);
+          final data = jsonDecode(response.body);
+          if (data['res_code'] == "1") {
+            _navService.navigateToView(
+              OtpVerify(
+                companyCode: companyCode,
+                countryCode: countryCode!.callingCode!,
+                countryNumber: number,
+              ),
+            );
+            return;
+          } else {
+            _dialogService.showDialog(
+                title: 'Authentication', description: data['res_message']);
+            return;
+          }
         } else {
           _dialogService.showDialog(
-              title: 'Authentication', description: data['res_message']);
-          return;
+            title: 'Failed',
+            description: "Something went wrong try again",
+          );
         }
-      } else {
+        setBusy(false);
+        return;
+      } on PlatformException catch (e) {
+        setBusy(false);
         _dialogService.showDialog(
           title: 'Failed',
-          description: "Something went wrong try again",
+          description: e.message,
         );
+        return;
+      } on SocketException catch (e) {
+        setBusy(false);
+        _dialogService.showDialog(
+          title: 'Connection Failed',
+          description: 'Check your internet connection',
+        );
+        return;
+      } catch (e) {
+        setBusy(false);
+        _dialogService.showDialog(
+          title: 'Failed',
+          description: e.toString(),
+        );
+        return;
       }
-      setBusy(false);
-      return;
     }
   }
 
