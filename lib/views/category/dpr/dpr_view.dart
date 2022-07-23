@@ -16,7 +16,7 @@ class DprView extends StatelessWidget {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<DprViewModel>.reactive(
-      onModelReady: (model) => model.loadData(),
+      onModelReady: (model) => model.loadData(projectId),
       viewModelBuilder: () => DprViewModel(),
       builder: (context, model, child) {
         return Scaffold(
@@ -44,13 +44,30 @@ class DprView extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 )
               : RefreshIndicator(
-                  onRefresh: () async => await model.loadData(),
+                  onRefresh: () async => await model.loadData(projectId),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: model.datas.isEmpty
                         ? Center(
-                            child: SvgPicture.asset(
-                              'assets/logo/undraw.svg',
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/logo/undraw.svg',
+                                  width: double.infinity,
+                                  height: _size.height * .3,
+                                ),
+                                const SizedBox(height: 20),
+                                const Text(
+                                  'No Dpr found',
+                                  style: TextStyle(
+                                    color: blackColor,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              ],
                             ),
                           )
                         : ListView.builder(

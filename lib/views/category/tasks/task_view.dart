@@ -17,7 +17,7 @@ class TaskView extends StatelessWidget {
     Size _size = MediaQuery.of(context).size;
     return ViewModelBuilder<TaskViewModel>.reactive(
       onModelReady: (model) {
-        model.loadData();
+        model.loadData(projectId);
       },
       viewModelBuilder: () => TaskViewModel(),
       builder: (context, model, child) {

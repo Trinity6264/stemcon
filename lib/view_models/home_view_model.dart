@@ -32,12 +32,21 @@ class HomeViewModel extends BaseViewModel {
   List<ProjectListModel> datas = [];
   String errorMessage = '';
   Future<void> loadData({
-    required int userId,
-    required String token,
+    required int? userId,
+    required String? token,
   }) async {
     setBusy(true);
     try {
-      final data = await _apiService.fetchProject(userId: userId, token: token);
+      if (userId == null || token == null) {
+        await _dialogService.showCustomDialog(
+            title: 'Timeout',
+            description: 'user details not found login again');
+        return;
+      }
+      final data = await _apiService.fetchProject(
+        userId: userId,
+        token: token,
+      );
       if (data.isNotEmpty) {
         setBusy(false);
         data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));

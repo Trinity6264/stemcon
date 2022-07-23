@@ -92,7 +92,7 @@ class AddNewDprViewModel extends BaseViewModel {
             ));
             _snackbarService.showSnackbar(message: 'Dpr added Succesfully');
             setBusy(false);
-           _navService.popRepeated(2);
+            _navService.popRepeated(2);
             _navService.navigateTo(
               Routes.dprView,
               arguments: DprViewArguments(projectId: projectId),
@@ -246,6 +246,7 @@ class AddNewDprViewModel extends BaseViewModel {
     required int? id,
   }) async {
     if (dprPdf != null) {
+      printInfo(info: 'Pdf');
       setBusy(true);
       try {
         final data = await editDprImage(
@@ -267,7 +268,11 @@ class AddNewDprViewModel extends BaseViewModel {
           );
           if (data2) {
             setBusy(false);
-            _navService.back();
+            _navService.popRepeated(2);
+            _navService.navigateTo(
+              Routes.dprView,
+              arguments: DprViewArguments(projectId: projectId!),
+            );
             _snackbarService.registerSnackbarConfig(SnackbarConfig(
               messageColor: whiteColor,
             ));
@@ -299,7 +304,12 @@ class AddNewDprViewModel extends BaseViewModel {
         token: token,
         id: id,
       );
-      _navService.back();
+      _navService.popRepeated(2);
+      _navService.navigateTo(
+        Routes.dprView,
+        arguments: DprViewArguments(projectId: projectId!),
+      );
+
       _snackbarService.registerSnackbarConfig(SnackbarConfig(
         messageColor: whiteColor,
       ));

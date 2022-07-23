@@ -59,7 +59,7 @@ class DprViewModel extends BaseViewModel {
     await _prefService.reloadData();
   }
 
-  Future<void> loadData() async {
+  Future<void> loadData(String projectId) async {
     setBusy(true);
     try {
       await reload();
@@ -69,7 +69,8 @@ class DprViewModel extends BaseViewModel {
       setBusy(false);
       if (data.isNotEmpty) {
         data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-        datas = data.reversed.toList();
+        final taskData = data.reversed.toList();
+        datas = taskData.where((dpr) => dpr.projectId == projectId).toList();
       } else {
         datas = [];
         errorMessage =

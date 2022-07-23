@@ -36,15 +36,17 @@ class TaskViewModel extends BaseViewModel {
 
   List<AddTaskModel> datas = [];
   String errorMessage = '';
-  Future<void> loadData() async {
+  Future<void> loadData(String projectId) async {
     setBusy(true);
     try {
       await reload();
       final data = await _apiService.fetchTask(userId: userId!, token: token!);
       if (data.isNotEmpty) {
         setBusy(false);
+        print(data);
         data.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-        datas = data.reversed.toList();
+        final taskData = data.reversed.toList();
+        datas = taskData.where((task) => task.projectId == projectId).toList();
       } else {
         setBusy(false);
         errorMessage =
